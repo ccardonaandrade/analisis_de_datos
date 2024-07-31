@@ -1,0 +1,1115 @@
+---
+format:
+  revealjs: 
+    theme: [default, style.scss]
+    slide-number: true
+    highlight-style: github
+    width: 1400
+    css:
+      - https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.2/font/bootstrap-icons.css
+---
+
+## {.center}
+
+<h1 class="text-indigo-pink">Analítica de Datos<h1>
+
+<h2>tidyverse y ggplot</h2>
+
+::: {style="margin-top:50px"}
+### Carlos Cardona Andrade {.text-orange-gold}
+
+:::
+
+
+# Tabla de contenido
+
+1. [Programación orientada a objetos en R](#progobjR)
+2. [tidyverse](#tidyverse)
+3. [ggplot](#ggplot)
+4. [Visualización de Datos](#visualization)
+
+# Programación orientada a objetos en R {#progobjR .text-wash-black background="linear-gradient(45deg, #00aadd, #66dd00)"}
+
+
+## Algunos fundamentos básicos de R {.text-lime-cyan}
+
+1. Todo es un objeto.
+
+2. Todo objeto tiene un nombre.
+
+3. Todo se opera usando funciones.
+
+4. Las funciones existen dentro de paquetes (i.e. "libraries"), aunque ustedes pueden escribir sus propias funciones.
+
+. . .
+
+<br/>Puntos 1. y 2. pueden ser resumidos como un enfoque de [programación orientada a objetos](https://es.wikipedia.org/wiki/Programaci%C3%B3n_orientada_a_objetos) (OOP).Esto puede sonar super abstracto ahora, pero veremos *muchos* ejemplos en las próximas semanas que harán todo más claro.
+
+
+## Qué son objetos? {.text-lime-cyan}
+
+Es importante enfatizar que hay muchos *tipos* (o *clases*) diferentes de objetos. 
+
+Algunos objetos con los que trabajaremos regularmente son:
+
+- vectores
+- matrices
+- data grames
+- listas
+- funciones
+- etc.
+
+
+## Paquetes en Tidyverse {.text-lime-cyan}
+
+Carguemos el meta-paquete tidyverse y veamos la salida.
+
+```{r}
+#| echo: true
+library(tidyverse)
+```
+     
+Vemos que efectivamente hemos cargado una serie de paquetes (que también podrían cargarse individualmente): **ggplot2**, **tibble**, **dplyr**, etc.
+
+## Qué es "tidy" data? {.text-lime-cyan}
+
+- Recursos:
+    - [Paquete tidyr](https://cran.r-project.org/web/packages/tidyr/vignettes/tidy-data.html)
+    - [Paper original](https://vita.had.co.nz/papers/tidy-data.pdf) (Hadley Wickham, 2014 JSS)
+
+
+- Puntos clave:
+    1. Cada variable forma una columna.
+    2. Cada observación forma una fila.
+    3. Cada tipo de unidad de observación forma una tabla.
+    
+## Qué es "tidy" data? {.text-lime-cyan}
+
+<div style="text-align: justify;">
+Todas las familias felices se parecen unas a otras, pero cada familia infeliz lo es a su manera - León Tolstói
+</div>
+
+![](images/tidydata.png){fig-align="center" width=50%}
+
+
+<div style="text-align: justify;">
+Al igual que las familias, los conjuntos de datos "tidy" son todos iguales, pero cada conjunto de datos desordenado es desordenado a su manera.
+</div>
+
+## ¿Por qué "tidy"? {.text-lime-cyan}
+
+- Un conjunto de datos en forma tidy facilita la selección de variables, la agrupación, el resumen y la visualización.
+
+- Algunas herramientas y paquetes en el tidyverse como **dplyr** o **ggplot2** requieren que los datos se organicen de esa manera
+
+- `El problema`: la mayoría de los datos que obtengan no estarán "ordenados" desde el principio -> tendrá que remodelarlos
+
+
+## Los paquetes de hoy {.text-lime-cyan}
+
+Una vez los paquetes están instalados, cárguenlos a su sesión en R con la función `library()`.
+
+```{r}
+#| echo: true
+
+# Recuerden siempre instalar los paquetes!
+# install.packages("ggplot2movies")
+library(ggplot2movies) ## Sólo usamos este paquete por la base de datos "movies"
+movies<-movies
+top1000 <- movies %>%
+  arrange(desc(budget)) %>%
+  slice_head(n = 1000)
+```
+
+
+## Base de datos "movies" {.text-lime-cyan}
+
+Dado que manipularemos los datos [movies](https://cran.r-project.org/web/packages/ggplot2movies/ggplot2movies.pdf), es importante saber que contiene información de películas como su presupuesto, duración, rating y votos en IMBD y el tipo de película desde 1892.
+
+```{r}
+#| echo: true
+head(top1000,5)
+```
+
+## Un aparte sobre el "pipe operator": %>% { .text-lime-cyan} 
+
+<span style="font-size: 90%;">Quiero reiterar lo funcional que es el pipe operator y cómo su uso puede mejorar drásticamente la experiencia de lectura y escritura de código. Comparar</span>:
+
+```{r}
+#| echo: true
+#| eval: false
+## Las siguientes líneas hacen exactamente lo mismo
+top1000 %>% filter(rating>6.5) %>% group_by(mpaa) %>% summarise(budget_mean = mean(bugdet))
+summarise(group_by(filter(top1000, rating>6.5), mpaa), budget_mean = mean(budget))
+```
+
+<span style="font-size: 90%;">La primera línea se lee de izquierda a derecha, exactamente como uno pensaría las operaciones</span>.
+
+  - <span style="font-size: 90%;">Toma este objeto (`top1000`), haz esto (`filter`), luego haz esto (`group_by`), etc</span>.
+
+<span style="font-size: 90%;">La segunda línea invierte totalmente este orden lógico (¡la operación final viene primero!)</span>
+ 
+  - <span style="font-size: 90%;">¿Quién quiere leer las cosas al revés?</span>
+  
+## Un aparte sobre el "pipe operator": %>% { .text-lime-cyan}
+
+La versión anclada ("piped") del código es aún más legible si la escribimos en varias líneas. Aquí está de nuevo pero con la salida de R:
+
+```{r}
+#| echo: true
+#| eval: true
+top1000 %>%
+  filter(rating>6.5) %>% 
+  group_by(mpaa) %>% 
+  summarise(budget_mean = mean(budget))
+```
+
+Recuerden: usar espacio vertical no cuesta nada y genera un código mucho más legible y fácil de escribir que amontonar cosas horizontalmente.
+
+## Asignación { .text-lime-cyan}
+
+En R, podemos usar `<-` o `=` para manejar la asignación de objetos.
+
+```{r}
+#| echo: true
+a <- 10 + 5
+a
+a = 10 + 5
+a
+```
+
+**Nota:** un atajo para escribir el operador `<-` es `Alt` + `-`. 
+
+
+## Asignación { .text-lime-cyan}
+### ¿Cuál operador usar? 
+
+La mayoría de los usuarios de R (¿puristas?) parecen preferir `<-` para la asignación, ya que `=` también tiene un rol específico para la evaluación *dentro* de las funciones.
+
+   - Veremos muchos ejemplos de esto más adelante.
+   - Pero no creo que importe; `=` es más rápido de escribir y es más intuitivo si vienes de otro lenguaje de programación. (Más discusión [aquí](https://github.com/Robinlovelace/geocompr/issues/319#issuecomment-427376764) y [aquí](https://www.separatinghyperplanes.com/2018/02/why-you-should-use-and-never.html).)
+
+# Tidyverse: <br>[dplyr]{.hl .hl-gold} {#tidyverse .text-wash-black background="linear-gradient(45deg, #f37335, #fdc830)"}
+
+## Key dplyr verbs   {.text-orange-gold}
+
+Hay 5 verbos claves en el paquete dplyr que necesitan aprender:
+
+1. `filter`: Filtra (i.e. subset) filas basado en los valores de estas.
+
+2. `arrange`: ordena (i.e. reordenar) filas basado en sus valores.
+
+3. `select`: selecciona (i.e. subset) columnas por nombre: 
+
+4. `mutate`: crea nuevas columnas.
+
+5. `summarise`: colapsa múltiples filas en un único valor que resume la información.
+
+## 1) dplyr::filter {.text-orange-gold}
+
+Podemos encadenar múltiples comandos de filtro con el pipe (), o simplemente separarlos dentro de un solo comando de filtro usando comas.
+
+```{r}
+#| echo: true
+top1000 %>% 
+  filter( 
+    mpaa == "R", 
+    rating >= 7.5
+    ) %>%
+  head(8) #Muéstreme sólo las 8 primeras filas
+```
+
+## 1) dplyr::filter *cont.* {.text-orange-gold}
+
+Las [expresiones regulares](https://es.wikipedia.org/wiki/Expresi%C3%B3n_regular) también funcionan dentro del comando.
+
+```{r}
+#| echo: true
+top1000 %>% 
+  filter(grepl("Terminator", title))
+```
+
+## 1) dplyr::filter *cont.* {.text-orange-gold}
+
+Un uso muy común de `filter` es identificar (o eliminar) casos con valores faltantes (missings). 
+
+```{r}
+#| echo: true
+movies %>% 
+  filter(is.na(budget)) %>%
+  head(3)
+```
+Para eliminar valores faltantes, simplemente usen la negación: `filter(!is.na(budget))`. Inténtenlo ustedes.
+
+   
+## 2) dplyr::arrange {.text-orange-gold}
+
+```{r}
+#| echo: true
+top1000 %>% 
+  arrange(year) %>%
+  head(5)  
+```
+. . .
+
+<br/>*Note:* Si se organiza una variable basado en caracteres, se ordenarán alfabéticamente. Intenten ordenando según la variable "title".
+
+## 2) dplyr::arrange *cont.* {.text-orange-gold}
+
+También podemos organizar los elementos en orden descendente utilizando `arrange(desc())`.
+```{r}
+#| echo: true
+top1000 %>% 
+  arrange(desc(year))%>%
+  head(8)
+```
+
+
+## 3) dplyr::select {.text-orange-gold}
+
+Utilicen comas para seleccionar varias columnas de una base de datos (usen "first:last" para columnas consecutivas). Anulen la selección de una columna con "-".
+
+```{r}
+#| echo: true
+top1000 %>% 
+  select(title:votes, mpaa, -r1)
+```
+
+## 3) dplyr::select *cont.* {.text-orange-gold}
+
+También puede cambiar el nombre de algunas (o todas) de las variables seleccionadas.
+
+```{r}
+#| echo: true
+top1000 %>%
+  select(name=title, duration=length, imbd_votes=votes) %>%
+  head(5)
+```
+
+Si solo desean cambiar el nombre de las columnas sin seleccionarlas, pueden utilizar. `rename`. Prueben esto ahora reemplazando `select(...)` en el fragmento de código anterior por `rename(...)`.
+
+
+## 3) dplyr::select *cont.*  {.text-orange-gold}
+
+La opción `select(contains(PATTERN))` proporciona un buen atajo en casos relevantes.
+
+```{r}
+#| echo: true
+top1000 %>% 
+  select(title, contains("r"))%>%
+  head(8)
+```
+
+## 3) dplyr::select *cont.* {.text-orange-gold}
+
+La opción `select(..., everything())` es otro atajo útil si solo desea traer algunas variables al "frente" de la base de datos.
+
+```{r}
+#| echo: true
+top1000 %>% 
+  select(Action, Animation, everything()) %>%
+  head(5)
+```
+
+
+
+## 4) dplyr::mutate { .text-orange-gold}
+
+Pueden crear nuevas columnas desde cero o (más comúnmente) como transformaciones de columnas existentes.
+
+```{r}
+#| echo: true
+top1000 %>% 
+  select(title, year) %>%
+  mutate(dog_years = year * 7) %>%
+  mutate(comment = paste0(title, " was in ", dog_years, " in dog years."))
+```
+
+
+## 4) dplyr::mutate *cont.* { .text-orange-gold}
+
+*Nota:* `mutate` tiene en cuenta el orden, por lo que puedes encadenar múltiples cambios en una sola llamada.
+
+```{r}
+#| echo: true
+top1000 %>% 
+  select(title, year) %>%
+  mutate(
+    dog_years = year * 7, ## Separate with a comma
+    comment = paste0(title, " was in ", dog_years, " in dog years.")
+    )
+```
+
+
+## 4) dplyr::mutate *cont.* { .text-orange-gold}
+
+Los operadores lógicos y condicionales también funcionan bien con `mutate`.
+
+```{r}
+#| echo: true
+top1000 %>% 
+  select(title, rating) %>%
+  filter(title %in% c("Van Helsing", "Titanic")) %>% 
+  mutate(tall1 = rating > 6.5) %>%
+  mutate(tall2 = ifelse(rating > 6.5, "Hit", "No Hit")) ## Same effect, but can choose labels
+
+```
+
+
+## 4) dplyr::mutate *cont.* { .text-orange-gold}
+
+Por último, la combinación de `mutate` con la  función `across` les permite trabajar fácilmente en un subconjunto de variables. Por ejemplo:
+
+```{r}
+#| echo: true
+top1000 %>% 
+  select(title:votes, mpaa) %>% 
+  mutate(across(where(is.character), tolower)) %>% 
+  head(5)
+```
+
+
+
+## 5) dplyr::summarise {.text-orange-gold}
+
+Particularmente útil en combinación con el comando `group_by`.
+
+```{r}
+#| echo: true
+top1000 %>% 
+  group_by(mpaa) %>% 
+  summarise(mean_budget = mean(budget, na.rm = TRUE))
+```
+
+
+## 5) dplyr::summarise *cont.* {.text-orange-gold}
+
+Tengan en cuenta que incluir "na.rm = TRUE" (o su alias "na.rm = T") suele ser una buena idea con estas funcioes. De lo contrario, cualquier valor faltante se propagará también al valor resumido.
+
+
+```{r}
+#| echo: true
+## Probably not what we want
+movies %>% 
+  summarise(mean_budget = mean(budget))
+## Much better
+movies %>% 
+  summarise(mean_budget = mean(budget, na.rm = TRUE))
+```
+
+
+## 5) dplyr::summarise *cont.* {.text-orange-gold}
+
+El mismo flujo de trabajo basado en `across` que vimos con `mutate` unas diapositivas atrás también funciona con `summarise`. Por ejemplo:
+
+```{r}
+#| echo: true
+top1000 %>% 
+  group_by(mpaa) %>% 
+  summarise(across(where(is.numeric), mean, na.rm=T)) %>% #<<
+  head(5)
+```
+
+
+# [Tidyverse:<br>[[ggplot]{.hl .hl-purple}]{style="font-size:75%;"}]{style="color:white"} {#ggplot background="linear-gradient(45deg, #4a00e0, #ff0099)"}
+
+
+## ggplot {.text-indigo-pink}
+```{r, fig.width = 4, fig.asp = 0.45} 
+#| echo: false
+#| fig.align: 'center'
+library(forcats)
+library(patchwork)
+library(lubridate)
+library(cowplot)
+library(tidyverse)
+aes_pos <- ggdraw() + 
+  geom_segment(data = data.frame(x = c(0, 0.5),
+                                 xend = c(1, 0.5),
+                                 y = c(0.5, 0),
+                                 yend = c(0.5, 1)),
+               aes(x = x, y = y, xend = xend, yend = yend),
+               arrow = arrow(length = grid::unit(12, "pt")), size = .75) +
+  draw_text("y", .5, 1, size = 12, vjust = 1, hjust = 2.5) +
+  draw_text("x", 1, .5, size = 12, vjust = 2, hjust = 1) + 
+  coord_cartesian(xlim = c(-.2, 1.2), ylim = c(-.2, 1.2))
+
+aes_color <- ggdraw() +
+  geom_tile(data = data.frame(x = 0.15 + .2333*(0:3)),
+            aes(x, y = .5, fill = factor(x)), width = .2, height = .6) 
+aes_shape <- ggdraw() +
+  geom_point(data = data.frame(x = (.5 + 0:3)/4),
+             aes(x, y = .5, shape = factor(x)), size = 8, fill = "grey80") +
+  scale_shape_manual(values = 21:24)
+
+aes_size <- ggdraw() +
+  geom_point(data = data.frame(x = (.5 + 0:3)/4),
+             aes(x, y = .5, size = factor(x)), shape = 21, fill = "grey80") +
+  scale_size_manual(values = c(2, 5, 8, 11))
+
+aes_lwd <- ggdraw() +
+  geom_segment(data = data.frame(x = rep(0.05, 4),
+                                 xend = rep(0.95, 4),
+                                 y = (1.5 + 0:3)/6,
+                                 yend = (1.5 + 0:3)/6,
+                                 size = 4:1),
+               aes(x = x, y = y, xend = xend, yend = yend, size = size)) +
+  scale_size_identity()
+
+aes_ltp <- ggdraw() +
+  geom_segment(data = data.frame(x = rep(0.05, 4),
+                                 xend = rep(0.95, 4),
+                                 y = (1.5 + 0:3)/6,
+                                 yend = (1.5 + 0:3)/6,
+                                 linetype = 4:1),
+               aes(x = x, y = y, xend = xend, yend = yend, linetype = linetype), size = 1) +
+  scale_linetype_identity()
+
+
+plot_grid(aes_pos, aes_shape, aes_size,
+          aes_color, aes_lwd, aes_ltp,
+          ncol = 3,
+          labels = c("position", "shape", "size", "color", "line width", "line type"),
+          label_x = 0.05, label_y = 0.95, hjust = 0, vjust = 1)
+```
+
+El paquete ggplot2 creado por [Hadley Wickham](http://hadley.nz/) es uno de los paquetes más populares de todo el mundo R. 
+  
+  - Está construido sobre una teoría de visualización profunda: i.e. [*The Grammar of Graphics*](https://www.amazon.com/Grammar-Graphics-Statistics-Computing/dp/0387245448) de Leland Wilkinson.
+
+## Elements of ggplot2 {.text-indigo-pink}
+
+Hay mucho que decir sobre la implementación de este enfoque de "gramática de gráficos" en ggplot2, pero los tres elementos clave son:
+
+1. La gráfica ("la visualización") está conectada a las variables ("los datos") a través de varios **mapeos estéticos** (aestethic mappings).
+
+2. Una vez el mapeo estético está definido, ustedes pueden representar sus datos en diferentes maneras al elegir diferentes **geoms** (i.e. "objetos geométricos" como puntos, líneas o barras).
+
+3. Los gráficos se contruyen por **capas** (layers).
+
+</br>
+
+Esto es un poco abstracto. Repasemos cada elemento por turno con algunos gráficos reales.
+
+
+    
+## 1. Mapeo estético {.text-indigo-pink}
+
+```{r}
+#| echo: true
+#| fig.align: 'center'
+ggplot(data = top1000, mapping = aes(x = budget, y = rating)) + 
+geom_point()
+```
+
+
+## 1. Mapeo estético (cont.) {.text-indigo-pink}
+
+``` {r}
+#| eval: false
+#| echo: true
+#| code-line-numbers: "1"
+ggplot(data = top1000, mapping = aes(x = budget, y = rating)) + 
+geom_point()
+```
+
+Concentrémonos en la primera línea que contiene el llamado a la función `ggplot()`. La función acepta varios argumentos incluyendo:
+
+  - los datos que estamos usando (i.e. `data = top1000`).
+  - el mapeo estético (i.e. `mapping = aes(x = budget, y = rating)`).
+
+
+El mapeo estético acá es simple: sólo define un eje x (budget) y un eje y (rating).
+
+- Sin embargo, para tener una idea del poder y la flexibilidad que conlleva este enfoque, consideremos lo que sucede si agregamos más estética a la línea de la función...
+
+
+
+## 1. Mapeo estético (cont.) {.text-indigo-pink}
+
+```{r}
+#| echo: true
+#| fig.align: 'center'
+top1000 <- top1000 %>%  ## Necesitamos esta línea porque hay un valor no especificado
+  mutate(mpaa = ifelse(mpaa == "", "NA", mpaa))
+ggplot(data = top1000, aes(x = budget/1000000, y = rating, col = mpaa)) + 
+  geom_point(alpha = 0.3) ## "alpha" controls transparency. Takes a value between 0 and 1.
+```
+
+
+Noten que borramos la parte "mapping =" al llamar la función. La mayoría de la gnete sólo empieza con "aes(...)", ya que `ggplot2` sabe el orden de los argumentos.
+
+
+## 1. Mapeo estético (cont.) {.text-indigo-pink}
+
+También podemos especificar mapeo estético en la capa de la geometríca que queremos.
+```{r}
+#| echo: true
+#| fig.align: 'center'
+ggplot(data = top1000, aes(x = budget/1000000, y = rating)) +  ## Applicable to all geoms
+  geom_point(aes(col = mpaa), alpha = 0.3) ## Applicable to this geom only
+```
+
+## 1. Mapeo estético (cont.) {.text-indigo-pink}
+
+Oops. ¿Qué salió mal aquí?
+
+```{r}
+#| echo: true
+#| fig.align: 'center'
+ggplot(data = top1000, aes(x = budget/1000000, y = rating)) +  
+  geom_point(aes(col = "black"), alpha = 0.3) 
+```
+
+<br/> **Respuesta: **Las características estéticas están asociadas a variables, no a descripciones!
+
+## 1. Mapeo estético (cont.) {.text-indigo-pink}
+En este punto, en lugar de repetir la misma primera línea de ggplot2, es más conveniente definir un gráfico intermedio que podamos reutilizar.
+
+```{r}
+#| echo: true
+#| fig.align: 'center'
+p = ggplot(data = top1000, aes(x = budget/1000000, y = rating))
+p
+```
+
+## 2. Geoms {.text-indigo-pink}
+
+Una vez que las relaciones de sus variables hayan sido definidas por los mapeos estéticos, pueden usar y combinar diferentes geometrías para generar diferentes visualizaciones.
+
+```{r}
+#| echo: true
+#| fig.align: 'center'
+p + 
+  geom_point(alpha = 0.3)  +
+  geom_smooth(method = "loess")
+```
+
+
+## 2. Geoms {.text-indigo-pink}
+
+Los mapeos estéticos pueden aplicarse de manera diferente en cada geometría.
+
+```{r}
+#| echo: true
+#| fig.align: 'center'
+p +
+  geom_point(aes(col = mpaa), alpha = 0.3)  +
+  geom_smooth(method = "loess")
+```
+
+## 2. Geoms (cont) {.text-indigo-pink}
+
+El gráfico anterior proporciona una buena ilustración del poder (o efecto) que surge de asignar mapeos estéticos "globalmente" vs al interior de las capas geométricas individuales.
+
+- Comparar: ¿Qué sucede si ejecuta el fragmento de código a continuación?
+
+```{r}
+#| eval: false
+#| echo: true
+#| fig.align: 'center'
+ggplot(data = top1000, aes(x = budget/1000000, y = rating, col = mpaa)) + 
+  geom_point(alpha = 0.3)+
+  geom_smooth(method = "loess")
+```
+
+## 2. Geoms (cont) {.text-indigo-pink}
+
+De manera similar, tenga en cuenta que algunos geoms solo aceptan un subconjunto de asignaciones. Por ejemplo, `geom_density()` no sabe qué hacer con la asignación estética "y".
+
+```{r}
+#| echo: true
+#| error: true
+#| fig.align: 'center'
+p + geom_density()
+
+```
+
+## 2. Geoms (cont) {.text-indigo-pink}
+
+Podemos solucionar esto siendo más cuidadosos con cómo construimos la gráfica.
+
+```{r}
+#| echo: true
+#| fig.align: 'center'
+ggplot(data = top1000) + ## i.e. No "global" aesthetic mappings"
+  geom_density(aes(x = rating, fill = mpaa), alpha=0.3)
+```
+
+## 3. Construir la gráfica por capas {.text-indigo-pink}
+
+Ya hemos visto cómo podemos encadenar (o "superponer") elementos de gráfico consecutivos utilizando el conector "+".
+
+  - El hecho de que podamos crear y luego reutilizar un objeto de gráfico intermedio (por ejemplo, "p") es un testimonio de esto.
+
+Pero vale la pena repetirlo: puede generar una complejidad y transformación realmente impresionantes de su visualización a través de este simple proceso de superposición.
+  - No tiene que transformar sus datos originales; ggplot2 se encarga de todo eso.
+  - Por ejemplo (vea la siguiente diapositiva para ver la figura).
+  
+## 3. Construir la gráfica por capas (cont) {.text-indigo-pink}
+```{r}
+#| echo: true
+#| fig.align: 'center'
+p2 <- ggplot(data = top1000, aes(x = budget, y = rating)) +
+geom_point(aes(col = mpaa), alpha = 0.3) +
+scale_color_brewer(name = "Mpaa", palette = "Set1") + ## Different colour scale
+scale_x_log10(labels = scales::dollar)  + ## Switch to logarithmic scale on x-axis. Use dollar units.
+labs(x = "Budget", y = "Rating in IMBD") + ## Better axis titles
+theme_minimal() ## Try a minimal (b&w) plot theme
+p2
+```
+
+## Adiciones a ggoplot {.text-indigo-pink}
+
+Extensión simple: usar un paquete externo para tipos de graficas.
+```{r}
+#| echo: true
+#| fig.align: 'center'
+# Recuerden instalar el paquete!
+library(ggthemes)
+p2 + theme_economist()
+```
+
+
+# [Visualización de Datos<br>[[Tipos de Variables y Gráficos]{.hl .hl-red}]{#visualization style="font-size:75%;"}]{style="color:white"} { background="linear-gradient(45deg, #ed213a, #93291e)"}
+
+## Tipos de variables {.text-red-brown}
+
+![](images/tipovariables.png){fig-align="center" width=50%}
+
+
+
+## Organizando datos categóricos {.text-red-brown}
+### La tabla resumen
+
+La tabla resumen organiza las frecuencias o porcentajes de cada una de las posibles categorías de una variable categórica. 
+
+```{r}
+#| echo: true
+#| fig.align: 'center'
+#| code-fold: true
+#| code-summary: "Código de la tabla"
+
+summary_table <- top1000 %>%
+  count(mpaa) %>%  # Count the number of observations for each category
+  mutate(percentage = n / sum(n) * 100) %>%  # Calculate the percentage
+  arrange(desc(percentage))  # Arrange the table in descending order of percentage
+
+# Print the summary table
+print(summary_table)
+```
+
+## Organizando datos categóricos {.text-red-brown}
+### La Tabla de contigencia 
+Permite organizar dos o más variables categóricas.
+
+```{r}
+#| echo: true
+#| fig.align: 'center'
+top1000 <- top1000 %>%
+  mutate(
+    rating_status = ifelse(rating > mean(rating, na.rm = TRUE), "Above average", "Below average")
+  )
+
+# Print the updated data frame
+top1000 %>% 
+  select(title, rating, rating_status, everything()) %>%
+  head(5)
+```
+
+
+## Organizando datos categóricos {.text-red-brown}
+### Tabla de contigencia (Frecuencia) 
+```{r}
+#| echo: true
+#| fig.align: 'center'
+#| code-fold: true
+#| code-summary: "Código de la tabla"
+top1000 <- top1000 %>%
+  mutate(
+    rating_status = ifelse(rating > mean(rating, na.rm = TRUE), "Above average", "Below average")
+  )
+
+cross_tab <- table(top1000$mpaa, top1000$rating_status)
+# Add row and column totals
+cross_tab_with_totals <- addmargins(cross_tab)
+
+# Print the cross-tabulation table with totals
+print(cross_tab_with_totals)
+```
+
+
+## Organizando datos categóricos {.text-red-brown}
+### Tabla de Contingencia (%) 
+
+```{r}
+#| echo: true
+#| code-fold: true
+#| code-summary: "Código de la tabla"
+#| fig.align: 'center'
+# Create a cross-tabulation table showing frequencies
+cross_tab <- table(top1000$mpaa, top1000$rating_status)
+
+# Calculate the total number of observations
+total_sum <- sum(cross_tab)
+
+# Calculate percentages
+percentages <- (cross_tab / total_sum) * 100
+
+# Add row and column totals
+row_totals <- rowSums(percentages)
+col_totals <- colSums(percentages)
+total_row <- c(row_totals, sum(percentages))
+
+# Combine into a single table
+percentages_with_totals <- rbind(
+  cbind(percentages, Total = row_totals),
+  Total = c(col_totals, sum(percentages))
+)
+
+# Print the table with percentages and totals
+print(percentages_with_totals)
+```
+
+
+## Visualizando datos categóricos {.text-red-brown}
+### Gráfico de Barras
+
+La gráfica de barras nos permite visualizar variables categóricas  por medio de una serie de barras. **La longitud de cada barra representa la frecuencia o el % de los valores que caen en cada categoría**.
+```{r}
+#| echo: true
+#| code-fold: true
+#| code-summary: "Código de la tabla"
+#| fig.align: 'center'
+percentages <- top1000 %>%
+  count(mpaa) %>%
+  mutate(Percentage = (n / sum(n)) * 100) %>%
+  arrange(Percentage) %>%  # Arrange from highest to lowest
+  mutate(mpaa = factor(mpaa, levels = mpaa))  # Reorder factor levels
+
+ggplot(percentages, aes(x = mpaa, y = Percentage, fill = mpaa)) +
+  geom_bar(stat = "identity") +
+  labs(x = "MPAA Rating", y = "Percentage (%)", title = "Percentage of Observations by MPAA Rating") +
+  theme_minimal() +
+  coord_flip()  # Optional: Flip coordinates for better readability
+```
+
+## Visualizando datos categóricos {.text-red-brown}
+### Gráfico de Torta
+Es un círculo cortado en rebanadas que representan las categorías. **El tamaño de cada rebanada varía de acuerdo al porcentaje que representa cada categoría**. 
+
+```{r}
+#| echo: true
+#| code-fold: true
+#| code-summary: "Código de la tabla"
+#| fig.align: 'center'
+library(scales)
+bp<- ggplot(percentages, aes(x="", y=Percentage, fill=mpaa))+
+  geom_bar(width = 1, stat = "identity")
+pie <- bp + coord_polar("y", start=0)
+pie + scale_fill_brewer("Blues")  +
+  theme(axis.text.x=element_blank()) +
+  geom_text(aes(y = Percentage/3 + c(0, cumsum(Percentage)[-length(Percentage)]), 
+                label = percent(Percentage/100)), size=4)
+
+```
+
+
+## Visualizando datos categóricos {.text-red-brown}
+### Gráfico de Barras emparejadas
+
+```{r}
+#| echo: true
+#| code-fold: true
+#| code-summary: "Código de la tabla"
+#| fig.align: 'center'
+bivar_percentages <- top1000 %>%
+  group_by(mpaa, rating_status) %>%
+  summarise(count = n()) %>%
+  mutate(Percentage = (count / 1000) * 100) %>%
+  ungroup()
+
+ggplot(bivar_percentages, aes(x = mpaa, y = Percentage, fill = rating_status)) + 
+  geom_bar(stat = "identity", position = "dodge") +
+  coord_flip() + 
+  labs(x = "MPAA", y = "Percentage", fill = "Rating Position", title = "Percentage of Observations by MPAA Rating and Rating Status") + 
+  theme_minimal() +
+  theme(legend.position = "right")  # Optional: Move legend to the top
+```
+
+
+## Visualizando datos categóricos {.text-red-brown}
+
+
+::: columns
+::: {.column width="40%"}
+```{r}
+#| echo: false
+#| code-fold: true
+#| code-summary: "Código de la tabla"
+#| fig.align: 'center'
+
+# Print the table with percentages and totals
+print(percentages_with_totals)
+```
+
+:::
+
+::: {.column width="60%"}
+```{r}
+#| echo: false
+#| code-fold: true
+#| code-summary: "Código de la tabla"
+#| fig.align: 'center'
+bivar_percentages <- top1000 %>%
+  group_by(mpaa, rating_status) %>%
+  summarise(count = n()) %>%
+  mutate(Percentage = (count / 1000) * 100) %>%
+  ungroup()
+
+ggplot(bivar_percentages, aes(x = mpaa, y = Percentage, fill = rating_status)) + 
+  geom_bar(stat = "identity", position = "dodge") +
+  coord_flip() + 
+  labs(x = "MPAA", y = "Percentage", fill = "Rating Position", title = "Percentage of Observations by MPAA Rating and Rating Status") + 
+  theme_minimal() +
+  theme(legend.position = "right")  # Optional: Move legend to the top
+```
+:::
+:::
+
+## Variables numéricas {.text-red-brown}
+### Distribución de frecuencia
+
+- La distribución de frecuencia es una tabla resumen en la que los datos están organizados en categorías numéricamente ordenadas.
+ 
+- Se tienen que **definir las categorías adecuadas**, determinando su ancho y sus fronteras. 
+
+
+```{r}
+#| echo: true
+#| code-fold: true
+#| code-summary: "Código de la tabla"
+#| fig.align: 'center'
+top1000 <- top1000 %>%
+  mutate(rating_category = cut(rating,
+                               breaks = c(0, 2, 4, 6, 8, 10), ## Specifies the boundaries for the intervals. The intervals are (0, 2], (2, 4], (4, 6], (6, 8], and (8, 10].
+                               labels = c("1-2", "3-4", "5-6", "7-8", "9-10"),
+                               right = TRUE)) ## Indicates that the intervals are right-closed (i.e., the endpoint is included in the interval).
+
+
+freq_table <- top1000 %>%
+  group_by(rating_category) %>%
+  summarise(
+    frequency = n(),
+    relative_frequency = frequency / nrow(top1000),
+    percentage = relative_frequency * 100
+  ) %>%
+  arrange(rating_category)  # Optional: Arrange by rating_category
+
+# Rename columns for clarity
+freq_table <- freq_table %>%
+  rename(
+    category = rating_category,
+    "relative frequency" = relative_frequency,
+    "%" = percentage
+  )
+
+# Print the summary table
+print(freq_table)
+```
+
+
+## Variables numéricas {.text-red-brown}
+### ¿Por qué una distribución de frequencia?
+
+- Condensa datos brutos en una forma más útil.
+- Permite una rápida interpretación visual de los datos.
+- Permite determinación de ciertas características de los datos, incluyendo dónde están concentrados. 
+
+```{r}
+#| echo: true
+#| code-fold: true
+#| code-summary: "Código de la tabla"
+#| fig.align: 'center'
+## Ahora es acumulada
+summary_table <- top1000 %>%
+  group_by(rating_category) %>%
+  summarise(
+    frequency = n(),
+    relative_frequency = frequency / nrow(top1000),
+    percentage = relative_frequency * 100
+  ) %>%
+  arrange(rating_category) %>%  # Arrange by rating_category
+  mutate(cumulative_relative_frequency = cumsum(relative_frequency))
+
+# Rename columns for clarity
+summary_table <- summary_table %>%
+  rename(
+    category = rating_category,
+    "relative frequency" = relative_frequency,
+    "%" = percentage,
+    "cumulative relative frequency" = cumulative_relative_frequency
+  )
+
+# Print the summary table
+print(summary_table)
+```
+
+
+
+## Visualizando datos numéricos {.text-red-brown}
+### El histograma
+- Una gráfica con barras verticales que representa la distribución de frecuencias de los datos. 
+
+- No tiene espacios entre las barras contiguas. 
+
+- Las fronteras de cada categoría o los puntos medios se muestran en el eje horizontal. 
+
+- El eje vertical son frecuencias, frecuencias relativas o porcentajes. 
+
+- El eje vertical son las categorías. 
+
+
+
+
+## Visualizando datos numéricos {.text-red-brown}
+### El histograma
+
+::: columns
+::: {.column width="50%"}
+```{r}
+#| echo: false
+#| code-fold: true
+#| code-summary: "Código de la tabla"
+#| fig.align: 'center'
+
+# Print the table with percentages and totals
+print(freq_table)
+```
+
+:::
+
+::: {.column width="50%"}
+```{r}
+#| echo: true
+#| code-fold: true
+#| code-summary: "Código de la gráfica"
+#| fig.align: 'center'
+ggplot(top1000, aes(x = rating)) +
+  geom_histogram(color = "darkblue", fill = "lightblue", breaks = c(0, 2, 4, 6, 8, 10)) +
+  scale_x_continuous(breaks = c(0, 2, 4, 6, 8, 10)) +
+  labs(x = "Rating", y = "Count") +
+  theme_minimal()
+```
+:::
+:::
+
+## Visualizando datos numéricos {.text-red-brown}
+### El histograma
+
+
+::: columns
+::: {.column width="50%"}
+```{r}
+#| echo: true
+#| code-fold: true
+#| code-summary: "Código de la gráfica"
+#| fig.align: 'center'
+ggplot(top1000, aes(x = rating)) +
+  geom_histogram(color = "darkblue", fill = "lightblue", breaks = c(0, 2, 4, 6, 8, 10)) +
+  scale_x_continuous(breaks = c(0, 2, 4, 6, 8, 10)) +
+  labs(x = "Rating", y = "Count") +
+  theme_minimal()
+```
+
+:::
+
+::: {.column width="50%"}
+```{r}
+#| echo: true
+#| code-fold: true
+#| code-summary: "Código de la gráfica"
+#| fig.align: 'center'
+ggplot(top1000, aes(x=rating)) + geom_histogram(color="darkblue", fill="lightblue") +
+  labs(x = "Rating", y = "Count") +
+  theme_minimal()
+```
+:::
+:::
+
+## Visualizando variables numéricas {.text-red-brown}
+### Gráfico de dispersión
+
+::: columns
+::: {.column width="50%"}
+```{r}
+#| echo: true
+#| code-fold: true
+#| code-summary: "Código de la gráfica"
+#| fig.align: 'center'
+ggplot(data = top1000, mapping = aes(x = budget/1000000, y = rating)) + 
+  geom_point() +
+  labs(x = "Budget in millions", y = "Rating in IMBD") +
+  theme_minimal()
+```
+
+:::
+
+::: {.column width="50%"}
+```{r}
+#| echo: true
+#| code-fold: true
+#| code-summary: "Código de la gráfica"
+#| fig.align: 'center'
+# Recuerden instalar el paquete!
+library(gapminder)
+ggplot(data = gapminder, aes(x = gdpPercap, y = lifeExp)) +
+  geom_point() +
+  scale_x_log10(labels = scales::dollar) + ## Switch to logarithmic scale on x-axis. Use dollar units.
+  labs(x = "Log (GDP per capita)", y = "Life Expectancy") + ## Better axis titles
+  theme_minimal() ## Try a minimal (b&w) plot theme
+```
+:::
+:::
+
+
+## Visualizando variables numéricas {.text-red-brown}
+### Gráfico de series de tiempo
+
+::: columns
+::: {.column width="50%"}
+```{r}
+#| echo: true
+#| code-fold: true
+#| code-summary: "Código de la gráfica"
+#| fig.align: 'center'
+gapbyyear <- gapminder %>% 
+  group_by(year) %>%
+  summarise(lifeExp=mean(lifeExp, na.rm=T)) 
+ggplot(data = gapbyyear, mapping = aes(x = year, y = lifeExp)) + 
+    geom_line() +
+    geom_point()+
+    labs(x = "Year", y = "Life Expectancy") +
+    theme_minimal()
+```
+
+:::
+
+::: {.column width="50%"}
+```{r}
+#| echo: true
+#| code-fold: true
+#| code-summary: "Código de la gráfica"
+#| fig.align: 'center'
+budgetbyyear<- top1000 %>% 
+  group_by(year) %>% 
+  summarise(budget=mean(budget, na.rm=T))
+ggplot(data = budgetbyyear, mapping = aes(x = year, y = budget/1000000)) + 
+    geom_line() +
+    labs(x = "Year", y = "Budget in millions") +
+    theme_minimal()
+```
+:::
+:::
+
+
