@@ -1,0 +1,503 @@
+---
+format:
+  revealjs: 
+    theme: [default, style.scss]
+    slide-number: true
+    highlight-style: github
+    width: 1400
+    css:
+      - https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.2/font/bootstrap-icons.css
+---
+  
+##  {.center}
+  
+<h1 class="text-indigo-pink">
+  
+Analítica de Datos
+
+<h1>
+  
+<h2>Visualización de Datos</h2>
+  
+::: {style="margin-top:50px"}
+### Carlos Cardona Andrade {.text-orange-gold}
+:::
+  
+# [Claus O. Wilke]{.hl .hl-gold}  {.text-wash-black background="linear-gradient(45deg, #f37335, #fdc830)"}
+
+- Debemos hacer todo lo posible para ayudar a nuestros lectores a:
+  1. Entender el significado de nuestras visualizaciones 
+  2. Ver los mismos patrones en los datos que nosotros vemos
+  
+- Esto usualmente significa que menos es más!!
+
+- `Simplifique sus gráficas` tanto como sea posible 
+
+- `Elimine todas las características que sean tangenciales a su historia`
+
+
+# [Acto I: crear un gráfico autocontenido<br>]{style="color:white"}[(o: reducir la carga mental en la gráfica)]{.hl .hl-red} {#acto1 background="linear-gradient(45deg, #ed213a, #93291e)"}
+
+
+## Gráfico basado en "movies" {.text-red-brown}
+
+```{r}
+#| echo: false
+#| fig.align: 'center'
+
+library(tidyverse)
+library(ggplot2movies)
+
+movies <- movies
+top1000 <- movies %>%
+  arrange(desc(budget)) %>%
+  slice_head(n = 1000)
+top1000 <- top1000 %>%
+  mutate(mpaa = ifelse(mpaa == "", "NA", mpaa))
+
+
+top1000 %>%
+  count(mpaa) %>%
+  arrange(n) %>%
+  mutate(mpaa = fct_inorder(mpaa)) %>%
+  ggplot(aes(x = n, y = mpaa)) +
+  geom_col() +
+  geom_text(
+    aes(label = n, x = n - 5), 
+    color = "white", 
+    size = 5, 
+    hjust = 1
+  ) +
+  cowplot::theme_minimal_vgrid(16) +
+  theme(
+    axis.title.y = element_blank(), 
+    legend.position = "none" 
+  ) +
+  xlab("")
+```
+
+
+## 
+
+![](images/confused_dog.png){.absolute width=90% height=90%}
+
+
+## Nunca olviden nombrar los ejes!!! {.text-red-brown}
+
+```{r}
+#| echo: false
+#| fig.align: 'center'
+
+top1000 %>%
+  count(mpaa) %>%
+  arrange(n) %>%
+  mutate(mpaa = fct_inorder(mpaa)) %>%
+  ggplot(aes(x = n, y = mpaa)) +
+  geom_col() +
+  geom_text(
+    aes(label = n, x = n - 5), 
+    color = "white", 
+    size = 5, 
+    hjust = 1
+  ) +
+  cowplot::theme_minimal_vgrid(16) +
+  theme(
+    axis.title.x = element_text(size = 14),  # Set x-axis label size and font
+    axis.title.y = element_text(size = 14),  # Set y-axis label size and font
+    legend.position = "none"
+  ) +
+  xlab("Número de películas") +
+  ylab("Categoría (Motion Picture Association)")
+```
+
+## Es importante facilitar la lectura inicial de la gráfica {.text-red-brown}
+
+```{r}
+#| echo: false
+#| fig.align: 'center'
+
+top1000 %>%
+  count(mpaa) %>%
+  arrange(n) %>%
+  mutate(mpaa = fct_inorder(mpaa)) %>%
+  ggplot(aes(x = n, y = mpaa)) +
+  geom_col() +
+  geom_text(
+    aes(label = n, x = n - 5), 
+    color = "white", 
+    size = 5, 
+    hjust = 1
+  ) +
+  cowplot::theme_minimal_vgrid(16) +
+  theme(
+    axis.title.x = element_text(size = 14),  # Set x-axis label size and font
+    axis.title.y = element_text(size = 12, angle = 0, vjust = 0.5, hjust = 0.5),  # Set y-axis label as subtitle
+    legend.position = "none",
+    plot.title = element_text(size = 14),  # Optional: adjust plot title size
+    plot.subtitle = element_text(size = 12, face = "italic")  # Optional: add subtitle formatting if needed
+  ) +
+  ggtitle("Categoría (Motion Picture Association)") +
+  xlab("Número de películas") +
+  ylab("")
+
+```
+
+
+## Usen colores para resaltar el mensaje principal {.text-red-brown}
+
+
+```{r}
+#| echo: false
+#| fig.align: 'center'
+
+movies_mpaa <- top1000 %>%
+  count(mpaa) %>%
+  arrange(n) %>%
+  mutate(
+    pg13 = ifelse(mpaa == "PG-13", TRUE, FALSE),
+    mpaa = fct_inorder(mpaa)
+  )
+
+movies_mpaa %>%
+  ggplot(aes(x = n, y = mpaa, fill = pg13)) +
+  geom_col() +
+  geom_text(
+    aes(label = n, x = n - 5), 
+    color = "white", 
+    size = 5, 
+    hjust = 1
+  ) +
+  cowplot::theme_minimal_vgrid(16) +
+  theme(
+    axis.title.x = element_text(size = 14),  # Set x-axis label size and font
+    axis.title.y = element_text(size = 12, angle = 0, vjust = 0.5, hjust = 0.5),  # Set y-axis label as subtitle
+    legend.position = "none",
+    plot.title = element_text(size = 14),  # Optional: adjust plot title size
+    plot.subtitle = element_text(size = 12, face = "italic")  # Optional: add subtitle formatting if needed
+  ) +
+  scale_fill_manual(
+    name = NULL,
+    values = c("#B0B0B0D0", "#D55E00D0")
+  ) + ggtitle("Categoría (Motion Picture Association)") +
+  xlab("Número de películas") +
+  ylab("")
+
+```
+
+## ¿Cómo reducir la carga mental en una gráfica? {.text-red-brown}
+- Simplificando y [**resaltando**]{.hl .hl-red} formas (en caso de ser necesario)
+  - Usen **colores** para llamar la atención
+- Diseñando figuras sin leyendas
+  1. Etiqueten las figuras directamente (o un subconjunto)
+  2. Retiren las leyendas
+  3. Etiqueten por proximidad o similitud (e.g. mismo color)
+
+
+
+
+## Gráficas con leyendas {.text-red-brown}
+
+```{r}
+#| echo: false
+#| fig.align: 'center'
+library(gapminder)
+
+  gapminder <- gapminder
+  gap_continent <- gapminder %>%
+    group_by(year, continent) %>%
+    summarize(lifeExp = mean(lifeExp, na.rm = TRUE), .groups = 'drop')
+  
+  ggplot(gap_continent, aes(x = year, y = lifeExp, color = continent)) +
+    geom_line() +
+    labs(title = "Average Life Expectancy by Continent",
+         x = "Year",
+         y = "",
+         color = "Continent") +
+    theme_minimal()
+  
+```
+
+## Cuando sea posible, eviten las leyendas {.text-red-brown}
+
+
+```{r}
+#| echo: false
+#| fig.align: 'center'
+  gap_continent_summary <- gap_continent %>%
+    group_by(continent) %>%
+    filter(year == max(year)) %>%
+    ungroup()
+  # Custom color mapping
+  continent_colors <- c("Africa" = "#D55E00D0", "Europe" = "navy", 
+                        "Asia" = "navy", "Americas" = "navy", 
+                        "Oceania" = "navy")
+  
+  ggplot(gap_continent, aes(x = year, y = lifeExp, group = continent)) +
+    geom_line(aes(color = continent)) +
+    geom_text(data = gap_continent_summary, aes(label = continent), 
+              hjust = -0.2, vjust = 0, size = 4.5, color = "black") +
+    labs(title = "Average Life Expectancy by Continent",
+         x = "Year",
+         y = "") +
+    theme_minimal() +
+    theme(legend.position = "none",
+          axis.text = element_text(color = "black")) +
+    scale_color_manual(values = continent_colors) +
+    xlim(min(gap_continent$year), max(gap_continent$year) + 10)
+  
+
+```
+
+
+
+## Etiqueten los datos directamente... {.text-red-brown}
+
+```{r}
+#| echo: false
+#| fig.align: 'center'
+library(ggrepel)
+gapminder %>%
+    filter(year == 2007) %>%
+    ggplot(aes(log(gdpPercap), lifeExp)) +
+    geom_point(
+      size = 3.5, 
+      alpha = .9, 
+      shape = 21, 
+      col = "white", 
+      fill = "#0162B2"
+    ) +
+    geom_text_repel(aes(label = country)) +
+    theme_minimal(14) +
+    theme(panel.grid.minor = element_blank()) +
+    labs(
+      x = "log(GDP per capita)",
+      y = "life expectancy"
+    )
+
+```
+
+## ..o un subconjunto de ellos {.text-red-brown}
+
+```{r}
+#| echo: false
+#| fig.align: 'center'
+  south_american_countries <- c("Argentina", "Bolivia", "Brazil", "Chile", "Colombia",
+                                "Ecuador", "Paraguay", "Peru", "Uruguay", "Venezuela")
+
+  p1 <- gapminder %>%
+    filter(year == 2007) %>%
+    mutate(
+      label = ifelse(
+        country  %in% south_american_countries,
+        as.character(country),
+        ""
+      )
+    ) %>%
+    ggplot(aes(log(gdpPercap), lifeExp)) +
+    geom_point(
+      size = 3.5, 
+      alpha = .9, 
+      shape = 21, 
+      col = "white", 
+      fill = "#0162B2"
+    )  
+  
+  scatter_plot <- p1 + 
+    geom_text_repel(
+      aes(label = label),
+      size = 4.5,
+      point.padding = .2,
+      box.padding = .3,
+      force = 1,
+      min.segment.length = 0,
+      max.overlaps = 35  # Increase this number as needed
+    ) +
+    theme_minimal(14) +
+    theme(
+      legend.position = "none",
+      panel.grid.minor = element_blank()
+    ) +
+    labs(
+      x = "log(GDP per capita)",
+      y = "life expectancy"
+    )
+  
+  scatter_plot
+  
+```
+
+## Proveer el nivel adecuado de tinta {.text-red-brown}
+Porcentaje de grasa corporal en función de la altura en deportistas profesionales australianos
+
+::::: {.columns style="text-align:center;margin-top:50px;"}
+
+:::: {.column width="50%" style="margin-top:50px"}
+::: {.r-stack}
+![](images/bodyfat1.png){.fragment .fade-in-then-semi-out fragment-index=1 style="width:85%"}
+
+![](images/bodyfat2.png){.fragment .fade-in-then-semi-out fragment-index=2 style="width:83%"}
+
+![](images/bodyfat3.png){.fragment .fade-in-then-semi-out fragment-index=3 style="width:90%"}
+
+:::
+::::
+
+:::: {.column width="50%"  style="margin-top:25px"}
+::: {.fragment fragment-index=1}
+¿Cuál es el problema en esta gráfica?
+:::
+::: {.fragment fragment-index=2}
+•
+
+Acá nos vamos al otro extremo...
+:::
+::: {.fragment fragment-index=3}
+•
+
+En este caso la gráfica es mucho más amigable al ojo
+:::
+::::
+
+:::::
+
+
+
+# Acto II: Narrar y poner en contexto <br>[(Storytelling with data visualization)]{.hl .hl-gold} {#central .text-wash-black background="linear-gradient(45deg, #f37335, #fdc830)"}
+
+## Elegir el gráfico adecuado {.text-orange-gold}
+
+- La conclusión de la primera parte es básicamente mantener el gráfico [**simple.**]{.hl .hl-red}.
+
+- Este segundo acto empieza con [**elegir el gráfico adecuado.**]{.hl .hl-red}
+
+- [Financial Times](https://www.ft.com/content/c7bb24c9-964d-479f-ba24-03a2b2df6e85) tiene una guía útil para este primer paso.
+
+## Financial Times - Charts that work {.text-orange-gold}
+
+![](images/financial_times.png){.absolute top="110" left="250" width=70% height=80%}
+
+## Las importancia de los ejes {.text-orange-gold}
+Precio de las acciones de Facebook (FB) de oct 22/2016 a ene 21/2017
+
+
+::::: {.columns style="text-align:center;margin-top:50px;"}
+
+:::: {.column width="50%" style="margin-top:50px"}
+::: {.r-stack}
+![](images/stock_facebook1.png){.fragment .fade-in-then-semi-out fragment-index=1 style="width:80%"}
+
+![](images/stock_facebook2.png){.fragment .fade-in-then-semi-out fragment-index=2 style="width:83%"}
+
+![](images/stock_facebook3.png){.fragment .fade-in-then-semi-out fragment-index=3 style="width:83%"}
+
+:::
+::::
+
+:::: {.column width="50%"  style="margin-top:25px"}
+::: {.fragment fragment-index=1}
+La primera impresión es inferir volatilidad!
+:::
+::: {.fragment fragment-index=2}
+•
+
+Sin embargo, la historia es completamente diferente.
+:::
+::: {.fragment fragment-index=3}
+•
+
+Este es el precio del stock con respecto a su pico en Octubre de 2016. Cuál es la historia?
+:::
+::::
+
+:::::
+
+
+
+## Nuevamente, los colores son claves también para la historia {.text-orange-gold}
+Temperatura en Estados Unidos por mes
+
+::::: {.columns style="text-align:center;margin-top:50px;"}
+
+:::: {.column width="50%" style="margin-top:50px"}
+::: {.r-stack}
+![](images/temperature_2.png){.fragment .fade-in-then-semi-out fragment-index=1 style="width:85%"}
+
+![](images/temperature_1.png){.fragment .fade-in-then-semi-out fragment-index=2 style="width:85%"}
+
+:::
+::::
+
+:::: {.column width="50%"  style="margin-top:25px"}
+::: {.fragment fragment-index=1}
+La gráfica carece de impacto a pesar de ser autocontenida.
+:::
+::: {.fragment fragment-index=2}
+•
+
+Una escala de colores puede marcar la diferencia!
+:::
+
+::::
+
+:::::
+
+## No es cualquier color!  {.text-orange-gold}
+Porcentaje de personas que se identifican como blancos en Texas
+
+::::: {.columns style="text-align:center;margin-top:50px;"}
+
+:::: {.column width="50%" style="margin-top:50px"}
+::: {.r-stack}
+![](images/white_1.png){.fragment .fade-in-then-semi-out fragment-index=1 style="width:85%"}
+
+![](images/white_2.png){.fragment .fade-in-then-semi-out fragment-index=2 style="width:85%"}
+
+:::
+::::
+
+:::: {.column width="50%"  style="margin-top:25px"}
+::: {.fragment fragment-index=1}
+La escala de colores no concuerda con la historia de la gráfica
+:::
+::: {.fragment fragment-index=2}
+•
+
+Otra vez, la escala de colores marca la diferencia!
+:::
+
+::::
+
+:::::
+
+
+## Hagan sus gráficas memorables! {.text-orange-gold}
+Número de hogares por tipo de mascota
+
+::::: {.columns style="text-align:center;margin-top:50px;"}
+
+:::: {.column width="50%" style="margin-top:50px"}
+::: {.r-stack}
+![](images/pets_1.png){.fragment .fade-in-then-semi-out fragment-index=1 style="width:85%"}
+
+![](images/pets_2.png){.fragment .fade-in-then-semi-out fragment-index=2 style="width:85%"}
+
+:::
+::::
+
+:::: {.column width="50%"  style="margin-top:25px"}
+::: {.fragment fragment-index=1}
+Resaltar la categoría gatos no hace a la gráfica particularmente memorable.
+:::
+::: {.fragment fragment-index=2}
+•
+
+Es mucho más probable recordar este [isotipo](https://es.wikipedia.org/wiki/Isotipo_(dise%C3%B1o)).
+:::
+
+::::
+
+:::::
+
+## Opiniones? {.text-orange-gold}
+
+![](images/tv_shows.png){.absolute top="110" left="250" width=70% height=80%}
