@@ -1,0 +1,870 @@
+---
+format:
+  revealjs: 
+   theme: [default, style.scss]
+   slide-number: true
+   highlight-style: github
+   width: 1400
+   css:
+     - https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.2/font/bootstrap-icons.css
+---
+  
+##  {.center}
+
+<h1 class="text-indigo-pink">
+
+Analítica de Datos
+
+<h1>
+
+<h2>Probabilidad, Z-Score y Distribuciones Muestrales</h2>
+
+::: {style="margin-top:50px"}
+### Carlos Cardona Andrade {.text-orange-gold}
+:::
+     
+# Tabla de contenido
+
+1.  [Probabilidad](#probabilidad)
+2.  [Z-Score](#zscore)
+3.  [Distribuciones Muestrales](#distribucion)
+4.  [Intervalos de Confianza](#interval)
+
+
+## La clase de hoy 
+
+![](images/ci_graph.png){.absolute top="100" left="250" width=70% height=80%}
+
+             
+# Breve Intro a: <br>[probabilidad]{.hl .hl-gold} {#central .text-wash-black background="linear-gradient(45deg, #f37335, #fdc830)"}
+
+## Población y Muestra {.text-orange-gold}
+
+![](images/muestra.png){.absolute top="100" left="250" width=80% height=80%}
+
+## Población y Muestra {.text-orange-gold}
+
+- Los estadísticos descriptivos discutidos anteriormente describen una **muestra**, pero no a la **población**. 
+
+- Las medidas que describen a una población se llaman `parámetros`. Utilizamos letras griegas para referirnos a ellos. 
+
+| Medida                | Parámetro poblacional  | Estadístico muestral |
+|:----------------------|:----------------------:|:--------------------:|
+| Media                 |       $\mu$            |    $\bar{X}$         |
+| Varianza              |       $\sigma^2$       |    $S^2$             |
+| Desviación Estándar   |       $\sigma$         |    $S$               |
+
+## Probabilidad {.text-orange-gold}
+
+- Una investigación inicia con una pregunta general sobre una población entera, pero se realiza usando una muestra.
+- En esta situación, el rol de la estadística inferencial es utilizar la muestra como base para generalizar los resultados a la población.
+-  Para lograr este objetivo, los procedimiento inferenciales están construidos sobre el concepto de probabilidad.
+-  Específicamente, la relación entre población y muestra usualmente se define en términos de probabilidad.
+
+
+
+## Probabilidad {.text-orange-gold}
+
+<div style="margin-top: 100px;"></div>
+
+
+::: columns
+::: {.column width="50%"}
+![](images/bags.png){width=60% height=60% fig-align="center"}
+:::
+
+::: {.column width="50%"}
+- ¿Cuál es la probabilidad de sacar una bola verde?
+- La probabilidad es una conexión entre población y muestra, la cual es base para la estadística inferencial que veremos más adelante.
+:::
+:::
+
+## Probabilidad {.text-orange-gold}
+
+- Una probabilidad se define como la siguiente proporción:
+
+$$P=\dfrac{\#\, resultados\, deseados}{\#\, resultados\, posibles}$$
+
+- Por ejemplo, al tirar un dado la probabilidad de obtener un 2 luego de lanzar un dado es:
+
+$$P(2)=\dfrac{1}{6}=0.166=16.66\%$$
+
+## Probabilidad {.text-orange-gold}
+
+1. Las probabilidades siempre están entre 0 y 1.
+  - Una probabilidad igual a 0 indica que el evento nunca va a ocurrir. 
+  - Por otro lado, si es igual 1 indica que con toda seguridad el evento tendrá lugar.
+  
+2. $\sum{P}=1$
+3. La probabilidad que un evento **no ocurra** es igual a 1 menos la probabilidad que el evento ocurra.
+  - Al tirar un dado:
+  
+$$P(\sim2)=1-P(2)=1-\dfrac{1}{6}=\dfrac{5}{6}$$
+
+## Probabilidad {.text-orange-gold}
+
+4. Si A y B son eventos alternativos (no se superponen), entonces $P(A$ $o$ $B)=P(A)+P(B)$
+  - Siguiendo con el ejemplo del dado:
+$$P(2\, o\,  3)=P(2)+P(3)=\dfrac{1}{6}+\dfrac{1}{6}=\dfrac{2}{6}=\dfrac{1}{3}$$
+
+## Probabilidad {.text-orange-gold}
+
+5. Si A y B son eventos que se superponen (ocurrencia conjunta), entonces $P(A$ $o$ $B)=P(A)+P(B)-P(A$ $y$ $B)$
+  - ¿Cuál sería la probabilidad de sacar un número par o un 6?
+$$P(Par\, o\,  6)=P(Par)+P(6)=\dfrac{3}{6}+\dfrac{1}{6}=\dfrac{4}{6}=\dfrac{2}{3} \quad Incorrecto $$
+$$P(Par\, o\,  6)=P(Par)+P(6)-P(Par\, y\,  6)=\dfrac{3}{6}+\dfrac{1}{6}-\dfrac{1}{6}=\dfrac{3}{6}=\dfrac{1}{2} \quad Correcto $$
+
+## Probabilidad {.text-orange-gold}
+
+6. Si A y B son **independientes**, entonces $P(A\, y\, B)=P(A)*P(B)$
+  - ¿Cuál es la probabilidad de sacar 2 luego de tirar el dados dos veces?
+$$P(2\, luego\, 2)=P(2)*P(2)=\dfrac{1}{6}*\dfrac{1}{6}=\dfrac{1}{36}$$
+
+- Es importante tener en cuenta si existe reemplazo o no.
+- Por ejemplo, si un recipiente tiene 4 pelotas amarrilas y 2 azules. ¿Cuál es la probabilidad de sacar una amarilla y luego una azul sin reemplazo?
+
+$$P(Amarilla\, luego\, Azul)=P(Amarilla)*P(Azul)=\dfrac{4}{6}*\dfrac{2}{5}=\dfrac{8}{30}=\dfrac{4}{15}$$
+
+# [Breve intro a:<br>]{style="color:white"}[Z-Score]{.hl .hl-purple} {#zscore background="linear-gradient(45deg, #4a00e0, #ff0099)"}
+
+## Distribución normal {.text-indigo-pink}
+
+::: columns
+::: {.column width="50%"}
+![](images/distnormal.png){width=90% height=80% fig-align="center"}
+:::
+
+::: {.column width="50%"}
+- La distribución normal es simétrica
+- Cuando hablemos de distribución, piensen en esa curva suave.
+:::
+:::
+
+
+
+## Z-Score {.text-indigo-pink}
+
+- Supongamos que en un examen cualquiera, la nota recibida es $X=76$. ¿Es buena o mala la nota?
+- Si la media es $\mu=70$, sé que estoy 6 puntos por encima de la media.
+
+
+::: columns
+::: {.column width="50%"}
+![](images/zscore_ejemplo.png){width=90% height=80% fig-align="center"}
+:::
+
+::: {.column width="50%"}
+- Aún teniendo información de la media, no es posible saber dónde está localizado el valor de la nota.
+:::
+:::
+
+
+
+
+## Z-Score  {.text-indigo-pink}
+
+- La ubicación relativa del valor dentro de una distribución depende tanto de la media como de la desviación estándar.
+- Los valores Z tienen dos objetivos:
+  1. Reportar la ubicación exacta de un valor dentro de una distribución.
+  2. Permitir la comparación entre dos distribuciones estandarizadas. 
+
+
+## Z-Score  {.text-indigo-pink}
+
+- ¿Se puede comparar un puntaje de 64 en la sección de matemáticas de Saber Pro con un puntaje de 66 directamente, si se sabe que cada prueba fue realizada en períodos diferentes?
+- Si la media de ambos exámenes fue 62, además $\sigma_1=1$ y $\sigma_2=4$ ¿A quién le fue mejor?
+
+
+## Z-Score  {.text-indigo-pink}
+
+[**Un valor Z reporta la ubicación precisa de cada valor X dentro de la distribución. Su signo señala si el valor está por encima o por debajo de la media. Además, el valor numérico especifica la distancia de la media al contar el número de desviaciones estándar entre el valor y la media.**]{.hl .hl-red}
+
+- La fórmula para calcular el valor Z es la siguiente:
+$$Z_X=\dfrac{X-\bar{X}}{s_X}$$
+- La unidad de medida del valor Z son el número de desviaciones estándar (SD).
+
+
+## Z-Score  {.text-indigo-pink}
+
+- Volvamos al ejemplo de la prueba Saber Pro.
+- Para el puntaje de 64, donde $\bar{X}=62$ y $\sigma_1=1$:
+$$Z_X=\dfrac{64-62}{1}=\dfrac{2}{1}=+2 SD$$
+- Para el puntaje de 66, donde $\bar{X}=62$ y $\sigma_1=4$:
+$$Z_X=\dfrac{66-62}{4}=\dfrac{4}{4}=+1 SD$$
+- La fórmula en muchas ocasiones no es necesaria. Si $\bar{X}=10$ y $s_x=2$, cuál es el valor de Z para un X=8?
+
+
+## Z-Score {.text-indigo-pink}
+
+<div style="margin-top: 100px;"></div>
+
+
+::: columns
+::: {.column width="50%"}
+![](images/zdistribution.png){width=90% height=80% fig-align="center"}
+:::
+
+::: {.column width="50%"}
+- Al estandarizar una distribución:
+    1. su forma se mantiene.
+    2. La media se convierte en $\mu=0$.
+    3. La desviación estándar será $\sigma=1$.
+:::
+:::
+
+## La Regla 68-95-99 {.text-indigo-pink}
+
+![](images/normal_rule.png){.absolute top="100" left="250" width=70% height=85%}
+
+
+## La utilidad de la regla {.text-indigo-pink}
+
+- Imaginemos una muestra de 1000 personas de la universidad.
+- Su peso medio es de $X$ = 60kgs y su desviación estándar es $s_X$ = 5kgs.
+- 500 personas pesan menos de 60 kgs.
+- Cerca de 680 personas pesan entre 55 y 65 kgs.
+- Alrededor de 950 personas pesan entre 50 y 70 kgs.
+- Aproximadamente 3 pesan menos de 45 y más de 75 kgs.
+
+
+## La distribución normal {.text-indigo-pink}
+
+![](images/normal_table_1.png){.absolute top="100" left="150" width=85% height=85%}
+
+
+## La distribución normal {.text-indigo-pink}
+
+![](images/normal_table.png){.absolute top="100" left="250" width=70% height=70%}
+
+## La distribución normal {.text-indigo-pink}
+
+
+<div style="margin-top: 100px;"></div>
+
+
+::: columns
+::: {.column width="50%"}
+![](images/ejercicio_1.png){width=100% height=100% fig-align="center"}
+:::
+
+::: {.column width="50%"}
+![](images/ejercicio_2.png){width=80% height=80% fig-align="center"}
+
+:::
+:::
+
+
+
+
+# [Distribuciones Muestrales y<br>]{style="color:white"}[Teorema del Límite Central]{.hl .hl-red} {#distribucion background="linear-gradient(45deg, #ed213a, #93291e)"}
+
+## Distribución Muestral {.text-red-brown}
+
+- Dos muestras separadas probablemente diferirán a pesar de ser tomadas de una misma población.
+- Las muestras tienen diferentes individuos, diferentes valores, diferentes medias, etc.
+- En muchos casos, es posible obtener infinitas muestras de una población.
+- Por ejemplo, para Colombia existen más de 10000 muestras de 2 personas dados los 45 millones de habitantes.
+
+## Distribución Muestral {.text-red-brown}
+
+- Aun cuando en muchas ocasiones es imposible obtener todas las muestras posibles de una población (e.g., más de 10000 muestras de 2 personas para Colombia) , existen ciertos patrones en el comportamiento de esas muestras.
+- La habilidad de predecir características 	muestrales está basada en la distribución muestral de medias.
+
+[**La distribución muestral de medias es la colección de las medias muestrales para todas las posibles muestras aleatorias de un tamaño particular ($n$) que pueden ser obtenidas de una población.**]{.hl .hl-red}
+
+
+
+## Distribución Muestral {.text-red-brown}
+
+- Como los estadísticos son obtenidos de muestras, la distribución de estadísticos  es denominada como *distribución muestral*.	
+
+[**Una distribución muestral es una distribución de estadísticos obtenidos al seleccionar todas las muestras posibles de un tamaño ($n$) específico de una población.**]{.hl .hl-red}
+
+- De esta manera, la distribución muestral de medias es un ejemplo de una distribución muestral.
+
+
+## Distribución Muestral {.text-red-brown}
+
+
+::: columns
+::: {.column width="50%"}
+![](images/muestra_ejemplo.png){width=90% height=90% fig-align="center"}
+:::
+
+::: {.column width="50%"}
+- Consideren una población que consiste de sólo 4 valores: 2, 4, 6, 8.
+- A partir de esta distribución, vamos a construir la distribución muestral de medias para $n=2$.
+:::
+:::
+
+
+
+
+## Distribución Muestral {.text-red-brown}
+
+![](images/distr_muestral.png){.absolute top="100" left="250" width=70% height=80%}
+
+
+## Distribución Muestral {.text-red-brown}
+
+- Noten que la distribución muestral de medias contienen *todas las muestras posibles*.
+- Es necesario tener todos los posibles valores para calcular probabilidades.
+- Por ejemplo, si el conjunto entero contiene 16 muestras, entonces la probabilidad de obtener cualquier muestra específica  es 1 de 16: $p=\dfrac{1}{16}$.
+- Antes hablábamos de distribuciones de valores/puntajes; ahora los valores en la distribución no son puntajes sino estadísticos (medias muestrales).
+
+## Distribución muestral {.text-red-brown}
+
+::: columns
+::: {.column width="50%"}
+
+```{r}
+#| fig.align: 'center'
+#| echo: true
+library(tidyverse)
+## Creemos el vector para el dado
+dado <- c(1,2,3,4,5,6)
+
+## Tiremos el dado 5 veces
+muestra_de_5 <- sample(dado, 5, replace=TRUE)
+
+muestra_de_5
+
+## Y calculemos su media
+mean(muestra_de_5)
+
+
+## Otra manera de calcular la media
+## de una muestra de 5
+sample(dado, 5, replace = TRUE) %>% mean()
+```
+
+:::
+
+::: {.column width="50%"}
+![](images/dice.gif){width=60% height=60% fig-align="center"}
+
+:::
+:::
+
+
+## Distribución Muestral {.text-red-brown}
+
+```{r}
+#| fig.align: 'center'
+#| echo: true
+library(tidyverse)
+## Creemos el vector para el dado
+dado <- c(1,2,3,4,5,6)
+
+## Tiremos el dado 5 veces
+muestra_de_5 <- sample(dado, 5, replace=TRUE)
+
+muestra_de_5
+
+## Y calculemos su media
+mean(muestra_de_5)
+
+
+## Otra manera de calcular la media de una muestra de 5
+sample(dado, 5, replace = TRUE) %>% mean()
+
+```
+
+
+## Distribución Muestral {.text-red-brown}
+
+¿Cómo sería la distribución de medias si tomamos una muestra de 10?
+
+::: columns
+::: {.column width="50%"}
+
+```{r}
+#| fig.align: 'center'
+#| echo: true
+#| eval: false
+library(tidyverse)
+
+sample_means <- replicate(10, sample(dado, 5, replace = TRUE) %>% mean())
+
+# Convert to a data frame for ggplot2
+df <- data.frame(sample_means = sample_means)
+
+# Plot the histogram
+ggplot(df, aes(x = sample_means)) +
+  geom_histogram(binwidth = 0.5, fill = "#348feb", color = "black") +
+  labs(title = "Distribución de media muestral", x = "Media muestral", y = "Frecuencia") +
+  theme_minimal()
+
+```
+:::
+
+::: {.column width="50%"}
+```{r}
+#| fig.align: 'center'
+#| echo: false
+library(tidyverse)
+
+sample_means <- replicate(10, sample(dado, 5, replace = TRUE) %>% mean())
+
+# Convert to a data frame for ggplot2
+df <- data.frame(sample_means = sample_means)
+
+# Plot the histogram
+ggplot(df, aes(x = sample_means)) +
+  geom_histogram(binwidth = 0.5, fill = "#348feb", color = "black") +
+  labs(title = "Distribución de media muestral", x = "Media muestral", y = "Frecuencia") +
+  theme_minimal()
+
+```
+:::
+:::
+
+
+## Distribución Muestral {.text-red-brown}
+
+¿Cómo sería la distribución de medias si tomamos una muestra de 100?
+
+
+::: columns
+::: {.column width="50%"}
+
+```{r}
+#| fig.align: 'center'
+#| echo: true
+#| eval: false
+library(tidyverse)
+
+sample_means <- replicate(100, sample(dado, 5, replace = TRUE) %>% mean())
+
+# Convert to a data frame for ggplot2
+df <- data.frame(sample_means = sample_means)
+
+# Plot the histogram
+ggplot(df, aes(x = sample_means)) +
+  geom_histogram(binwidth = 0.5, fill = "#348feb", color = "black") +
+  labs(title = "Distribución de media muestral", x = "Media muestral", y = "Frecuencia") +
+  theme_minimal()
+
+```
+:::
+
+::: {.column width="50%"}
+```{r}
+#| fig.align: 'center'
+#| echo: false
+library(tidyverse)
+
+sample_means <- replicate(100, sample(dado, 5, replace = TRUE) %>% mean())
+
+# Convert to a data frame for ggplot2
+df <- data.frame(sample_means = sample_means)
+
+# Plot the histogram
+ggplot(df, aes(x = sample_means)) +
+  geom_histogram(binwidth = 0.5, fill = "#348feb", color = "black") +
+  labs(title = "Distribución de media muestral", x = "Media muestral", y = "Frecuencia") +
+  theme_minimal()
+
+```
+:::
+:::
+
+
+
+## Distribución Muestral {.text-red-brown}
+
+¿Cómo sería la distribución de medias si tomamos una muestra de 1000?
+
+
+::: columns
+::: {.column width="50%"}
+
+```{r}
+#| fig.align: 'center'
+#| echo: true
+#| eval: false
+library(tidyverse)
+
+sample_means <- replicate(1000, sample(dado, 5, replace = TRUE) %>% mean())
+
+# Convert to a data frame for ggplot2
+df <- data.frame(sample_means = sample_means)
+
+# Plot the histogram
+ggplot(df, aes(x = sample_means)) +
+  geom_histogram(binwidth = 0.5, fill = "#348feb", color = "black") +
+  labs(title = "Distribución de media muestral", x = "Media muestral", y = "Frecuencia") +
+  theme_minimal()
+
+```
+:::
+
+::: {.column width="50%"}
+```{r}
+#| fig.align: 'center'
+#| echo: false
+library(tidyverse)
+
+sample_means <- replicate(1000, sample(dado, 5, replace = TRUE) %>% mean())
+
+# Convert to a data frame for ggplot2
+df <- data.frame(sample_means = sample_means)
+
+# Plot the histogram
+ggplot(df, aes(x = sample_means)) +
+  geom_histogram(binwidth = 0.5, fill = "#348feb", color = "black") +
+  labs(title = "Distribución de media muestral", x = "Media muestral", y = "Frecuencia") +
+  theme_minimal()
+
+```
+:::
+:::
+
+
+
+## Distribución Muestral {.text-red-brown}
+
+- Dos caracterízticas se destacan del histograma de la distribución muestral de medias:
+    1. Las medias muestrales se mueven alrededor de la media.
+    2. La distribución muestral de medias se aproxima a una curva normal.
+
+## Distribución Muestral {.text-red-brown}
+
+
+<div style="margin-top: 100px;"></div>
+
+
+::: columns
+::: {.column width="50%"}
+![](images/distr_muestral.png){width=80% height=80% fig-align="center"}
+:::
+
+::: {.column width="50%"}
+- Finalmente, se puede usar la distribución muestral para responder preguntas de probabilidad relacionadas a las medias muestrales.
+- Por ejemplo, si tomamos una muestra $n=2$ de la población original, ¿cuál es la probabilidad de obtener una media muestral mayor a 6?
+:::
+:::
+
+
+
+## Distribución Muestral {.text-red-brown}
+
+- En situaciones más reales, con poblaciones y muestras mucho más grandes, el número de muestras posibles aumenta drásticamente.
+- Por lo tanto, es imposible tener cada muestra posible.
+- A pesar de esto, el teorema del límite central provee una descripción precisa de la distribución resultante si se seleccionan todas las muestras posibles.
+
+
+## Teorema del Límite Central {.text-red-brown}
+[**Para cualquier población con media $\mu$ y desviación estándar $\sigma$, la distribución muestral de medias para un tamaño de muestra $n$ tendrá una media igual a $\mu$ y una desviación estándar de $\dfrac{\sigma}{\sqrt{n}}$. Además, se aproximará a una normal a medida que $n$ tiende a infinito.**]{.hl .hl-red}
+
+
+## Teorema del Límite Central {.text-red-brown}
+
+- El valor de este teorema recae en dos hechos:
+    1. Describe la distribución muestral de medias para *cualquier población*, sin importar su forma, media o desviación estándar.
+    2. La distribución muestral de medias 	se aproxima a una normal de manera rápida. Cuando la muestra alcanza un $n=30$, la distribución es muy cercana a una normal.
+    
+## Teorema del Límite Central {.text-red-brown}
+
+- En resumen, el teorema del límite central identifica las tres caracterízticas básicas de una distribución: 
+    1. Forma $\rightarrow$ Normal (Si la distribución poblacional es normal o si $n>30$)
+    2. Tendencia central $\rightarrow$ $\mu$
+    3. Dispersión $\rightarrow$ $\dfrac{\sigma}{\sqrt{n}}$
+    
+## Distribución Muestral {.text-red-brown}
+
+![](images/sampling_distr.png){.absolute top="100" left="250" width=70% height=80%}
+
+
+## Error Estándar {.text-red-brown}
+
+- La desviación estándar de una distribución muestral de medias se denomina *error estándar* y se identifica con el símbolo $\sigma_{\bar{X}}$.
+- El error estándar cumple los dos propósitos de una desviación estándar:
+    1. Describe la distribución al decir si las medias muestrales están agrupadas o se dispersan a lo largo de un intervalo amplio.
+    2. Mide qué tan bien a una media muestral representa a toda la distribución de medias.
+    
+
+
+## Error Estándar {.text-red-brown}
+
+<div style="margin-top: 100px;"></div>
+
+
+::: columns
+::: {.column width="50%"}
+![](images/samplingerror.jpg){width=100% height=100% fig-align="center"}
+:::
+
+::: {.column width="50%"}
+- Por tanto, un error estándar muy grande significa que existen grandes diferencias entre las muestras.
+- Dado que la media de la distribución es $\mu$, el error estándar provee un estimado de la distancia entre una media muestral $\bar{X}$ y la media poblacional $\mu$.
+:::
+:::
+
+## Probabilidad y Distribución Muestral {.text-red-brown}
+- El principal uso de la distribución muestral de medias es encontrar la probabilidad asociada a cualquier muestra específica.
+- Recuerden que la probabilidad es equivalente a una proporción!
+- Dado a que la distribución muestral de medias presenta el conjunto de todas las posibles medias muestrales, podemos utilizar proporciones de esta distribución para determinar las probabilidades.
+- Además, gracias al teorema del límite central podemos utilizar la tabla de la distribución normal.
+
+## Probabilidad y Distribución Muestral {.text-red-brown}
+
+- Asumamos que se realiza un examen a todos los estudiantes de la universidad. La media de la distribución es $\mu=$ 3.5 y la desviación estándar es $\sigma=$ 0.5. La distribución de la nota del examen es normal.
+- Si se toma una muestra de $n=25$ estudiantes, ¿cuál es la probabilidad que la media muestral sea mayor a $\bar{X}=$ 3.7?
+
+
+## Probabilidad y Distribución Muestral {.text-red-brown}
+
+- ¿Qué sabemos?
+1. La distribución muestral es normal porque la distribución del examen es normal.
+2. La distribución muestral tiene una media de 3.5 dado que la media poblacional es $\mu=$ 3.5
+3. La distribución muestral tiene una error estándar $\sigma_{\bar{X}}=$ 0.1
+
+$$\sigma_{\bar{X}}=\dfrac{\sigma}{\sqrt{n}}=\dfrac{0.5}{\sqrt{25}}=\dfrac{0.5}{5}=0.1$$
+
+
+
+## Probabilidad y Distribución Muestral {.text-red-brown}
+
+```{r}
+#| fig.align: 'center'
+#| echo: false
+#| eval: true
+# Define the x-axis range and normal distribution
+x <- seq(2.5, 4.5, length = 1000)
+mean_val <- 3.5
+sd_val <- (3.7 - 3.5) / 2  # Standard deviation so that 3.7 is 2 SDs from the mean
+y <- dnorm(x, mean = mean_val, sd = sd_val)
+
+# Create a data frame
+df <- data.frame(x = x, y = y)
+
+# Plot the normal distribution with highlighted regions
+ggplot(df, aes(x = x, y = y)) +
+  geom_area(aes(x = ifelse(x <= 3.7, x, NA)), fill = "white", alpha = 0.5) +
+  geom_area(aes(x = ifelse(x > 3.7, x, NA)), fill = "darkred", alpha = 0.5) +
+  geom_line(color = "black", size = 1) +
+  scale_x_continuous(breaks = c(3.5, 3.7), limits = c(3.2, 3.8)) +
+  labs(title = "Normal Distribution",
+       x = "X", y = "Density") +
+  theme_minimal() +
+  theme(
+    legend.position = "none",
+    axis.text = element_text(size = 14)  # Increase the size of x and y axis text
+  )
+
+```
+
+$$z=\dfrac{\bar{X}-\mu}{\sigma_{\bar{X}}}=\dfrac{3.7-3.5}{0.1}=\dfrac{0.2}{0.1}=2$$
+
+
+
+
+
+## Probabilidad y Distribución Muestral {.text-red-brown}
+
+- Por lo tanto, la probabilidad o proporción de encontrar una muestra con una media mayor a 3.7 es $p(z>2)=$ 0.0228=2.8\%.
+- Considerando la misma distribución del ejemplo anterior, ahora encontremos el rango de valores que son esperados para la media muestral el 80\% de las veces. 
+- Ya sabemos que la distribución es normal con una media esperada de $\mu=$ 3.5 y desviación estándar $\sigma_{\bar{X}}=$ 0.1.
+
+
+
+## Probabilidad y Distribución Muestral {.text-red-brown}
+
+
+<div style="margin-top: 100px;"></div>
+
+
+::: columns
+::: {.column width="50%"}
+![](images/normal_table_3.png){width=90% height=90% fig-align="center"}
+:::
+
+::: {.column width="50%"}
+- En la tabla encontramos que para una proporción o probabilidad de 0.9, el z-score es 1.28
+- De esta manera, los límites del 80\% medio de la distribución corresponden a $z=-$ 1.28 y $z=+$ 1.28
+:::
+:::
+
+
+## Probabilidad y Distribución Muestral {.text-red-brown}
+
+- Con un error estándar de 0.1, la distancia a la media es de 1.28*0.1 $=$ 0.128
+- La media es $\mu=$ 3.5, por lo cual, una distancia de 0.128 en ambas direcciones produce un rango de valores entre 3.372 y 3.628
+- De esta manera, 80\% de todas las posibles medias muestrales se encuentran dentro de un intervalo entre 3.372 y 3.628
+- Otra interpretación es que si seleccionamos una muestra $n=25$, estamos 80\%  seguros que la media de la muestra va a encontrarse en ese intervalo.
+
+# Intervalos de Confianza {#interval .text-wash-black background="linear-gradient(45deg, #00aadd, #66dd00)"}
+
+## Intervalos de Confianza {.text-lime-cyan}
+
+- Es claro que sólo en contadas ocasiones se tendrán los valores para la media y la desviación estándar poblacional.
+- Al trabajar con una de las posibles muestras, es necesario acercarnos a los parámetros poblacionales a partir de los estadísticos muestrales que se tienen disponibles.
+-  Un **intervalo de confianza** es un rango de valores posibles de un parámetro expresado en un grado o nivel específico de confianza.
+- Con los intervalos de confianza tomamos una estimación puntual de la muestra y la acoplamos con el conocimiento que tenemos sobre las distribuciones muestrales.
+
+
+
+## Intervalos de Confianza {.text-lime-cyan}
+
+$$IC\, de\, \mu=\bar{X}\pm Z_{\Big(\dfrac{\alpha}{2}\Big)}\times\sigma_{\bar{X}}$$
+
+- Para calcular el intervalo de confianza necesitamos:
+    1. la media muestral
+    2. el $Z$ al nivel de significancia $\alpha$
+    3. el error estándar
+
+
+## Nivel de Confianza {.text-lime-cyan}
+
+- El **nivel de confianza** nos dice nuestra tasa de éxito, es decir, con qué frecuencia el parámetro poblacional se encuentra en el rango del intervalo de confianza.
+- Usualmente, los grados de confianza más utilizados son el 95 y 99\%.
+- Al confiar en una muestra, sabemos que podemos fallar en la predicción debido a la existencia del error de muestreo.
+
+
+## ¿Cuál es la interpretación? {.text-lime-cyan}
+
+::: columns
+::: {.column width="50%"}
+
+![](images/inter_conf.png){.absolute width=60% height=75%}
+
+:::
+
+::: {.column width="50%"}
+![](images/inter_conf_2.png){.absolute width=50% height=40%}
+
+:::
+:::
+
+
+
+## Nivel de Significancia {.text-lime-cyan}
+
+- La única manera de tener total certeza sobre nuestras conclusiones es reunir datos de la población.
+- Cabe destacar que la cantidad de error es conocida. El nivel de error esperado es la diferencia entre el nivel de confianza y la `confianza perfecta` del 100\%.
+- En otras palabras, si estamos 95\% seguros acerca de nuestro resultado, estamos 5\% inseguros acerca de este.
+
+$$Nivel \, de \, confianza =95\%$$
+$$Nivel \, de \, significancia = \alpha= 100\%-95\%=5\%$$
+
+
+
+## Nivel de Significancia {.text-lime-cyan}
+
+
+<div style="margin-top: 100px;"></div>
+
+
+::: columns
+::: {.column width="50%"}
+![](images/normal_table_4.png){width=80% height=80% fig-align="center"}
+:::
+
+::: {.column width="50%"}
+- ¿A qué distancia del parámetro poblacional se encuentra nuestra media muestral para un nivel de confianza del 95\%?
+- A partir dela tabla de la normal podemos encontrar los valores Z críticos para el nivel de significancia $\alpha$ ($Z_{\Big(\dfrac{\alpha}{2}\Big)}$).
+:::
+:::
+
+
+
+## Nivel de Significancia {.text-lime-cyan}
+ 
+
+::: columns
+::: {.column width="50%"}
+
+```{r}
+#| fig.align: 'center'
+#| echo: false
+#| eval: true
+# Define the x-axis range and normal distribution
+x <- seq(-4, 4, length = 1000)
+y <- dnorm(x)
+
+# Create a data frame
+df <- data.frame(x = x, y = y)
+
+# Plot the normal distribution with highlighted regions
+ggplot(df, aes(x = x, y = y)) +
+  geom_area(aes(x = ifelse(x >= -1.96 & x <= 1.96, x, NA)), fill = "yellow", alpha = 0.5) +
+  geom_area(aes(x = ifelse(x < -1.96, x, NA)), fill = "navy", alpha = 0.5) +
+  geom_area(aes(x = ifelse(x > 1.96, x, NA)), fill = "navy", alpha = 0.5) +
+  geom_line(color = "black", size = 1) +
+  scale_x_continuous(breaks = c(-1.96, 0, 1.96)) +
+  labs(title = "Distribución Normal",
+       x = "Z-score", y = "Densidad") +
+  theme_minimal() +
+  theme(
+    legend.position = "none",
+    axis.text = element_text(size = 14))  # Increase the size of x and y axis text
+
+```
+:::
+
+::: {.column width="50%"}
+- El área amarilla representa el 95\% de las medias muestrales, mientras que, las dos áreas moradas representan el 5\% de las medias que están fuera de los dos valores críticos.
+- 95\% de las observaciones de una normal están dentro de 1.96 SD.
+:::
+:::
+
+
+## Intervalos de Confianza {.text-lime-cyan}
+
+- Supongamos que tomamos una muestra de $n=300$ estudiantes de la universidad con un promedio de edad de $\bar{X}=$ 20.5 años y $s_{X}=$ 1.5.
+- Sabemos que la distribución muestral de medias toma forma de curva normal cuando $n>30$.
+- La edad promedio de la muestra debe estar cerca del parámetro poblacional real (la edad media de todos los estudiantes de la universidad).
+- Dado lo anterior, podemos decir con seguridad que el 95\% de las muestras caen dentro de casi 2 errores estándar del parámetro real (Regla 68-95-99).
+
+## Margen/Término de Error {.text-lime-cyan}
+
+- Ya sabemos que el $Z_{\Big(\dfrac{\alpha}{2}\Big)}=$ 1.96 y que $s_X=1.5$. Por lo tanto:
+
+$$\sigma_{\bar{X}}=\dfrac{1.5}{\sqrt{300}}=\dfrac{1.5}{17.3}=0.08$$
+- El margen de error será igual a $Z_{\Big(\dfrac{\alpha}{2}\Big)}\times\sigma_{\bar{X}}=1.96\times0.08=0.169$
+
+- El intervalo de confianza estará entre:
+
+    - Límite Inferior = 20.5 $-$ 0.169 = 20.3 
+
+    - Límite Superior = 20.5 $+$ 0.169 = 20.6  
+
+
+## ¿Cuál es la interpretación? {.text-lime-cyan}
+
+- Estoy 95\% seguro de que la edad promedio de los estudiantes de la universidad se ubica entre 20.3 y 20.6 años.
+- En otras palabras, si se realizan los mismos procedimientos muestrales 100 veces, el parámetro poblacional $\mu$ estará entre los intervalos calculados el 95 de esas veces.
+
+
+
+## Grado de Precisión {.text-lime-cyan}
+
+- Entre mayor sea el nivel de confianza estipulado, mayor será el margen de error y por lo tanto será menos preciso el intervalo de confianza.
+
+$$ Z_{0.05}=1.96 \quad vs \quad Z_{0.01}=2.58$$
+
+- Entre mayor sea el tamaño de la muestra, más preciso será el intervalo de confianza.
+
+$$\sigma_{\bar{X}}=\dfrac{s_X}{\sqrt{n}}\, entonces \, si\, \uparrow n \rightarrow \downarrow \sigma_{\bar{X}}  $$
+
+
+
+## Precisión y Exactitud {.text-lime-cyan}
+
+<div style="margin-top: 100px;"></div>
+
+
+::: columns
+::: {.column width="50%"}
+![](images/preciso_exacto.png){width=60% height=60% fig-align="center"}
+:::
+
+::: {.column width="50%"}
+- A medida que los intervalos de confianza se hacen más estrechos, se vuelven más precisos y ofrecen menos variabilidad.
+- A medida que los intervalos de confianza se hacen más amplios, se vuelven más exactos.
+:::
+:::
+
+  
+  
