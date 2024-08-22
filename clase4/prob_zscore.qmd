@@ -201,7 +201,7 @@ $$Z_X=\dfrac{66-62}{4}=\dfrac{4}{4}=+1 SD$$
 
 ::: columns
 ::: {.column width="50%"}
-![](images/zdistribution.png){width=90% height=80% fig-align="center"}
+![](images/zdistribution.jpg){width=90% height=80% fig-align="center"}
 :::
 
 ::: {.column width="50%"}
