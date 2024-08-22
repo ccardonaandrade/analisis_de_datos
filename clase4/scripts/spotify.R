@@ -1,4 +1,5 @@
 library(tidyverse)
+library(ggridges)
 
 
 # Working directory
@@ -20,6 +21,21 @@ ggplot(data, aes(x = danceability, fill = factor(year))) +
 
 selected_years <- c(2000, 2005, 2010, 2015, 2019)
 filtered_data <- data %>% filter(year %in% selected_years)
+
+
+ggplot(filtered_data,  aes(x = danceability, 
+      y = factor(year), 
+      fill = danceability)) +
+  geom_density_ridges2(scale = 2) +
+  scale_fill_viridis_d(alpha = 0.9) +
+  labs(x = "Danceability Score", y = "Year")
+
+
+ggplot(filtered_data, aes(x = danceability, y = factor(year), fill = stat(x))) +
+  geom_density_ridges_gradient() +
+  scale_fill_viridis_c(name = "Danceability", option = "C") +
+  labs(x = "Danceability Score", y = "Year")
+
 
 ggplot() +
   # Density of the entire dataset in gray
@@ -95,29 +111,32 @@ n_samples <- 100
 # Population mean (assumed or known)
 population_mean <- mean(data$danceability, na.rm = TRUE)
 
-# Function to compute confidence interval
+# Function to compute confidence interval and sample mean
 compute_ci <- function(sampled_data) {
   result <- t.test(sampled_data$danceability, conf.level = 0.95)
   ci <- result$conf.int
-  return(ci)
+  mean_val <- mean(sampled_data$danceability, na.rm = TRUE)
+  return(list(ci = ci, mean_val = mean_val))
 }
 
-# Generate 100 confidence intervals
+# Generate 100 confidence intervals and sample means
 ci_list <- replicate(n_samples, compute_ci(sample_n(data, 100)), simplify = FALSE)
 
 # Create a data frame for plotting
 ci_df <- do.call(rbind, lapply(1:n_samples, function(i) {
   data.frame(
-    lower = ci_list[[i]][1],
-    upper = ci_list[[i]][2],
-    include_mean = ci_list[[i]][1] <= population_mean & ci_list[[i]][2] >= population_mean,
+    lower = ci_list[[i]]$ci[1],
+    upper = ci_list[[i]]$ci[2],
+    mean_val = ci_list[[i]]$mean_val,
+    include_mean = ci_list[[i]]$ci[1] <= population_mean & ci_list[[i]]$ci[2] >= population_mean,
     sample = i
   )
 }))
 
-# Plot the confidence intervals
+# Plot the confidence intervals and point estimates
 ggplot(ci_df, aes(x = sample, ymin = lower, ymax = upper, color = include_mean)) +
   geom_linerange(size = 1) +
+  geom_point(aes(y = mean_val), size = 2, shape = 21, fill = "white") + # Point estimate
   geom_hline(yintercept = population_mean, linetype = "dashed", color = "black", size = 1) +
   scale_color_manual(values = c("darkred", "navy"), labels = c("Excludes Mean", "Includes Mean")) +
   labs(title = "100 Confidence Intervals for Danceability Mean",
@@ -128,8 +147,12 @@ ggplot(ci_df, aes(x = sample, ymin = lower, ymax = upper, color = include_mean))
 
 
 
+
 ##############
 # Lets do it for a 90% confidence interval
+
+# Set seed for reproducibility
+set.seed(123)
 
 # Number of samples
 n_samples <- 100
@@ -137,29 +160,32 @@ n_samples <- 100
 # Population mean (assumed or known)
 population_mean <- mean(data$danceability, na.rm = TRUE)
 
-# Function to compute confidence interval
+# Function to compute confidence interval and sample mean
 compute_ci_90 <- function(sampled_data) {
   result <- t.test(sampled_data$danceability, conf.level = 0.90)
   ci <- result$conf.int
-  return(ci)
+  mean_val <- mean(sampled_data$danceability, na.rm = TRUE)
+  return(list(ci = ci, mean_val = mean_val))
 }
 
-# Generate 100 confidence intervals
+# Generate 100 confidence intervals and sample means
 ci_list <- replicate(n_samples, compute_ci_90(sample_n(data, 100)), simplify = FALSE)
 
 # Create a data frame for plotting
 ci_df <- do.call(rbind, lapply(1:n_samples, function(i) {
   data.frame(
-    lower = ci_list[[i]][1],
-    upper = ci_list[[i]][2],
-    include_mean = ci_list[[i]][1] <= population_mean & ci_list[[i]][2] >= population_mean,
+    lower = ci_list[[i]]$ci[1],
+    upper = ci_list[[i]]$ci[2],
+    mean_val = ci_list[[i]]$mean_val,
+    include_mean = ci_list[[i]]$ci[1] <= population_mean & ci_list[[i]]$ci[2] >= population_mean,
     sample = i
   )
 }))
 
-# Plot the confidence intervals
+# Plot the confidence intervals and point estimates
 ggplot(ci_df, aes(x = sample, ymin = lower, ymax = upper, color = include_mean)) +
   geom_linerange(size = 1) +
+  geom_point(aes(y = mean_val), size = 2, shape = 21, fill = "white") + # Point estimate
   geom_hline(yintercept = population_mean, linetype = "dashed", color = "black", size = 1) +
   scale_color_manual(values = c("darkred", "navy"), labels = c("Excludes Mean", "Includes Mean")) +
   labs(title = "100 Confidence Intervals for Danceability Mean",
