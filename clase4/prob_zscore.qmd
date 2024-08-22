@@ -150,7 +150,7 @@ $$P(Amarilla\, luego\, Azul)=P(Amarilla)*P(Azul)=\dfrac{4}{6}*\dfrac{2}{5}=\dfra
 
 ::: columns
 ::: {.column width="50%"}
-![](images/zscore_ejemplo.png){width=90% height=80% fig-align="center"}
+![](images/zscore_ejemplo.jpg){width=90% height=80% fig-align="center"}
 :::
 
 ::: {.column width="50%"}
@@ -244,11 +244,11 @@ $$Z_X=\dfrac{66-62}{4}=\dfrac{4}{4}=+1 SD$$
 
 ::: columns
 ::: {.column width="50%"}
-![](images/ejercicio_1.png){width=100% height=100% fig-align="center"}
+![](images/ejercicio_1.jpg){width=100% height=100% fig-align="center"}
 :::
 
 ::: {.column width="50%"}
-![](images/ejercicio_2.png){width=80% height=80% fig-align="center"}
+![](images/ejercicio_2.jpg){width=80% height=80% fig-align="center"}
 
 :::
 :::
@@ -302,7 +302,7 @@ $$Z_X=\dfrac{66-62}{4}=\dfrac{4}{4}=+1 SD$$
 
 ## Distribución Muestral {.text-red-brown}
 
-![](images/distr_muestral.png){.absolute top="100" left="250" width=70% height=80%}
+![](images/distr_muestral.jpg){.absolute top="100" left="250" width=70% height=80%}
 
 
 ## Distribución Muestral {.text-red-brown}
@@ -536,7 +536,7 @@ ggplot(df, aes(x = sample_means)) +
 
 ::: columns
 ::: {.column width="50%"}
-![](images/distr_muestral.png){width=80% height=80% fig-align="center"}
+![](images/distr_muestral.jpg){width=80% height=80% fig-align="center"}
 :::
 
 ::: {.column width="50%"}
@@ -573,7 +573,7 @@ ggplot(df, aes(x = sample_means)) +
     
 ## Distribución Muestral {.text-red-brown}
 
-![](images/sampling_distr.png){.absolute top="100" left="250" width=70% height=80%}
+![](images/sampling_distr.jpg){.absolute top="100" left="250" width=60% height=70%}
 
 
 ## Error Estándar {.text-red-brown}
@@ -727,7 +727,7 @@ $$IC\, de\, \mu=\bar{X}\pm Z_{\Big(\dfrac{\alpha}{2}\Big)}\times\sigma_{\bar{X}}
 ::: columns
 ::: {.column width="50%"}
 
-![](images/inter_conf.png){.absolute width=60% height=75%}
+![](images/inter_conf.jpg){.absolute width=60% height=75%}
 
 :::
 
