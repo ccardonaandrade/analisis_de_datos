@@ -1,0 +1,952 @@
+---
+  format:
+   revealjs: 
+     theme: [default, style.scss]
+     slide-number: true
+     highlight-style: github
+     width: 1400
+     css:
+     - https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.2/font/bootstrap-icons.css
+---
+  
+##  {.center}
+  
+<h1 class="text-indigo-pink">
+  
+Analítica de Datos
+
+<h1>
+  
+<h2>Muestreo y Encuestas</h2>
+  
+::: {style="margin-top:50px"}
+### Carlos Cardona Andrade {.text-orange-gold}
+:::
+  
+# Tabla de contenido
+
+1.  [Muestreo](#muestreo)
+2.  [Fundamentos para Encuestas](#encuestas)
+3.  [Un poco de R](#r4ds)
+
+
+# Un poco sobre <br>[Muestreo]{.hl .hl-gold} {#muestreo .text-wash-black background="linear-gradient(45deg, #f37335, #fdc830)"}
+
+## Poblacipon y Muestras {.text-orange-gold}
+
+![](images/muestra.png){.absolute top="100" left="250" width=60% height=70%}
+  
+## Muestras {.text-orange-gold}
+
+- Toma `menos tiempo` que seleccionar a cada ente de la población. 
+
+- Es `menos costoso` que seleccionar cada ente de la población. 
+
+- Es `imposible` recolectar datos de toda la población
+
+## Tipos de muestras {.text-orange-gold}
+
+- No probabilística
+    1. Muestreo por conveniencia
+    2. Muestreo de respuesta voluntaria
+
+- Probabilística
+    1. Muestreo simple
+    2. Muestre estratificado
+    3. Muestreo por conglomerado
+    4. Muestre en múltiples etapas
+  
+## Malos ejemplos de muestreo {.text-orange-gold}
+  
+- Muestreo por conveniencia: consiste en tomar muestras de aquellos que son fácilmente accesibles.
+   - Ejemplo: encuesta al "hombre en la calle" (barata, conveniente, popular en el "periodismo" televisivo).
+   - Problema: los resultados pueden variar significativamente según el "cuándo y dónde" se realice la encuesta; falta de representatividad.
+   
+## Malos ejemplos de muestreo {.text-orange-gold}
+   
+- Muestreo de respuesta voluntaria:
+    - Ejemplo: encuestas en internet, encuestas telefónicas.
+    - Solo las personas que visiten el sitio web o vean el programa serán muestreadas.
+    - Las personas con opiniones fuertes son más propensas a participar.
+    
+## Muestreo Simple {.text-orange-gold}
+
+<div style="margin-top: 100px;"></div>
+
+::: columns
+::: {.column width="50%"}
+![](images/simple_sampling.jpg){width=70% height=70% fig-align="center"}
+:::
+
+::: {.column width="50%"}
+- Idea básica: colocar los nombres en una caja, agitar bien y sacar nombres al azar de la caja.
+
+- Se necesita una lista de nombres de todos los sujetos de la población, llamada marco muestral.
+
+- Todos los sujetos tienen la misma probabilidad de ser elegidos.
+:::
+:::
+  
+## Muestreo Simple {.text-orange-gold}
+
+- Pros: La composición de la muestra reflejará la composición de la población (edad/género/raza/ingresos...).
+
+- Contras: La necesidad de un marco muestral lo hace poco práctico para poblaciones grandes
+
+
+## Muestreo Simple en R {.text-orange-gold}
+
+```{r}
+#| echo: true
+#| eval: false
+#| error: true
+
+library(tidyverse)
+sample(x, size, replace = FALSE, prob = NULL)
+
+
+```
+
+
+- x - vector or a data set.
+- size - sample size.
+- replace - with or without replacement of values.
+- prob - probability weights
+
+ 
+## Muestreo Simple en R {.text-orange-gold}
+
+```{r}
+#| echo: true
+#| eval: true
+#| error: true
+
+# la muestra esta entre 1 y 5. El numero de muestras es 3
+x<- sample(1:5, 3)
+# veamos las 3 muestras
+x
+
+# la muestra esta entre 1 y 5. El numero de muestras es 6
+x<- sample(1:5, 6)
+x
+
+#especificar replace=TRUE o T permitirá repeticiones de valores para que se puedan generar las 6 muestras
+x<- sample(1:5, 6, replace=T)
+x
+```
+
+
+
+## Muestreo Simple en R {.text-orange-gold}
+
+```{r}
+#| echo: true
+#| eval: true
+#| error: true
+
+# establezcamos la semilla
+set.seed(5)
+#tomemos la muestra aleatoria con reemplazo
+sample(1:5, 4, replace=T)
+
+# cambiemos la semilla
+set.seed(4)
+sample(1:5, 4, replace=T)
+
+set.seed(5)
+sample(1:5, 4, replace=T)
+
+```
+
+
+## Muestreo Simple en R {.text-orange-gold}
+
+```{r}
+#| echo: true
+#| eval: true
+#| error: true
+
+# creemos una lista de nombres y seleccionemos 1 al azar
+sample(c('duvan','diego','daniel','mariana','keyla','juan','emily','ian','jair'),1)
+
+# Otro nombre
+sample(c('duvan','diego','daniel','mariana','keyla','juan','emily','ian','jair'),1)
+
+# Otro nombre
+sample(c('duvan','diego','daniel','mariana','keyla','juan','emily','ian','jair'),1)
+
+
+# Otro nombre
+sample(c('duvan','diego','daniel','mariana','keyla','juan','emily','ian','jair'),1)
+
+```
+
+
+## Muestreo Simple en R {.text-orange-gold}
+
+```{r}
+#| echo: true
+#| eval: true
+#| error: true
+
+# creamos una probabilidad de 80% para Bueno y 20% para malo.
+sample (c('Bueno','Malo'), size=10, replace=T, prob=c(.80,.20))
+
+# Establezcamos otras probabilidades 
+sample (c('Bueno','Malo'), size=10, replace=T, prob=c(.60,.40))
+
+
+```
+
+
+## Muestreo Estratificado {.text-orange-gold}
+
+::: columns
+::: {.column width="50%"}
+![](images/strat_sampling.jpg){width=70% height=70% fig-align="center"}
+:::
+
+::: {.column width="50%"}
+La población se divide en grupos llamados **estratos**, y luego se elige una muestra aleatoria simple en cada estrato.
+:::
+:::
+
+- Funciona mejor cuando los casos dentro de un estrato son similares, pero existen grandes diferencias entre los estratos.
+
+- Inconvenientes: Se necesita un marco muestral para cada estrato, lo cual no es práctico para poblaciones grandes.
+
+
+## Muestreo Estratificado en R {.text-orange-gold}
+
+
+```{r}
+#| echo: true
+#| eval: true
+#| error: true
+library(tidyverse)
+
+# Creemos la población
+data <- data.frame(grupo= rep(c('Profesores', 'Estudiantes', 'Admin', 'Invitados'), each=150), gpa = rnorm(600, mean=90, sd=3))
+head(data)
+
+# Obtengamos la muestra estratificada
+estrat_muestra <- data %>%
+  group_by(grupo) %>%
+  sample_n(size=15)
+
+table(estrat_muestra$grupo)
+
+```
+
+
+## Muestreo Estratificado en R {.text-orange-gold}
+
+```{r}
+#| echo: true
+#| eval: true
+#| error: true
+
+# Obtengamos la muestra estratificada por proporción
+
+estrat_muestra <- data %>%
+                  group_by(grupo) %>%
+                  sample_frac(size=.20)
+
+# Veamos la frencuencia de personas para cada grupo
+table(estrat_muestra$grupo)
+
+```
+
+
+
+## Muestreo por conglomerados {.text-orange-gold}
+
+::: columns
+::: {.column width="50%"}
+![](images/cluster_sampling.jpg){width=70% height=70% fig-align="center"}
+:::
+
+::: {.column width="50%"}
+La población se divide en grupos, llamados **conglomerados**. Se elige una muestra de conglomerados. Todos los sujetos en los conglomerados seleccionados son muestreados.
+:::
+:::
+
+- Por ejemplo, Éxito puede seleccionar un número de tiendas y entrevistar a todos los empleados en las tiendas seleccionadas. Aquí, un conglomerado es una tienda.
+
+- El muestreo por conglomerados funciona mejor cuando hay poca variación entre conglomerados, pero una gran variación dentro de los conglomerados.
+
+
+## Muestreo por conglomerados en R {.text-orange-gold}
+
+```{r}
+#| echo: true
+#| eval: true
+#| error: true
+
+# Generemos la muestra
+set.seed(123)
+poblacion <- data.frame(
+  supermercado = paste("Supermercado", 1:1000, sep = "_"),
+  SatisfaccionCliente = rnorm(1000, mean = 75, sd = 10)
+)
+
+# Muestreo por conglomerado
+supermercados_elegidos <- sample(poblacion$supermercado, size = 10, replace = FALSE)
+muestra <- poblacion[poblacion$supermercado %in% supermercados_elegidos, ]
+
+# Veamos la muestra
+head(muestra)
+```
+
+
+## Muestreo en múltiples etapas {.text-orange-gold}
+
+::: columns
+::: {.column width="50%"}
+![](images/multi_sampling.jpg){width=70% height=70% fig-align="center"}
+:::
+
+::: {.column width="50%"}
+- Primera etapa: la población se divide en grupos, llamados **conglomerados**, y se elige una muestra de grupos.
+- Segunda etapa: los grupos seleccionados se dividen a su vez en subgrupos, y se elige una muestra de subgrupos en cada grupo seleccionado.
+- (Tercera etapa: ...)
+- (Cuarta etapa: ...)
+:::
+:::
+
+## Muestreo en múltiples etapas {.text-orange-gold}
+
+Muchas encuestas nacionales (como la Encuesta General Social) utilizan muestreo en cuatro etapas.
+
+- departamentos $\rightarrow$ ciudades $\rightarrow$ barrios $\rightarrow$ hogares
+
+
+Ventaja:
+
+- Los sujetos seleccionados vivirán todos en las ciudades seleccionadas, y no estarán dispersos por todo el país, lo que puede reducir significativamente los costos de viaje de los entrevistadores.
+- No es necesario elaborar un marco muestral para los subgrupos no seleccionados.
+
+## Muestreo en múltiples etapas en R {.text-orange-gold}
+
+```{r}
+#| echo: true
+#| eval: true
+#| error: true
+# Sample Data Generation
+set.seed(123)
+region <- data.frame(
+  Barrio = paste("Barrio", 1:500, sep = "_"),
+  IngresoMedio = rnorm(500, mean = 50000, sd = 10000)
+)
+hogares <- data.frame(
+  Barrio = rep(sample(region$Barrio, size = 500, replace = TRUE), 
+                     each = 20),
+  IDhogar = rep(1:20, times = 500),
+  TipoEmpleo = sample(c("Ocupado", "Desempleado"), size = 10000, replace = TRUE)
+)
+
+# Two-Stage Cluster Sampling
+barrios_elegidos <- sample(region$Barrio, size = 5, replace = FALSE)
+hogares_muestra <- hogares[hogares$Barrio %in% barrios_elegidos, ]
+
+# Display Sampled Data
+head(hogares_muestra)
+```
+
+
+## Problemas de muestreo - Sesgo de selección {.smaller .text-orange-gold}
+
+Una tendencia sistemática por parte del procedimiento de muestreo a excluir un tipo de persona u otro de la muestra se llama sesgo de selección.
+
+- Las personas sin dirección permanente son excluidas por las encuestas por correo.
+- Aproximadamente 1/3 de los teléfonos residenciales no están listados. Muestrear números de teléfono de las páginas blancas perdería esos números no listados. Los ricos y los pobres tienen más probabilidades de tener números no listados, por lo que el directorio telefónico tiende hacia la clase media.
+- Se ha encontrado que las mujeres tienen más probabilidades de contestar el teléfono que los hombres. Las encuestas telefónicas a menudo incluyen más mujeres que hombres.
+- Cuando un procedimiento de selección está sesgado, tomar una muestra grande no ayuda. Esto es solo repetir el mismo errror a una mayor escala.
+
+## Problemas de muestreo - Sesgo de no respuesta {.smaller .text-orange-gold}
+
+El sesgo de no respuesta causa problemas porque los que no responden pueden ser muy diferentes de los que sí responden.
+
+- Los que no responden pueden tener largas horas de trabajo, vivir solos con más probabilidad, o no molestarse en responder, etc.
+- Ejemplo: en las últimas décadas, Gallup ha encontrado que los republicanos tenían más probabilidades de responder que los demócratas.
+- Cuando la tasa de respuesta es baja, no se puede tomar una nueva muestra para reemplazar a quienes no responden.
+- Se debe intentar contactar a los que no responden, haciendo más llamadas/visitas, ofreciendo recompensas, etc.
+- Siempre verifique la tasa de respuesta. Si es baja, el resultado de la encuesta podría no ser confiable.
+
+## Problemas de muestreo - Sesgo de respuesta {.text-orange-gold}
+
+El sesgo de respuesta significa que las respuestas de los encuestados están influenciadas, en cierta medida, por la formulación de las preguntas e incluso por el tono o la actitud del entrevistador.
+
+Solución: control del entrevistador y diseño adecuado de los cuestionarios.
+
+## Sesgo de muestreo {.text-orange-gold}
+
+![](images/sampling_bias.jpg){.absolute top="100" left="250" width=60% height=70%}
+
+## Sesgo de supervivencia {.text-orange-gold}
+
+![](images/survivor_bias.jpg){.absolute top="100" left="250" width=60% height=70%}
+
+## Sesgo de supervivencia {.text-orange-gold}
+
+![](images/survivor_bias_2.jpg){.absolute top="100" left="250" width=60% height=70%}
+
+
+# [Fundamentos para<br>]{style="color:white"}[Encuestas]{.hl .hl-purple} {#encuestas background="linear-gradient(45deg, #4a00e0, #ff0099)"}
+
+## Evaluando una encuesta {.text-indigo-pink}
+
+¿Está basada en muestreo probabilístico?
+
+Hay que preocuparse por:
+
+    - Error de cobertura
+    - Error de no-respuesta
+    - Error de medición
+    - (Error de muestreo)
+
+
+## Errores durante el proceso {.text-indigo-pink}
+
+![](images/allerrors.jpg){.absolute top="100" left="250" width=60% height=70%}
+
+## Recomendaciones generales {.text-indigo-pink}
+
+Usa un lenguaje simple, claro y neutral.
+
+  - Conoce a tu audiencia (por ejemplo, la diferencia entre adultos y adolescentes).
+  - No uses jerga ni siglas no definidas.
+  - No utilices dobles negativos o negativos difíciles de entender.
+  - Elimina todas las palabras innecesarias y mantén las preguntas cortas.
+  - Ten cuidado con las palabras sensibles o que puedan ser ofensivas.
+  
+## Recomendaciones generales {.text-indigo-pink}
+ 
+Haga un pre-test/piloto: 
+
+    - identificar preguntas que no son claras, percepción del tiempo que tomará responder la encuesta. 
+
+    - Pregunte a los encuestados que piensen en voz alta al momento de responder. ¿Qué errores podríamos evitar?
+
+- Haga la encuesta lo más `corta` posible. ¿Qué errores podríamos evitar?                
+        - Solamente incluir preguntas que son relevantes para la
+          pregunta que queremos responder con la encuesta.
+       
+       -  Utilizar "branching" (ramificaciones) y filtros.
+
+  
+## Gráficas, gráficas y más gráficas {.text-indigo-pink}
+
+![](images/slider_question.jpg){.absolute top="100" left="250" width=60% height=70%}
+
+
+## Gráficas, gráficas y más gráficas {.text-indigo-pink}
+
+![](images/gaps.jpg){.absolute top="100" left="250" width=60% height=70%}
+
+
+
+## Orden de las preguntas {.text-indigo-pink}
+
+El orden de las preguntas debe guiarse por tres preocupaciones (a veces contradictorias):
+
+  - Los encuestados suelen estar más comprometidos y menos cansados al principio.
+  
+  - Las preguntas que se hacen al principio pueden influir en las respuestas posteriores.
+  
+  - Los encuestados forman una opinión sobre tu encuesta desde el principio, y es crucial captar su interés.
+  
+## Orden de las preguntas {.text-indigo-pink}
+
+- El consejo común es hacer preguntas interesantes primero!
+
+- Si te preocupa la deserción, pregunta la información demográfica al principio.
+
+- Las preguntas sensibles deben ir más tarde en la encuesta.
+
+- Organiza tu encuesta de manera lógica y guía a los encuestados.
+
+- Si haces preguntas de filtro (por ejemplo, “¿Es usted trabajador autónomo?”), haz todas estas primero y luego las preguntas de seguimiento (por ejemplo, “¿Cuál es su ingreso por trabajo autónomo?”)."
+
+## Efectos del orden de las preguntas {.text-indigo-pink}
+
+¿Por qué ocurren los efectos del orden de las preguntas?
+
+- Efectos de orden basados en lo *cognitivo*: primacía o efecto ancla.
+- Efectos de orden basados en lo *normativo*: incluyen el deseo del encuestado de parecer: imparcial o justo, coherente y moderado.
+
+
+Posibles soluciones:
+
+- No hay una solución general, pero hay que tener en cuenta estos efectos al diseñar la encuesta.
+
+- Se puede aleatorizar el orden de las preguntas o bloques, siempre y cuando no afecte negativamente el flujo de la encuesta.
+
+## Sesgo de deseabilidad social {.text-indigo-pink}
+
+Básicamente sucede cuando al encuestado le da vergüenza responder de cierta forma a cierta pregunta (presión social para responder de cierta forma): 
+ 
+-  ¿Sí o No a la paz?
+-  ¿Ha consumido drogas ilícitas?
+- ¿Ha sobornado a un funcionario público?
+- ¿Ha robado en su lugar de trabajo?
+
+Si el sesgo/presión para responder de cierta forma es significativo, esto resulta en error de medición (y en particular, en un error de medición sistemático).
+
+## Sesgo de deseabilidad social {.text-indigo-pink}
+
+Hay varias alternativas que pueden disminuir el sesgo:
+
+  - Encuestas telefónicas automatizadas.
+  - Encuestas por internet.
+  - Métodos para asegurar anonimidad: respuesta en privado y urnas.
+
+
+## Error de medida {.text-indigo-pink}
+
+Consideraciones Cuantitativas y Técnicas: Muchos estudios necesitarán incluir preguntas nuevas, creativas y, a veces, complejas. Por ejemplo, puede pedir a los encuestados que usen un deslizador para indicar su posición en una escala de distribución de ingresos. Para este tipo de preguntas:
+
+- Realice varias pruebas piloto para asegurarse de que los encuestados las entienden.
+- Automatice el código de su encuesta para garantizar que las cifras (por ejemplo, porcentajes) sumen correctamente 100.
+- Asegúrese de que el diseño visual de la encuesta sea claro y efectivo.
+
+## Error de medición {.text-indigo-pink}
+
+La importancia del benchmarking: Suponga que encuentra que los encuestados estiman una determinada variable de manera incorrecta. ¿Esta percepción errónea es específica de esa variable o es la manifestación de un sesgo general?
+
+- Ej: Las personas sobreestiman significativamente la proporción de inmigrantes desempleados, pero también sobreestiman la de no inmigrantes desempleados.
+
+# [Un poco de<br>]{style="color:white"}[R]{.hl .hl-red} {#r4ds background="linear-gradient(45deg, #ed213a, #93291e)"}
+  
+  
+  
+## De regreso a los datos de Spotify {.text-red-brown}
+
+```{r}
+#| echo: true
+#| eval: true
+
+library(tidyverse)
+library(janitor)
+library(patchwork)
+
+# Working directory
+setwd(dir = "/Users/ccard/Dropbox/analitica_datos/2024-II/slides/lecture5/data")
+
+# https://www.kaggle.com/code/lusfernandotorres/spotify-top-hits-2000-2019-eda/data
+spotify <- read.csv("spotify_data.csv")
+
+# veamos las dimensiones
+dim(spotify)
+
+
+# Para ver los nombres de las variables
+str(spotify)
+```
+  
+
+
+## Spotify Data - Descriptivas {.text-red-brown}
+ 
+```{r}
+#| echo: true
+#| eval: true
+
+
+# Calculemos algunas estadísticas
+
+mean(spotify$popularity)
+median(spotify$popularity)
+sd(spotify$popularity)
+var(spotify$popularity)
+```
+
+
+## Spotify Data - Descriptivas {.text-red-brown}
+ 
+```{r}
+#| echo: true
+#| eval: true
+
+
+# Calculemos algunas estadísticas
+fivenum(spotify$popularity)
+IQR(spotify$popularity)
+min(spotify$popularity)
+max(spotify$popularity)
+```
+
+
+## Spotify Data - Función Aggregate {.text-red-brown}
+ 
+```{r}
+#| echo: true
+#| eval: true
+
+# Funcion "aggregate" para descriptivas por grupo
+
+aggregate(popularity ~ explicit , data=spotify, mean)
+
+# Agreguemos otra categoría
+
+spotify <- spotify %>%
+  mutate(hip_hop_genre = ifelse(grepl("hip hop",
+                                      genre, ignore.case = TRUE), TRUE, FALSE))
+aggregate(popularity ~ explicit + hip_hop_genre , data=spotify, mean)
+```
+
+
+
+## Spotify Data - Función Aggregate {.text-red-brown}
+
+ 
+```{r}
+#| echo: true
+#| eval: false
+#| 
+# La funcion también funciona con las siguientes descriptivas:
+
+aggregate(popularity ~ explicit , data=spotify, median)
+aggregate(popularity ~ explicit , data=spotify, sd)
+aggregate(popularity ~ explicit , data=spotify, var)
+aggregate(popularity ~ explicit , data=spotify, min)
+aggregate(popularity ~ explicit , data=spotify, max)
+aggregate(popularity ~ explicit , data=spotify, IQR)
+```
+
+## Ejercicio {.text-red-brown}
+
+Usando la base de datos airbnb_ny_2019:
+
+1. Revisen las dimensiones de la base de datos
+2. ¿Qué información tiene?
+3. Elijan un par de variables y revisen las estadísticas descripticas
+
+## Spotify Data - Histograma {.text-red-brown}
+ 
+```{r}
+#| echo: true
+#| eval: true
+#| fig-pos: center
+
+# Pasemos a visualizar los datos
+
+ggplot(spotify, aes(x=popularity)) + geom_histogram()
+
+```
+
+## Spotify Data - Histogramas {.text-red-brown}
+
+```{r}
+#| echo: true
+#| eval: true
+#| fig-pos: center
+
+
+# Profundicemos en los histogramas
+
+ggplot(spotify, aes(x=popularity)) + geom_histogram(binwidth=0.5)
+
+```
+
+## Spotify Data - Histogramas {.text-red-brown}
+
+```{r}
+#| echo: true
+#| eval: true
+#| fig-pos: center
+
+
+ggplot(spotify, aes(x=popularity)) + geom_histogram(binwidth=0.1)
+
+```
+
+
+## Spotify Data - Histogramas {.text-red-brown}
+
+```{r}
+#| echo: true
+#| eval: true
+#| fig-pos: center
+
+ggplot(spotify, aes(x=popularity)) + geom_histogram(binwidth=0.02)
+
+```
+
+
+## Spotify Data - Diagrama de Caja {.text-red-brown}
+
+```{r}
+#| echo: true
+#| eval: true
+#| fig-pos: center
+
+
+# Qué tal un diagrama de caja
+
+ggplot(spotify, aes(x=popularity)) + geom_boxplot()
+```
+
+
+## Spotify Data - Diagrama de Caja {.text-red-brown}
+
+```{r}
+#| echo: true
+#| eval: true
+#| fig-pos: center
+
+# Y ahora en el diagrama de caja
+ggplot(spotify, aes(x=popularity)) + geom_boxplot()
+
+```
+
+
+## Spotify Data - Diagrama de Caja {.text-red-brown}
+
+```{r}
+#| echo: true
+#| eval: true
+#| fig-pos: center
+
+ggplot(spotify, aes(y=popularity)) + geom_boxplot()
+
+```
+
+
+## Spotify Data - Diagrama de Caja {.text-red-brown}
+
+```{r}
+#| echo: true
+#| eval: true
+#| fig-pos: center
+
+
+# Diagrama de caja comparando entre categorías
+
+ggplot(spotify, aes(x=popularity, y=explicit)) + geom_boxplot()
+
+```
+
+
+## Spotify Data - Diagrama de Caja {.text-red-brown}
+
+```{r}
+#| echo: true
+#| eval: true
+#| fig-pos: center
+
+ggplot(spotify, aes(x=explicit, y=popularity)) + geom_boxplot()
+
+```
+
+
+## Spotify Data - Diagrama de Caja {.text-red-brown}
+
+```{r}
+#| echo: true
+#| eval: true
+#| fig-pos: center
+
+# Incluyamos el genero musical
+ggplot(subset(spotify, genre=="hip hop"), 
+       aes(x=explicit, y=popularity)) + 
+  geom_boxplot()
+```
+
+
+
+
+## Spotify Data - Patchwork {.text-red-brown}
+
+```{r}
+#| echo: true
+#| eval: true
+#| fig-pos: center
+
+
+# Usemos patchwork
+# Para una mejor explicación:
+# https://patchwork.data-imaginist.com/
+histograma <- ggplot(spotify, aes(x=popularity)) + geom_histogram()
+diag_caja <- ggplot(spotify, aes(x=popularity)) + geom_boxplot()
+histograma+diag_caja
+```
+
+## Ejercicio {.text-red-brown}
+
+Usando la base de datos airbnb_ny_2019:
+
+4. Hagan un histograma de la variable "price". ¿ qué nos dice?
+5. Hagan un diagrama de caja de la variable "number_of_reviews" ¿ qué nos dice?
+6. Hagan un histograma y un diagrama de caja usando el paquete patchwork para alguna de las dos variables
+
+
+## Spotify Data - Diagrama de Dispersión {.text-red-brown}
+
+```{r}
+#| echo: true
+#| eval: true
+#| fig-pos: center
+
+
+# Un diagrama de dispersión
+
+ggplot(spotify, aes(x=danceability, y=popularity)) + geom_point()
+```
+
+
+
+## Spotify Data - Diagrama de Dispersión {.text-red-brown}
+
+```{r}
+#| echo: true
+#| eval: true
+#| fig-pos: center
+
+
+# Filtremos los datos
+
+spotify %>% 
+  filter(popularity>0) %>%
+  ggplot(aes(x=danceability, y=popularity)) + geom_point()
+```
+
+
+## Spotify Data - Diagrama de Dispersión {.text-red-brown}
+
+```{r}
+#| echo: true
+#| eval: true
+#| fig-pos: center
+
+# Diagramas de dispersión
+
+ggplot(spotify, aes(x=danceability, y=popularity, color=explicit)) + geom_point()
+```
+
+
+## Spotify Data - Diagrama de Dispersión {.text-red-brown}
+
+```{r}
+#| echo: true
+#| eval: true
+#| fig-pos: center
+
+# Diagrama de dispersión por explicito en diferente color
+ggplot(spotify, aes(x=danceability, y=log(1+popularity), color=explicit)) + 
+  geom_point()
+```
+
+
+## Spotify Data - Diagrama de Dispersión {.text-red-brown}
+
+```{r}
+#| echo: true
+#| eval: true
+#| fig-pos: center
+
+# Diagrama de dispersión por explicito en diferente forma 
+
+ggplot(spotify, aes(x=danceability, y=popularity, shape=explicit)) + geom_point()
+```
+
+
+## Spotify Data - Diagrama de Dispersión {.text-red-brown}
+
+```{r}
+#| echo: true
+#| eval: true
+#| fig-pos: center
+
+# Diagrama de dispersión por explicito en diferente tamaño
+
+ggplot(spotify, aes(x=danceability, y=popularity, size=explicit)) + geom_point()
+```
+
+
+## Spotify Data - Diagrama de Dispersión {.text-red-brown}
+
+```{r}
+#| echo: true
+#| eval: true
+#| fig-pos: center
+
+# combinando ambas color y forma
+ggplot(spotify, aes(x=danceability,
+                    y=popularity,
+                    shape=explicit,
+                    color=explicit)) + geom_point()
+```
+
+## Ejercicio {.text-red-brown}
+
+Usando la base de datos airbnb_ny_2019:
+
+7. Hagan un diagrama de dispersión para las variables "price" y "number_of_reviews". ¿Qué nos dice?
+8. Elijan o construyan una tercer variables y analicen las 3 variables a la vez.
+
+## Spotify Data - División de gráficos {.text-red-brown}
+
+```{r}
+#| echo: true
+#| eval: true
+#| fig-pos: center
+
+# Mostrar para cada categoría en diferentes facetas
+ggplot(spotify, aes(x=danceability,y=popularity,color=explicit)) + 
+  geom_point(size = 0.8)+
+  facet_wrap(~explicit)
+```
+
+
+## Spotify Data - División de gráficos {.text-red-brown}
+
+```{r}
+#| echo: true
+#| eval: true
+#| fig-pos: center
+
+# Incluyamosle otra variable
+ggplot(spotify, aes(x=danceability,y=popularity,color=hip_hop_genre)) + 
+  geom_point(size = 0.8)+
+  facet_wrap(~explicit)
+```
+
+
+## Spotify Data - División de gráficos {.text-red-brown}
+
+```{r}
+#| echo: true
+#| eval: true
+#| fig-pos: center
+
+
+ggplot(spotify, aes(x=popularity)) + 
+  geom_histogram(binwidth=0.5) +
+  facet_wrap(~hip_hop_genre)
+```
+
+## Spotify Data - División de gráficos {.text-red-brown}
+
+```{r}
+#| echo: true
+#| eval: true
+#| fig-pos: center
+
+ggplot(spotify, aes(x=popularity)) + 
+  geom_histogram(binwidth=0.5) +
+  facet_wrap(~hip_hop_genre, nrow=5)
+```
+
+
+## Spotify Data - División de gráficos {.text-red-brown}
+
+```{r}
+#| echo: true
+#| eval: true
+#| fig-pos: center
+
+ggplot(spotify, aes(x=explicit,y=popularity)) + 
+  geom_boxplot() +
+  facet_wrap(~hip_hop_genre, nrow=2)
+```
