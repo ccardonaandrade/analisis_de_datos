@@ -1,0 +1,340 @@
+---
+  format: html
+---
+  
+## `r fontawesome::fa("cubes", fill = "#2e3175", a11y = "sem")` Explorando Datos Categóricos {#datos_categoricos}
+  
+### Datos `Starbucks`
+
+Usaremos estos datos que contienen información sobre el contenido calórico de todas las bebidas en Starbucks. Pueden encontrar más información sobre los datos en este [link](https://github.com/rfordatascience/tidytuesday/blob/master/data/2021/2021-12-21/readme.md).
+
+```{r}
+#| eval: true
+#| echo: true
+#| fig-align: "center"
+#| out-width: "100%"
+#| warning: false
+
+starbucks <- read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2021/2021-12-21/starbucks.csv')
+
+glimpse(starbucks)
+```
+
+
+```{r}
+#| eval: true
+#| echo: true
+#| fig-align: "center"
+#| out-width: "100%"
+
+starbucks$milk_factor <- factor(starbucks$milk,
+                      levels = c(0, 1, 2, 3, 4, 5),
+                      labels = c("no milk", "nonfat", "2%", "soy", "coconut", "whole"))
+
+
+starbucks$whip <- factor(starbucks$whip,
+               levels = c(0, 1),
+               labels = c("no cream", "cream"))
+
+```
+
+
+### Tablas
+
+Si bien tiene sentido describir una variable numérica como el **peso** en términos de estadísticas descriptivas como la media o la desviación estándar, para variables categóricas, simplemente hacemos una tabla de frecuencias que muestre el número de observaciones  en cada categoría de la variable. La función `xtabs()` en R puede hacer el conteo por nosotros. Por ejemplo, las 3 líneas a continuación producen la tabla de frecuencias para las siguientes variables: `size` y `milk_factor`.
+
+```{r}
+#| eval: true
+#| echo: true
+#| fig-align: "center"
+#| out-width: "100%"
+
+xtabs(~size, data=starbucks)
+
+xtabs(~milk_factor, data=starbucks)
+
+```
+
+Se puede convertir la tabla de frecuencias a proporciones usando la función `prop.table`
+
+```{r}
+#| eval: true
+#| echo: true
+#| fig-align: "center"
+#| out-width: "100%"
+
+prop.table(xtabs(~milk_factor, data=starbucks))
+
+```
+
+Con la función `xtabs`podemos tabular cualquier número de variables. Por ejemplo, para hacer una tabulación cruzada con las variables `whip` y `milk_factor` escribimos:
+
+```{r}
+#| eval: true
+#| echo: true
+#| fig-align: "center"
+#| out-width: "100%"
+
+xtabs(~ whip + milk_factor, data=starbucks)
+
+```
+
+La función `addmargins` agrega los totales para cada fila y columna.
+
+```{r}
+#| eval: true
+#| echo: true
+#| fig-align: "center"
+#| out-width: "100%"
+
+addmargins(xtabs(~ whip + milk_factor, data=starbucks))
+
+
+```
+
+
+La función `prop.table()` puede calcular:
+
+1. las proporciones generales = (conteos de celdas) / (número total de casos),
+2. las proporciones por fila = (conteos de celdas) / (total de la fila), y
+3. las proporciones por columna = (conteos de celdas) / (total de la columna).
+
+de la siguiente manera respectivamente:
+
+
+```{r}
+#| eval: true
+#| echo: true
+#| fig-align: "center"
+#| out-width: "100%"
+
+prop.table(xtabs(~ whip + milk_factor, data=starbucks))
+
+prop.table(xtabs(~ whip + milk_factor, data=starbucks),1)
+
+prop.table(xtabs(~ whip + milk_factor, data=starbucks),2)
+
+```
+
+La función `xtabs()` puede hacer una tabulación cruzada con 3 variables de la siguiente manera:
+
+```{r}
+#| eval: true
+#| echo: true
+#| fig-align: "center"
+#| out-width: "100%"
+
+xtabs(~ size + milk_factor + whip, data=starbucks)
+
+```
+
+### Gráficos de Barras
+
+La capa (layer) del comando `ggplot` para hacer gráficos de barras es `geom_bar`. En este caso, la altura de la barra es la frecuencia en cada categoría.
+
+```{r}
+#| eval: true
+#| echo: true
+#| fig-align: "center"
+#| out-width: "60%"
+
+ggplot(starbucks, aes(x=milk_factor))+geom_bar()
+
+```
+
+
+Para hacer un gráfico de barras segmentadas donde las barras representen `whip` y los segmentos representen `milk_factor`, necesitamos establecer `whip` como la variable en el eje $x$ y `milk_factor` como la variable $fill$.
+
+```{r}
+#| eval: true
+#| echo: true
+#| fig-align: "center"
+#| out-width: "60%"
+
+ggplot(starbucks, aes(fill=milk_factor, x=whip)) + geom_bar()
+
+```
+
+Para estandarizar la gráfica de barras segmentada (es decir, que la suma al interior de cada barra sea 1), solo agreguen `position=fill` dentro de la capa `geom_bar`.
+
+```{r}
+#| eval: true
+#| echo: true
+#| fig-align: "center"
+#| out-width: "60%"
+
+ggplot(starbucks, aes(fill=milk_factor, x=whip)) + 
+  geom_bar(position="fill")
+```
+
+Uno puede cambiar el título de la leyenda para `milk_factor` a "Types of Milk".
+
+```{r}
+#| eval: true
+#| echo: true
+#| fig-align: "center"
+#| out-width: "60%"
+
+ggplot(starbucks, aes(fill=milk_factor, x=whip)) + 
+  geom_bar(position="fill") +
+  labs(fill='Types of Milk') 
+```
+
+### Gráfico de Barras para Datos Tabulados
+
+Supongamos que solo se dispone de datos tabulados y no los valores para cada bebida.Los datos que tienen son los de la tabla a continuación:
+
+
+```{r}
+#| eval: true
+#| echo: false
+#| fig-align: "center"
+#| out-width: "60%"
+#| warning: false
+
+library(kableExtra)
+sb_tabulated <-  matrix(c(157, 8, 166, 56, 134, 56, 139, 51,134, 56, 134, 56), nrow=2)
+dimnames(sb_tabulated) = list(Whip=c("No Cream","Cream"),  
+                                     Milk=c("no milk", "nonfat", "2%", "soy", "coconut", "whole"))
+sb_tabulated %>%
+  kbl() %>%
+  add_header_above(c(" ", "Types of Milk" = 6)) %>%
+  kable_styling()
+```
+
+Necesitan ingresar los datos tabulados en R ustedes mismos. Primero, crean una matriz de 2x6. Noten que los valores en la tabla se ingresan **por columnas**, y especificamos que hay 2 filas en la matriz. Entonces, R sabe automáticamente que hay 6 columnas, ya que hay 12 entradas en la matriz.
+
+```{r}
+#| eval: true
+#| echo: true
+#| fig-align: "center"
+#| out-width: "60%"
+
+starbucks_tabulated <-  matrix(c(157, 8, 166, 56, 134, 56, 139, 51,134, 56, 134, 56), nrow=2)
+starbucks_tabulated
+```
+
+Luego, especifican los nombres de las variables de las filas y las columnas, así como sus categorías.
+
+
+```{r}
+#| eval: true
+#| echo: true
+#| fig-align: "center"
+#| out-width: "60%"
+
+dimnames(starbucks_tabulated) = list(Whip=c("No Cream","Cream"),  
+                         Milk=c("no milk", "nonfat", "2%", "soy", "coconut", "whole"))
+starbucks_tabulated
+```
+
+Convierten la matriz en una tabla usando `as.table()` y luego convierten la tabla en un data frame usando `as.data.frame()`. Necesitan convertir la tabla en un data frame porque `ggplot` solo acepta data frames.
+
+```{r}
+#| eval: true
+#| echo: true
+#| fig-align: "center"
+#| out-width: "60%"
+
+starbucks_tabulated <-  as.table(starbucks_tabulated)
+starbucks_tabulated <-  as.data.frame(starbucks_tabulated)
+starbucks_tabulated
+```
+
+La base de datos `starbucks_tabulated`contiene una columna `Freq`que es igual al número de observaciones en la tabla. Con esta información se puede hacer el gráfico de barras con `ggplot`. Deben especificar `weight=Freq`
+
+```{r}
+#| eval: true
+#| echo: true
+#| fig-align: "center"
+#| out-width: "60%"
+
+ggplot(starbucks_tabulated, aes(fill=Milk, x=Whip, weight=Freq)) + 
+  geom_bar()
+```
+
+Para estandarizar como antes, solo añaden `position="fill"` en la capa `geom_bar()`.
+
+```{r}
+#| eval: true
+#| echo: true
+#| fig-align: "center"
+#| out-width: "60%"
+
+ggplot(starbucks_tabulated, aes(fill=Milk, x=Whip, weight=Freq)) + 
+  geom_bar(position="fill")
+```
+
+
+### Gráficos en Mosaico
+
+No hay una función específica `geom_XXX()` en el paquete `ggplot` para hacer gráficos de mosaico. Por lo tanto, usen la función `mosaicplot()` la base de R. Los gráficos producidos por `mosaicplot`() no son tan estéticos como los de `ggplot`, pero funcionan.
+
+A diferencia de `ggplot`, que requiere que los datos de entrada sean un data frame, `mosaicplot()` requiere que los datos sean una tabla.
+
+Recuerda que la tabla bidimensional de `whip` y `milk_factor` es:
+
+
+```{r}
+#| eval: true
+#| echo: true
+#| fig-align: "center"
+#| out-width: "60%"
+xtabs(~ whip + milk_factor, data=starbucks)
+```
+
+Para crear un gráfico de mosaicos de la tabla anterior, solo inserten el código en el comando `mosaicplot`.
+
+```{r}
+#| eval: true
+#| echo: true
+#| fig-align: "center"
+#| out-width: "60%"
+mosaicplot(xtabs(~ whip+milk_factor, data=starbucks), color=TRUE, main="")
+
+```
+
+Como los gráficos siempre deben estar bien etiquetados, la siguiente línea muestra cómo cambiar el título, la etiqueta del eje $x$ y la etiqueta del eje $y$ del gráfico. La opción `las=1` hace que las etiquetas sean perpendiculares a los ejes para que no se superpongan.
+
+```{r}
+#| eval: true
+#| echo: true
+#| fig-align: "center"
+#| out-width: "60%"
+mosaicplot(xtabs(~whip+milk_factor, data=starbucks), 
+           main="Cream by Type of Milk", 
+           ylab="Type of Milk", 
+           xlab="Cream in the Beverage",
+           las=2, color=TRUE)
+```
+
+Podemos usar `mosaicplot` con el conjunto de datos tabulados (en caso de no tener los casos individuales) para crear un gráfico de mosaico.
+
+```{r}
+#| eval: true
+#| echo: true
+#| fig-align: "center"
+#| out-width: "60%"
+mosaicplot(starbucks_tabulated, main="", color=TRUE)
+```
+
+El gráfico de arriba claramente no es útil y no es el que se espera. Se puede cambiar la posición de los ejes usando el comando `xtabs` nuevamente. 
+
+```{r}
+#| eval: true
+#| echo: true
+#| fig-align: "center"
+#| out-width: "60%"
+
+mosaicplot(xtabs(Freq ~ Whip + Milk, data = starbucks_tabulated), main = "", color = TRUE)
+```
+
+El resultado ha mejorado considerablemente. Sin embargo, podríamos refinar aún más la presentación trasponiendo la tabla para cambiar la ubicación de los ejes. Al final, cada quien tiene la libertad de elegir la gráfica que, a su juicio, presenta la información de manera más clara y atractiva.
+
+```{r}
+#| eval: true
+#| echo: true
+#| fig-align: "center"
+#| out-width: "60%"
+mosaicplot(t(xtabs(Freq ~ Whip + Milk, data = starbucks_tabulated)), main = "", color = TRUE)
+```

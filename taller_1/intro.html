@@ -1,0 +1,2011 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.3.290">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Carlos Cardona Andrade">
+<meta name="dcterms.date" content="2024-09-05">
+
+<title>Introducción a R y RStudio</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="intro_files/libs/clipboard/clipboard.min.js"></script>
+<script src="intro_files/libs/quarto-html/quarto.js"></script>
+<script src="intro_files/libs/quarto-html/popper.min.js"></script>
+<script src="intro_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="intro_files/libs/quarto-html/anchor.min.js"></script>
+<link href="intro_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="intro_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="intro_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="intro_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="intro_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<style>html{ scroll-behavior: smooth; }</style>
+
+<script src="intro_files/libs/kePrint-0.0.1/kePrint.js"></script>
+<link href="intro_files/libs/lightable-0.0.1/lightable.css" rel="stylesheet">
+
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+</head>
+
+<body>
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article toc-left">
+<div id="quarto-sidebar-toc-left" class="sidebar toc-left">
+  <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#preliminares" id="toc-preliminares" class="nav-link active" data-scroll-target="#preliminares"><svg aria-label="Gear" role="img" viewbox="0 0 512 512" style="height:1em;width:1em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:#2e3175;overflow:visible;position:relative;"><title>Gear</title><path d="M495.9 166.6c3.2 8.7 .5 18.4-6.4 24.6l-43.3 39.4c1.1 8.3 1.7 16.8 1.7 25.4s-.6 17.1-1.7 25.4l43.3 39.4c6.9 6.2 9.6 15.9 6.4 24.6c-4.4 11.9-9.7 23.3-15.8 34.3l-4.7 8.1c-6.6 11-14 21.4-22.1 31.2c-5.9 7.2-15.7 9.6-24.5 6.8l-55.7-17.7c-13.4 10.3-28.2 18.9-44 25.4l-12.5 57.1c-2 9.1-9 16.3-18.2 17.8c-13.8 2.3-28 3.5-42.5 3.5s-28.7-1.2-42.5-3.5c-9.2-1.5-16.2-8.7-18.2-17.8l-12.5-57.1c-15.8-6.5-30.6-15.1-44-25.4L83.1 425.9c-8.8 2.8-18.6 .3-24.5-6.8c-8.1-9.8-15.5-20.2-22.1-31.2l-4.7-8.1c-6.1-11-11.4-22.4-15.8-34.3c-3.2-8.7-.5-18.4 6.4-24.6l43.3-39.4C64.6 273.1 64 264.6 64 256s.6-17.1 1.7-25.4L22.4 191.2c-6.9-6.2-9.6-15.9-6.4-24.6c4.4-11.9 9.7-23.3 15.8-34.3l4.7-8.1c6.6-11 14-21.4 22.1-31.2c5.9-7.2 15.7-9.6 24.5-6.8l55.7 17.7c13.4-10.3 28.2-18.9 44-25.4l12.5-57.1c2-9.1 9-16.3 18.2-17.8C227.3 1.2 241.5 0 256 0s28.7 1.2 42.5 3.5c9.2 1.5 16.2 8.7 18.2 17.8l12.5 57.1c15.8 6.5 30.6 15.1 44 25.4l55.7-17.7c8.8-2.8 18.6-.3 24.5 6.8c8.1 9.8 15.5 20.2 22.1 31.2l4.7 8.1c6.1 11 11.4 22.4 15.8 34.3zM256 336a80 80 0 1 0 0-160 80 80 0 1 0 0 160z"></path></svg> Preliminares</a>
+  <ul class="collapse">
+  <li><a href="#introducción" id="toc-introducción" class="nav-link" data-scroll-target="#introducción">Introducción</a></li>
+  <li><a href="#sean-pacientes-con-r-y-con-ustedes-mismos" id="toc-sean-pacientes-con-r-y-con-ustedes-mismos" class="nav-link" data-scroll-target="#sean-pacientes-con-r-y-con-ustedes-mismos">Sean pacientes con R y con ustedes mismos</a></li>
+  <li><a href="#instalación-de-r-y-rstudio" id="toc-instalación-de-r-y-rstudio" class="nav-link" data-scroll-target="#instalación-de-r-y-rstudio">Instalación de R y RStudio</a></li>
+  <li><a href="#algunos-fundamentos-básicos" id="toc-algunos-fundamentos-básicos" class="nav-link" data-scroll-target="#algunos-fundamentos-básicos">Algunos fundamentos básicos</a></li>
+  </ul></li>
+  <li><a href="#inicio" id="toc-inicio" class="nav-link" data-scroll-target="#inicio"><svg aria-label="Laptop Code" role="img" viewbox="0 0 640 512" style="height:1em;width:1.25em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:#2e3175;overflow:visible;position:relative;"><title>Laptop Code</title><path d="M64 96c0-35.3 28.7-64 64-64H512c35.3 0 64 28.7 64 64V352H512V96H128V352H64V96zM0 403.2C0 392.6 8.6 384 19.2 384H620.8c10.6 0 19.2 8.6 19.2 19.2c0 42.4-34.4 76.8-76.8 76.8H76.8C34.4 480 0 445.6 0 403.2zM281 209l-31 31 31 31c9.4 9.4 9.4 24.6 0 33.9s-24.6 9.4-33.9 0l-48-48c-9.4-9.4-9.4-24.6 0-33.9l48-48c9.4-9.4 24.6-9.4 33.9 0s9.4 24.6 0 33.9zM393 175l48 48c9.4 9.4 9.4 24.6 0 33.9l-48 48c-9.4 9.4-24.6 9.4-33.9 0s-9.4-24.6 0-33.9l31-31-31-31c-9.4-9.4-9.4-24.6 0-33.9s24.6-9.4 33.9 0z"></path></svg> Iniciando un proyecto</a>
+  <ul class="collapse">
+  <li><a href="#el-directorio-de-trabajo" id="toc-el-directorio-de-trabajo" class="nav-link" data-scroll-target="#el-directorio-de-trabajo">El directorio de trabajo</a></li>
+  <li><a href="#cargar-datos-a-r" id="toc-cargar-datos-a-r" class="nav-link" data-scroll-target="#cargar-datos-a-r">Cargar datos a R</a></li>
+  <li><a href="#una-mirada-a-los-datos" id="toc-una-mirada-a-los-datos" class="nav-link" data-scroll-target="#una-mirada-a-los-datos">Una mirada a los datos</a></li>
+  </ul></li>
+  <li><a href="#transformar_datos" id="toc-transformar_datos" class="nav-link" data-scroll-target="#transformar_datos"><svg aria-label="Compass Drafting" role="img" viewbox="0 0 512 512" style="height:1em;width:1em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:#2e3175;overflow:visible;position:relative;"><title>Compass Drafting</title><path d="M352 96c0 14.3-3.1 27.9-8.8 40.2L396 227.4c-23.7 25.3-54.2 44.1-88.5 53.6L256 192h0 0l-68 117.5c21.5 6.8 44.3 10.5 68.1 10.5c70.7 0 133.8-32.7 174.9-84c11.1-13.8 31.2-16 45-5s16 31.2 5 45C428.1 341.8 347 384 256 384c-35.4 0-69.4-6.4-100.7-18.1L98.7 463.7C94 471.8 87 478.4 78.6 482.6L23.2 510.3c-5 2.5-10.9 2.2-15.6-.7S0 501.5 0 496V440.6c0-8.4 2.2-16.7 6.5-24.1l60-103.7C53.7 301.6 41.8 289.3 31.2 276c-11.1-13.8-8.8-33.9 5-45s33.9-8.8 45 5c5.7 7.1 11.8 13.8 18.2 20.1l69.4-119.9c-5.6-12.2-8.8-25.8-8.8-40.2c0-53 43-96 96-96s96 43 96 96zm21 297.9c32.6-12.8 62.5-30.8 88.9-52.9l43.7 75.5c4.2 7.3 6.5 15.6 6.5 24.1V496c0 5.5-2.9 10.7-7.6 13.6s-10.6 3.2-15.6 .7l-55.4-27.7c-8.4-4.2-15.4-10.8-20.1-18.9L373 393.9zM256 128a32 32 0 1 0 0-64 32 32 0 1 0 0 64z"></path></svg> Transformar datos con dplyr</a>
+  <ul class="collapse">
+  <li><a href="#el-tidyverse" id="toc-el-tidyverse" class="nav-link" data-scroll-target="#el-tidyverse">El tidyverse</a></li>
+  <li><a href="#los-verbos-del-dlpyr" id="toc-los-verbos-del-dlpyr" class="nav-link" data-scroll-target="#los-verbos-del-dlpyr">Los verbos del dlpyr</a></li>
+  <li><a href="#filter" id="toc-filter" class="nav-link" data-scroll-target="#filter"><code>filter</code></a></li>
+  <li><a href="#mutate" id="toc-mutate" class="nav-link" data-scroll-target="#mutate"><code>mutate</code></a></li>
+  </ul></li>
+  <li><a href="#datos_numericos" id="toc-datos_numericos" class="nav-link" data-scroll-target="#datos_numericos"><svg aria-label="Object Group" role="img" viewbox="0 0 576 512" style="height:1em;width:1.12em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:#2e3175;overflow:visible;position:relative;"><title>Object Group</title><path d="M48 115.8C38.2 107 32 94.2 32 80c0-26.5 21.5-48 48-48c14.2 0 27 6.2 35.8 16H460.2c8.8-9.8 21.6-16 35.8-16c26.5 0 48 21.5 48 48c0 14.2-6.2 27-16 35.8V396.2c9.8 8.8 16 21.6 16 35.8c0 26.5-21.5 48-48 48c-14.2 0-27-6.2-35.8-16H115.8c-8.8 9.8-21.6 16-35.8 16c-26.5 0-48-21.5-48-48c0-14.2 6.2-27 16-35.8V115.8zM125.3 96c-4.8 13.6-15.6 24.4-29.3 29.3V386.7c13.6 4.8 24.4 15.6 29.3 29.3H450.7c4.8-13.6 15.6-24.4 29.3-29.3V125.3c-13.6-4.8-24.4-15.6-29.3-29.3H125.3zm2.7 64c0-17.7 14.3-32 32-32H288c17.7 0 32 14.3 32 32v96c0 17.7-14.3 32-32 32H160c-17.7 0-32-14.3-32-32V160zM256 320h32c35.3 0 64-28.7 64-64V224h64c17.7 0 32 14.3 32 32v96c0 17.7-14.3 32-32 32H288c-17.7 0-32-14.3-32-32V320z"></path></svg> Explorando Datos Numéricos</a>
+  <ul class="collapse">
+  <li><a href="#los-datos-gapminder" id="toc-los-datos-gapminder" class="nav-link" data-scroll-target="#los-datos-gapminder">Los datos <code>gapminder</code></a></li>
+  <li><a href="#estadísticas-descriptivas" id="toc-estadísticas-descriptivas" class="nav-link" data-scroll-target="#estadísticas-descriptivas">Estadísticas Descriptivas</a></li>
+  <li><a href="#visualizando-los-datos-con-ggplot" id="toc-visualizando-los-datos-con-ggplot" class="nav-link" data-scroll-target="#visualizando-los-datos-con-ggplot">Visualizando los datos con `ggplot’</a></li>
+  </ul></li>
+  <li><a href="#datos_categoricos" id="toc-datos_categoricos" class="nav-link" data-scroll-target="#datos_categoricos"><svg aria-label="Cubes" role="img" viewbox="0 0 576 512" style="height:1em;width:1.12em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:#2e3175;overflow:visible;position:relative;"><title>Cubes</title><path d="M290.8 48.6l78.4 29.7L288 109.5 206.8 78.3l78.4-29.7c1.8-.7 3.8-.7 5.7 0zM136 92.5V204.7c-1.3 .4-2.6 .8-3.9 1.3l-96 36.4C14.4 250.6 0 271.5 0 294.7V413.9c0 22.2 13.1 42.3 33.5 51.3l96 42.2c14.4 6.3 30.7 6.3 45.1 0L288 457.5l113.5 49.9c14.4 6.3 30.7 6.3 45.1 0l96-42.2c20.3-8.9 33.5-29.1 33.5-51.3V294.7c0-23.3-14.4-44.1-36.1-52.4l-96-36.4c-1.3-.5-2.6-.9-3.9-1.3V92.5c0-23.3-14.4-44.1-36.1-52.4l-96-36.4c-12.8-4.8-26.9-4.8-39.7 0l-96 36.4C150.4 48.4 136 69.3 136 92.5zM392 210.6l-82.4 31.2V152.6L392 121v89.6zM154.8 250.9l78.4 29.7L152 311.7 70.8 280.6l78.4-29.7c1.8-.7 3.8-.7 5.7 0zm18.8 204.4V354.8L256 323.2v95.9l-82.4 36.2zM421.2 250.9c1.8-.7 3.8-.7 5.7 0l78.4 29.7L424 311.7l-81.2-31.1 78.4-29.7zM523.2 421.2l-77.6 34.1V354.8L528 323.2v90.7c0 3.2-1.9 6-4.8 7.3z"></path></svg> Explorando Datos Categóricos</a>
+  <ul class="collapse">
+  <li><a href="#datos-starbucks" id="toc-datos-starbucks" class="nav-link" data-scroll-target="#datos-starbucks">Datos <code>Starbucks</code></a></li>
+  <li><a href="#tablas" id="toc-tablas" class="nav-link" data-scroll-target="#tablas">Tablas</a></li>
+  <li><a href="#gráficos-de-barras" id="toc-gráficos-de-barras" class="nav-link" data-scroll-target="#gráficos-de-barras">Gráficos de Barras</a></li>
+  <li><a href="#gráfico-de-barras-para-datos-tabulados" id="toc-gráfico-de-barras-para-datos-tabulados" class="nav-link" data-scroll-target="#gráfico-de-barras-para-datos-tabulados">Gráfico de Barras para Datos Tabulados</a></li>
+  <li><a href="#gráficos-en-mosaico" id="toc-gráficos-en-mosaico" class="nav-link" data-scroll-target="#gráficos-en-mosaico">Gráficos en Mosaico</a></li>
+  </ul></li>
+  </ul>
+</nav>
+</div>
+<div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+</div>
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Introducción a R y RStudio</h1>
+<p class="subtitle lead">Taller I</p>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p><a href="https://ccardonaandrade.github.io/">Carlos Cardona Andrade</a> </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">September 5, 2024</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+</header>
+
+<p><br></p>
+<ul>
+<li>La idea es crear un taller con esto. Vamos a ver!*</li>
+</ul>
+<section id="preliminares" class="level2">
+<h2 class="anchored" data-anchor-id="preliminares"><svg aria-label="Gear" role="img" viewbox="0 0 512 512" style="height:1em;width:1em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:#2e3175;overflow:visible;position:relative;"><title>Gear</title><path d="M495.9 166.6c3.2 8.7 .5 18.4-6.4 24.6l-43.3 39.4c1.1 8.3 1.7 16.8 1.7 25.4s-.6 17.1-1.7 25.4l43.3 39.4c6.9 6.2 9.6 15.9 6.4 24.6c-4.4 11.9-9.7 23.3-15.8 34.3l-4.7 8.1c-6.6 11-14 21.4-22.1 31.2c-5.9 7.2-15.7 9.6-24.5 6.8l-55.7-17.7c-13.4 10.3-28.2 18.9-44 25.4l-12.5 57.1c-2 9.1-9 16.3-18.2 17.8c-13.8 2.3-28 3.5-42.5 3.5s-28.7-1.2-42.5-3.5c-9.2-1.5-16.2-8.7-18.2-17.8l-12.5-57.1c-15.8-6.5-30.6-15.1-44-25.4L83.1 425.9c-8.8 2.8-18.6 .3-24.5-6.8c-8.1-9.8-15.5-20.2-22.1-31.2l-4.7-8.1c-6.1-11-11.4-22.4-15.8-34.3c-3.2-8.7-.5-18.4 6.4-24.6l43.3-39.4C64.6 273.1 64 264.6 64 256s.6-17.1 1.7-25.4L22.4 191.2c-6.9-6.2-9.6-15.9-6.4-24.6c4.4-11.9 9.7-23.3 15.8-34.3l4.7-8.1c6.6-11 14-21.4 22.1-31.2c5.9-7.2 15.7-9.6 24.5-6.8l55.7 17.7c13.4-10.3 28.2-18.9 44-25.4l12.5-57.1c2-9.1 9-16.3 18.2-17.8C227.3 1.2 241.5 0 256 0s28.7 1.2 42.5 3.5c9.2 1.5 16.2 8.7 18.2 17.8l12.5 57.1c15.8 6.5 30.6 15.1 44 25.4l55.7-17.7c8.8-2.8 18.6-.3 24.5 6.8c8.1 9.8 15.5 20.2 22.1 31.2l4.7 8.1c6.1 11 11.4 22.4 15.8 34.3zM256 336a80 80 0 1 0 0-160 80 80 0 1 0 0 160z"></path></svg> Preliminares</h2>
+<section id="introducción" class="level3">
+<h3 class="anchored" data-anchor-id="introducción">Introducción</h3>
+<p>El objetivo de este taller es introducirlos a R y RStudio, que utilizarán a lo largo del curso tanto para aprender los conceptos estadísticos discutidos en el libro de texto como para analizar datos reales y llegar a conclusiones informadas. Para aclarar la diferencia entre ambos: R es el nombre del lenguaje de programación en sí, y RStudio es una interfaz conveniente. Como analogía:</p>
+<ul>
+<li>R es como el motor de un coche.</li>
+<li>RStudio es como la carrocería.</li>
+</ul>
+</section>
+<section id="sean-pacientes-con-r-y-con-ustedes-mismos" class="level3">
+<h3 class="anchored" data-anchor-id="sean-pacientes-con-r-y-con-ustedes-mismos">Sean pacientes con R y con ustedes mismos</h3>
+<div class="columns">
+<div class="column" style="width:50%;">
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/jake_sucking.png" class="quarto-discovered-preview-image img-fluid figure-img" style="width:100.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+</div><div class="column" style="width:50%;">
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/newyorktimes.png" class="img-fluid figure-img" style="width:100.0%"></p>
+<p></p><figcaption class="figure-caption"><a href="https://www.nytimes.com/2017/04/28/opinion/its-great-to-suck-at-surfing.html">Karen Rinaldi, (It’s Great to) Suck at Something</a></figcaption><p></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="instalación-de-r-y-rstudio" class="level3">
+<h3 class="anchored" data-anchor-id="instalación-de-r-y-rstudio">Instalación de R y RStudio</h3>
+<p>Si han utilizado R o RStudio antes, les recomiendo desinstalar las versiones antiguas e instalar la última versión de R y RStudio, ya que algunos paquetes que instalaremos podrían no ser compatibles con versiones anteriores de R.</p>
+<p>Vean los siguientes videos de <a href="https://www.openintro.org/book/os/">OpenIntro Statistics</a> para un tutorial de:</p>
+<ul>
+<li><a href="https://www.youtube.com/watch?v=rHZ9MGWxU5I&amp;feature=youtu.be">Cómo instalar R y RStudio en Windows</a></li>
+<li><a href="https://www.youtube.com/watch?v=AEebOXiMyyI&amp;feature=youtu.be">Cómo instalar R y RStudio en Mac OS X</a></li>
+</ul>
+<p>o pueden simplemente sequir las instrucciones a continuación:</p>
+<section id="instalen-la-última-versión-de-r" class="level4">
+<h4 class="anchored" data-anchor-id="instalen-la-última-versión-de-r">1. Instalen la última versión de R</h4>
+<p>Descarguen el archivo de instalación aquí para…</p>
+<ul>
+<li><a href="https://cran.r-project.org/bin/windows/base/">Windows</a>: Hagan clic en “Download R x.y.z for Windows”. Luego, ejecuten el archivo .exe descargado para instalar. Acepten todas las opciones predeterminadas de instalación (a menos que ya sepan cómo personalizar R).</li>
+<li><a href="https://cran.r-project.org/bin/macosx/">Mac</a> y <a href="https://cran.r-project.org/bin/linux/">Linux</a>: Acá van los links y asumo que ustedes lo saben instalar porque yo no :D</li>
+</ul>
+</section>
+<section id="instalen-el-último-rstudio" class="level4">
+<h4 class="anchored" data-anchor-id="instalen-el-último-rstudio">2. Instalen el último RStudio</h4>
+<p>RStudio proporciona un entorno de trabajo más amigable para R.</p>
+<p><a href="https://posit.co/download/rstudio-desktop/#download">Descarguen RStudio Destkop</a>. Instalenlo seleccionando la instalación dependiendo de su sistema operativo.</p>
+</section>
+<section id="ambiente-de-rstudio" class="level4">
+<h4 class="anchored" data-anchor-id="ambiente-de-rstudio">3. Ambiente de RStudio</h4>
+<p>El interfaz de RStudio consiste en diferentes ventanas como se ve en el siguiente gráfico.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/layout_rstudio.png" class="img-fluid figure-img" style="width:100.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+<ol type="1">
+<li><p>Editor (sección superior izquierda): esta sección es fundamental para la reproducibilidad del código. Este editor permite guardar el código para que sea usado en futuras ocasiones. El código puede ser ejecutado en esta sección posicionando el cursor de texto al final de la línea de código que se ejecutará; otra opción es seleccionando la misma y empleando el comando Control+Enter para Windows o Command+Enter para Mac.</p></li>
+<li><p>Entorno (sección superior derecha): en esta sección se pueden visualizar los objetos y funciones creados o importados en la sección de R. Objetos como vectores, matrices, arreglos, data frames, listas, objetos tipo ggplot, entre otros.</p></li>
+<li><p>Consola (sección inferior izquierda): esta sección es donde se ejecuta el código. No solo se ejecuta el código que escrito en el editor, sino que también el código puede escribirse y ejecutarse aquí directamente presionando Enter. Sin embargo, cuando el código se ejecuta directamente en la consola, este no se almacena y cuando se cierra la sesión de R este se pierde.</p></li>
+<li><p>Visualizador (sección inferior derecha): en esta sección se pueden visualizar los archivos en “Files”, los gráficos en “Plots”, los paquetes que ya están instalados en “Packages”, la ayuda de R con información de los paquetes y el funcionamiento en “Help”, y páginas web en “Viewer”.</p></li>
+</ol>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Algunos recursos de utilidad
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-1" class="callout-1-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>Existen muchos recursos para empezar a programar en R. Esta sección se basa en material principalmente de <a href="https://rpubs.com/tracelac/1082623">esta introducción</a> y de <a href="https://socviz.co/gettingstarted.html#gettingstarted">Getting Started</a> en <em>Data Visualization</em> de Kieran Healy.</p>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="algunos-fundamentos-básicos" class="level3">
+<h3 class="anchored" data-anchor-id="algunos-fundamentos-básicos">Algunos fundamentos básicos</h3>
+<ol type="1">
+<li>Las <strong>funciones</strong> son (usualmente) verbos, seguidos por los objetos a los cuales serán aplicados:</li>
+</ol>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">haz_esto</span>(a_esto)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">haz_esto</span>(a_esto, a_aquello, con_esto)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<ol start="2" type="1">
+<li>Existen muchos <em>paquetes</em> (libraries) que se instalan para expandir las funciones estándar de R. Se instalan con la función <code>install.packages</code> y el nombre del paquete entre comillas. Siempre que se inicie una sesión en R se deben cargan con la función <code>library</code> sin comillas.</li>
+</ol>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">"package_name"</span>)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(package_name)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+</section>
+<section id="inicio" class="level2">
+<h2 class="anchored" data-anchor-id="inicio"><svg aria-label="Laptop Code" role="img" viewbox="0 0 640 512" style="height:1em;width:1.25em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:#2e3175;overflow:visible;position:relative;"><title>Laptop Code</title><path d="M64 96c0-35.3 28.7-64 64-64H512c35.3 0 64 28.7 64 64V352H512V96H128V352H64V96zM0 403.2C0 392.6 8.6 384 19.2 384H620.8c10.6 0 19.2 8.6 19.2 19.2c0 42.4-34.4 76.8-76.8 76.8H76.8C34.4 480 0 445.6 0 403.2zM281 209l-31 31 31 31c9.4 9.4 9.4 24.6 0 33.9s-24.6 9.4-33.9 0l-48-48c-9.4-9.4-9.4-24.6 0-33.9l48-48c9.4-9.4 24.6-9.4 33.9 0s9.4 24.6 0 33.9zM393 175l48 48c9.4 9.4 9.4 24.6 0 33.9l-48 48c-9.4 9.4-24.6 9.4-33.9 0s-9.4-24.6 0-33.9l31-31-31-31c-9.4-9.4-9.4-24.6 0-33.9s24.6-9.4 33.9 0z"></path></svg> Iniciando un proyecto</h2>
+<section id="el-directorio-de-trabajo" class="level3">
+<h3 class="anchored" data-anchor-id="el-directorio-de-trabajo">El directorio de trabajo</h3>
+<p>Su directorio de trabajo es la carpeta en su computadora en la que están trabajando actualmente. Cuando le piden a R que abra un archivo determinado, buscará ese archivo en el directorio de trabajo, y cuando le indiquen a R que guarde un archivo de datos o una figura, lo guardará en el directorio de trabajo.</p>
+<p>Antes de empezar a trabajar, por favor establezcan su directorio de trabajo en la carpeta donde se encuentra almacenado su archivo de datos de la siguiente manera:</p>
+<section id="mediante-el-comando-setwd" class="level4">
+<h4 class="anchored" data-anchor-id="mediante-el-comando-setwd">1. Mediante el comando <code>setwd()</code></h4>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">setwd</span>(<span class="st">"C:/Users/nombre_apellido/OneDrive/Documentos/analisis_de_datos/"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="manualmente-desde-el-visualizador-de-archivos" class="level4">
+<h4 class="anchored" data-anchor-id="manualmente-desde-el-visualizador-de-archivos">2. Manualmente desde el visualizador de archivos</h4>
+<p>Primero, van al panel [Files] en la parte inferior derecha.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/paso1.png" class="img-fluid figure-img" style="width:100.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Luego en la parte derecha, dan click en <code>...</code> que es “go to directory”.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/paso2.png" class="img-fluid figure-img" style="width:100.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Seleccionen la carpeta donde van a tener sus archivos. El directorio deberá aparecer en [Files].</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/paso3.png" class="img-fluid figure-img" style="width:100.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Seleccionen la tuerca en [FILES] y establezcan la carpeta como directorio de trabajo.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/paso4.png" class="img-fluid figure-img" style="width:100.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="cargar-datos-a-r" class="level3">
+<h3 class="anchored" data-anchor-id="cargar-datos-a-r">Cargar datos a R</h3>
+<p>Existen diferentes maneras de cargar datos a R:</p>
+<ol type="1">
+<li>Algunos paquetes incluyen sus propias bases de datos. Por ejemplo:</li>
+</ol>
+<div class="cell" data-layout-align="center">
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: package 'tidyverse' was built under R version 4.1.3</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: package 'tibble' was built under R version 4.1.3</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: package 'forcats' was built under R version 4.1.3</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>-- Attaching core tidyverse packages ------------------------ tidyverse 2.0.0 --
+v dplyr     1.1.4     v readr     2.1.5
+v forcats   1.0.0     v stringr   1.5.1
+v ggplot2   3.5.1     v tibble    3.2.1
+v lubridate 1.9.3     v tidyr     1.3.1
+v purrr     1.0.2     
+-- Conflicts ------------------------------------------ tidyverse_conflicts() --
+x dplyr::filter() masks stats::filter()
+x dplyr::lag()    masks stats::lag()
+i Use the conflicted package (&lt;http://conflicted.r-lib.org/&gt;) to force all conflicts to become errors</code></pre>
+</div>
+</div>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(gapminder)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: package 'gapminder' was built under R version 4.1.3</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(gapminder)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>tibble [1,704 x 6] (S3: tbl_df/tbl/data.frame)
+ $ country  : Factor w/ 142 levels "Afghanistan",..: 1 1 1 1 1 1 1 1 1 1 ...
+ $ continent: Factor w/ 5 levels "Africa","Americas",..: 3 3 3 3 3 3 3 3 3 3 ...
+ $ year     : int [1:1704] 1952 1957 1962 1967 1972 1977 1982 1987 1992 1997 ...
+ $ lifeExp  : num [1:1704] 28.8 30.3 32 34 36.1 ...
+ $ pop      : int [1:1704] 8425333 9240934 10267083 11537966 13079460 14880372 12881816 13867957 16317921 22227415 ...
+ $ gdpPercap: num [1:1704] 779 821 853 836 740 ...</code></pre>
+</div>
+</div>
+<ol start="2" type="1">
+<li>La otra manera es descargando el archivo y guardarlo en el <strong>directorio de trabajo</strong> que ya establecieron. Los archivos se importan a R usando una función que dependerá del tipo de archivo que van a importar.</li>
+</ol>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>nombre_datos <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"nombre_del_archivo.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Revisen <a href="https://intro2r.com/importing-data.html">acá</a> para una explicación más detallada.</p>
+</section>
+<section id="una-mirada-a-los-datos" class="level3">
+<h3 class="anchored" data-anchor-id="una-mirada-a-los-datos">Una mirada a los datos</h3>
+<p>Podemos ver los datos escribiendo el nombre de los datos:</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>gapminder</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 1,704 x 6
+   country     continent  year lifeExp      pop gdpPercap
+   &lt;fct&gt;       &lt;fct&gt;     &lt;int&gt;   &lt;dbl&gt;    &lt;int&gt;     &lt;dbl&gt;
+ 1 Afghanistan Asia       1952    28.8  8425333      779.
+ 2 Afghanistan Asia       1957    30.3  9240934      821.
+ 3 Afghanistan Asia       1962    32.0 10267083      853.
+ 4 Afghanistan Asia       1967    34.0 11537966      836.
+ 5 Afghanistan Asia       1972    36.1 13079460      740.
+ 6 Afghanistan Asia       1977    38.4 14880372      786.
+ 7 Afghanistan Asia       1982    39.9 12881816      978.
+ 8 Afghanistan Asia       1987    40.8 13867957      852.
+ 9 Afghanistan Asia       1992    41.7 16317921      649.
+10 Afghanistan Asia       1997    41.8 22227415      635.
+# i 1,694 more rows</code></pre>
+</div>
+</div>
+<p>Nombremos la base de datos para que aparezca en el espacio de trabajo (Environment). Pueden ver las dimensiones de los datos con el siguiente código:</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>gapminder <span class="ot">&lt;-</span> gapminder</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="fu">dim</span>(gapminder)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 1704    6</code></pre>
+</div>
+</div>
+<p>Este comando debería mostrar [1] 1704 6, indicando que hay 1704 filas y 6 columnas (el [1] lo explico más adelante), tal como se indica al lado del objeto en tu espacio de trabajo. Puedes ver los nombres de estas columnas (o variables) escribiendo:</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(gapminder)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "country"   "continent" "year"      "lifeExp"   "pop"       "gdpPercap"</code></pre>
+</div>
+</div>
+<p>Una ventaja de RStudio es que viene con un visor de datos incorporado. Haz clic en el nombre <code>gapminder</code> en el panel de espacio de trabajo (ventana superior derecha) que enumera los objetos en tu espacio de trabajo. Esto abrirá una visualización alternativa del conjunto de datos en el Visor de Datos (ventana superior izquierda). Puedes cerrar el visor de datos haciendo clic en la ‘x’ en la esquina superior izquierda.</p>
+<p>Podemos acceder a una sola variable de un marco de datos utilizando la notación del signo de dólar $. Por ejemplo, el siguiente comando</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>gapminder<span class="sc">$</span>continent <span class="sc">%&gt;%</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">head</span>(<span class="dv">5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] Asia Asia Asia Asia Asia
+Levels: Africa Americas Asia Europe Oceania</code></pre>
+</div>
+</div>
+</section>
+</section>
+<section id="transformar_datos" class="level2">
+<h2 class="anchored" data-anchor-id="transformar_datos"><svg aria-label="Compass Drafting" role="img" viewbox="0 0 512 512" style="height:1em;width:1em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:#2e3175;overflow:visible;position:relative;"><title>Compass Drafting</title><path d="M352 96c0 14.3-3.1 27.9-8.8 40.2L396 227.4c-23.7 25.3-54.2 44.1-88.5 53.6L256 192h0 0l-68 117.5c21.5 6.8 44.3 10.5 68.1 10.5c70.7 0 133.8-32.7 174.9-84c11.1-13.8 31.2-16 45-5s16 31.2 5 45C428.1 341.8 347 384 256 384c-35.4 0-69.4-6.4-100.7-18.1L98.7 463.7C94 471.8 87 478.4 78.6 482.6L23.2 510.3c-5 2.5-10.9 2.2-15.6-.7S0 501.5 0 496V440.6c0-8.4 2.2-16.7 6.5-24.1l60-103.7C53.7 301.6 41.8 289.3 31.2 276c-11.1-13.8-8.8-33.9 5-45s33.9-8.8 45 5c5.7 7.1 11.8 13.8 18.2 20.1l69.4-119.9c-5.6-12.2-8.8-25.8-8.8-40.2c0-53 43-96 96-96s96 43 96 96zm21 297.9c32.6-12.8 62.5-30.8 88.9-52.9l43.7 75.5c4.2 7.3 6.5 15.6 6.5 24.1V496c0 5.5-2.9 10.7-7.6 13.6s-10.6 3.2-15.6 .7l-55.4-27.7c-8.4-4.2-15.4-10.8-20.1-18.9L373 393.9zM256 128a32 32 0 1 0 0-64 32 32 0 1 0 0 64z"></path></svg> Transformar datos con dplyr</h2>
+<section id="el-tidyverse" class="level3">
+<h3 class="anchored" data-anchor-id="el-tidyverse">El tidyverse</h3>
+</section>
+<section id="los-verbos-del-dlpyr" class="level3">
+<h3 class="anchored" data-anchor-id="los-verbos-del-dlpyr">Los verbos del dlpyr</h3>
+<div class="cell">
+<table class="table table-sm table-striped small">
+<colgroup>
+<col style="width: 55%">
+<col style="width: 44%">
+</colgroup>
+<tbody>
+<tr class="odd">
+<td>Extract rows with <code>filter()</code></td>
+<td><img src="images/filter.png" height="80" alt="filter"></td>
+</tr>
+<tr class="even">
+<td>Extract columns with <code>select()</code></td>
+<td><img src="images/select.png" height="80" alt="select"></td>
+</tr>
+<tr class="odd">
+<td>Arrange/sort rows with <code>arrange()</code></td>
+<td><img src="images/arrange.png" height="80" alt="arrange"></td>
+</tr>
+<tr class="even">
+<td>Make new columns with <code>mutate()</code></td>
+<td><img src="images/mutate.png" height="80" alt="mutate"></td>
+</tr>
+<tr class="odd">
+<td>Make group summaries with <code>group_by() |&gt; summarize()</code></td>
+<td><img src="images/summarize.png" height="80" alt="summarize"></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="filter" class="level3">
+<h3 class="anchored" data-anchor-id="filter"><code>filter</code></h3>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p><code>filter(.data = <span style="background-color: #FFDFD1; font-weight: bold;">DATA</span>, <span style="background-color: #FFD0CF; font-weight: bold;">…</span>)</code></p>
+</div><div class="column" style="width:50%;">
+<ul>
+<li><span style="background-color: #FFDFD1; font-weight: bold;">DATA</span> = Data frame to transform</li>
+<li><span style="background-color: #FFD0CF; font-weight: bold;">…</span> = One or more tests<br>.<code>filter()</code> returns each row for which the test is TRUE.</li>
+</ul>
+</div>
+</div>
+<p>De la base original:</p>
+<div class="cell">
+<div class="cell-output-display">
+<table data-quarto-postprocess="true" class="table table-sm table-striped small">
+<thead>
+<tr class="header">
+<th style="text-align: left;" data-quarto-table-cell-role="th">country</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">continent</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">year</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Afghanistan</td>
+<td style="text-align: left;">Asia</td>
+<td style="text-align: left;">1952</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Afghanistan</td>
+<td style="text-align: left;">Asia</td>
+<td style="text-align: left;">1957</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Afghanistan</td>
+<td style="text-align: left;">Asia</td>
+<td style="text-align: left;">1962</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Afghanistan</td>
+<td style="text-align: left;">Asia</td>
+<td style="text-align: left;">1967</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Afghanistan</td>
+<td style="text-align: left;">Asia</td>
+<td style="text-align: left;">1972</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">…</td>
+<td style="text-align: left;">…</td>
+<td style="text-align: left;">…</td>
+</tr>
+</tbody>
+</table>
+
+
+</div>
+</div>
+<p>Podemos seleccionar</p>
+<div class="columns">
+<div class="column" style="width:50%;">
+<div class="cell">
+<p><code>filter(.data = <span style="background-color: #FFDFD1; font-weight: bold;">gapminder</span>, <span style="background-color: #FFD0CF; font-weight: bold;">country == “Denmark”</span>)</code></p>
+</div>
+</div><div class="column" style="width:50%;">
+<div class="cell">
+<div class="cell-output-display">
+<table data-quarto-postprocess="true" class="table table-sm table-striped small">
+<thead>
+<tr class="header">
+<th style="text-align: left;" data-quarto-table-cell-role="th">country</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">continent</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">year</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Denmark</td>
+<td style="text-align: left;">Europe</td>
+<td style="text-align: right;">1952</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Denmark</td>
+<td style="text-align: left;">Europe</td>
+<td style="text-align: right;">1957</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Denmark</td>
+<td style="text-align: left;">Europe</td>
+<td style="text-align: right;">1962</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Denmark</td>
+<td style="text-align: left;">Europe</td>
+<td style="text-align: right;">1967</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Denmark</td>
+<td style="text-align: left;">Europe</td>
+<td style="text-align: right;">1972</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Denmark</td>
+<td style="text-align: left;">Europe</td>
+<td style="text-align: right;">1977</td>
+</tr>
+</tbody>
+</table>
+
+
+</div>
+</div>
+</div>
+</div>
+<section id="símbolos-lógicos" class="level4">
+<h4 class="anchored" data-anchor-id="símbolos-lógicos">Símbolos Lógicos</h4>
+<div class="cell">
+<table class="table table-sm table-striped small">
+<colgroup>
+<col style="width: 23%">
+<col style="width: 27%">
+<col style="width: 23%">
+<col style="width: 26%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: center;">Test</th>
+<th style="text-align: left;">Meaning</th>
+<th style="text-align: center;">Test</th>
+<th style="text-align: left;">Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;"><code>x &lt; y</code></td>
+<td style="text-align: left;">Less than</td>
+<td style="text-align: center;"><code>x %in% y</code></td>
+<td style="text-align: left;">In (group membership)</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><code>x &gt; y</code></td>
+<td style="text-align: left;">Greater than</td>
+<td style="text-align: center;"><code>is.na(x)</code></td>
+<td style="text-align: left;">Is missing</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><code>==</code></td>
+<td style="text-align: left;">Equal to</td>
+<td style="text-align: center;"><code>!is.na(x)</code></td>
+<td style="text-align: left;">Is not missing</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><code>x &lt;= y</code></td>
+<td style="text-align: left;">Less than or equal to</td>
+<td style="text-align: center;"></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><code>x &gt;= y</code></td>
+<td style="text-align: left;">Greater than or equal to</td>
+<td style="text-align: center;"></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><code>x != y</code></td>
+<td style="text-align: left;">Not equal to</td>
+<td style="text-align: center;"></td>
+<td style="text-align: left;"></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Ejercicio
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Utilicen <code>filter()</code>y los condicionales para mostrar:</p>
+<ol type="1">
+<li>Los datos para Canadá</li>
+<li>Todos los datos para los países de Oceanía</li>
+<li>Filas donde la expectativa de vida es mayor a 82</li>
+</ol>
+</div>
+</div>
+</section>
+<section id="errores-comunes" class="level4">
+<h4 class="anchored" data-anchor-id="errores-comunes">Errores comunes</h4>
+<p>Dos de los errores más comunes son:</p>
+<ol type="1">
+<li>Usar “=” en vez de “==”</li>
+<li>No usar las comillas cuando las variables son de tipo texto</li>
+</ol>
+<div class="columns">
+<div class="column" style="width:50%;">
+<ul>
+<li>Incorrecto</li>
+</ul>
+<p><code>filter(gapminder,<br>country <span style="color: #3f56b0;">=</span> “Canada”)</code></p>
+<p><code>filter(gapminder,<br>country = <span style="color: #3f56b0;">Canada</span>)</code></p>
+</div><div class="column" style="width:50%;">
+<ul>
+<li>Correcto</li>
+</ul>
+<p><code>filter(gapminder,<br>country <span style="color: #4db070;">==</span> “Canada”)</code></p>
+<p><code>filter(gapminder,<br>country = <span style="color: #4db070;">“Canada”</span>)</code></p>
+</div>
+</div>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p><code>filter(.data = <span style="background-color: #FFDFD1; font-weight: bold;">gapminder</span>, <span style="background-color: #FFD0CF; font-weight: bold;">country == “Denmark”, year &gt; 2000</span>)</code></p>
+</div><div class="column" style="width:50%;">
+<div class="cell">
+<div class="cell-output-display">
+<table data-quarto-postprocess="true" class="table table-sm table-striped small">
+<thead>
+<tr class="header">
+<th style="text-align: left;" data-quarto-table-cell-role="th">country</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">continent</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">year</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Denmark</td>
+<td style="text-align: left;">Europe</td>
+<td style="text-align: right;">2002</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Denmark</td>
+<td style="text-align: left;">Europe</td>
+<td style="text-align: right;">2007</td>
+</tr>
+</tbody>
+</table>
+
+
+</div>
+</div>
+</div>
+</div>
+<p>Algunos operadores lógicos son:</p>
+<div class="columns">
+<div class="column" style="width:50%;">
+<ul>
+<li>Si no se específica el operador, “&amp;” es el default</li>
+</ul>
+</div><div class="column" style="width:50%;">
+<table class="table">
+<thead>
+<tr class="header">
+<th>Operator</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>a &amp; b</td>
+<td>y</td>
+</tr>
+<tr class="even">
+<td>a</td>
+<td>b</td>
+</tr>
+<tr class="odd">
+<td>!a`</td>
+<td>negación</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>Las siguietes líneas de código hacen lo mismo:</p>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p><code>filter(.data = <span style="background-color: #FFDFD1; font-weight: bold;">gapminder</span>, <span style="background-color: #FFD0CF; font-weight: bold;">country == “Denmark”, year &gt; 2000</span>)</code></p>
+</div><div class="column" style="width:50%;">
+<p><code>filter(.data = <span style="background-color: #FFDFD1; font-weight: bold;">gapminder</span>, <span style="background-color: #FFD0CF; font-weight: bold;">country == “Denmark” &amp; year &gt; 2000</span>)</code></p>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Ejercicio
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Utilicen <code>filter()</code>y los condicionales para mostrar:</p>
+<ol type="1">
+<li>Los datos para Canadá antes de 1970</li>
+<li>Países donde la expectativa de vida in 2007 es menor a 50</li>
+<li>Países donde la expectativa de vida en 2007 es menor a 50 y no están en África</li>
+</ol>
+</div>
+</div>
+</section>
+<section id="errores-comunes-1" class="level4">
+<h4 class="anchored" data-anchor-id="errores-comunes-1">Errores comunes</h4>
+<div class="columns">
+<div class="column" style="width:50%;">
+<ul>
+<li>Incorrecto</li>
+</ul>
+<p><code>filter(gapminder,<br> <span style="color: #3f56b0;">1960 &lt; year &lt; 1980</span> )</code></p>
+<p><code>filter(gapminder,<br> <span style="color: #3f56b0;">country = “Canada”, country = “Mexico”, country = “United States” </span>)</code></p>
+</div><div class="column" style="width:50%;">
+<ul>
+<li>Correcto</li>
+</ul>
+<p><code>filter(gapminder,<br> <span style="color: #4db070;">year &gt; 1960, year &lt; 1980</span>)</code></p>
+<p><code>filter(gapminder,<br> <span style="color: #4db070;">country %in% c(“Canada”, “Mexico”, “United States”) </span>)</code></p>
+</div>
+</div>
+</section>
+</section>
+<section id="mutate" class="level3">
+<h3 class="anchored" data-anchor-id="mutate"><code>mutate</code></h3>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p><code>mutate(.data = <span style="background-color: #FFDFD1; font-weight: bold;">gapminder</span>, <span style="background-color: #FFD0CF; font-weight: bold;">gdp = gdpPercap * pop</span>)</code></p>
+</div><div class="column" style="width:50%;">
+<div class="cell">
+<div class="cell-output-display">
+<table data-quarto-postprocess="true" class="table table-sm table-striped small">
+<thead>
+<tr class="header">
+<th style="text-align: left;" data-quarto-table-cell-role="th">country</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">year</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">…</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">gdp</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Afghanistan</td>
+<td style="text-align: right;">1952</td>
+<td style="text-align: left;">…</td>
+<td style="text-align: right;">6567086330</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Afghanistan</td>
+<td style="text-align: right;">1957</td>
+<td style="text-align: left;">…</td>
+<td style="text-align: right;">7585448670</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Afghanistan</td>
+<td style="text-align: right;">1962</td>
+<td style="text-align: left;">…</td>
+<td style="text-align: right;">8758855797</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Afghanistan</td>
+<td style="text-align: right;">1967</td>
+<td style="text-align: left;">…</td>
+<td style="text-align: right;">9648014150</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Afghanistan</td>
+<td style="text-align: right;">1972</td>
+<td style="text-align: left;">…</td>
+<td style="text-align: right;">9678553274</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Afghanistan</td>
+<td style="text-align: right;">1977</td>
+<td style="text-align: left;">…</td>
+<td style="text-align: right;">11697659231</td>
+</tr>
+</tbody>
+</table>
+
+
+</div>
+</div>
+</div>
+</div>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p><code>mutate(.data = <span style="background-color: #FFDFD1; font-weight: bold;">gapminder</span>, <span style="background-color: #FFD0CF; font-weight: bold;">gdp = gdpPercap * pop, pop_mil= round(pop / 1000000)</span>)</code></p>
+</div><div class="column" style="width:50%;">
+<div class="cell">
+<div class="cell-output-display">
+<table data-quarto-postprocess="true" class="table table-sm table-striped small">
+<thead>
+<tr class="header">
+<th style="text-align: left;" data-quarto-table-cell-role="th">country</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">year</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">…</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">gdp</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">pop_mil</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Afghanistan</td>
+<td style="text-align: right;">1952</td>
+<td style="text-align: left;">…</td>
+<td style="text-align: right;">6567086330</td>
+<td style="text-align: right;">8</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Afghanistan</td>
+<td style="text-align: right;">1957</td>
+<td style="text-align: left;">…</td>
+<td style="text-align: right;">7585448670</td>
+<td style="text-align: right;">9</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Afghanistan</td>
+<td style="text-align: right;">1962</td>
+<td style="text-align: left;">…</td>
+<td style="text-align: right;">8758855797</td>
+<td style="text-align: right;">10</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Afghanistan</td>
+<td style="text-align: right;">1967</td>
+<td style="text-align: left;">…</td>
+<td style="text-align: right;">9648014150</td>
+<td style="text-align: right;">12</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Afghanistan</td>
+<td style="text-align: right;">1972</td>
+<td style="text-align: left;">…</td>
+<td style="text-align: right;">9678553274</td>
+<td style="text-align: right;">13</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Afghanistan</td>
+<td style="text-align: right;">1977</td>
+<td style="text-align: left;">…</td>
+<td style="text-align: right;">11697659231</td>
+<td style="text-align: right;">15</td>
+</tr>
+</tbody>
+</table>
+
+
+</div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="datos_numericos" class="level2">
+<h2 class="anchored" data-anchor-id="datos_numericos"><svg aria-label="Object Group" role="img" viewbox="0 0 576 512" style="height:1em;width:1.12em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:#2e3175;overflow:visible;position:relative;"><title>Object Group</title><path d="M48 115.8C38.2 107 32 94.2 32 80c0-26.5 21.5-48 48-48c14.2 0 27 6.2 35.8 16H460.2c8.8-9.8 21.6-16 35.8-16c26.5 0 48 21.5 48 48c0 14.2-6.2 27-16 35.8V396.2c9.8 8.8 16 21.6 16 35.8c0 26.5-21.5 48-48 48c-14.2 0-27-6.2-35.8-16H115.8c-8.8 9.8-21.6 16-35.8 16c-26.5 0-48-21.5-48-48c0-14.2 6.2-27 16-35.8V115.8zM125.3 96c-4.8 13.6-15.6 24.4-29.3 29.3V386.7c13.6 4.8 24.4 15.6 29.3 29.3H450.7c4.8-13.6 15.6-24.4 29.3-29.3V125.3c-13.6-4.8-24.4-15.6-29.3-29.3H125.3zm2.7 64c0-17.7 14.3-32 32-32H288c17.7 0 32 14.3 32 32v96c0 17.7-14.3 32-32 32H160c-17.7 0-32-14.3-32-32V160zM256 320h32c35.3 0 64-28.7 64-64V224h64c17.7 0 32 14.3 32 32v96c0 17.7-14.3 32-32 32H288c-17.7 0-32-14.3-32-32V320z"></path></svg> Explorando Datos Numéricos</h2>
+<section id="los-datos-gapminder" class="level3">
+<h3 class="anchored" data-anchor-id="los-datos-gapminder">Los datos <code>gapminder</code></h3>
+</section>
+<section id="estadísticas-descriptivas" class="level3">
+<h3 class="anchored" data-anchor-id="estadísticas-descriptivas">Estadísticas Descriptivas</h3>
+<p>Para calcular la media, mediana, desviación estándar, varianza, cuartiles, rango intercuartílico, mínimo y máximo de la variable de precio en el conjunto de datos diamonds, escriba</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(gapminder<span class="sc">$</span>lifeExp)</span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="fu">median</span>(gapminder<span class="sc">$</span>lifeExp)</span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a><span class="fu">sd</span>(gapminder<span class="sc">$</span>lifeExp)</span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a><span class="fu">var</span>(gapminder<span class="sc">$</span>lifeExp)</span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a><span class="fu">fivenum</span>(gapminder<span class="sc">$</span>lifeExp)</span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a><span class="fu">IQR</span>(gapminder<span class="sc">$</span>lifeExp)</span>
+<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a><span class="fu">min</span>(gapminder<span class="sc">$</span>lifeExp)</span>
+<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a><span class="fu">max</span>(gapminder<span class="sc">$</span>lifeExp)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<section id="función-aggregate-para-resumir-datos-por-grupo" class="level4">
+<h4 class="anchored" data-anchor-id="función-aggregate-para-resumir-datos-por-grupo">Función <code>aggregate</code> para resumir datos “por grupo”</h4>
+<p>En vez de resumir todo el conjunto de datos, quizás estén interesados en resumir los datos <em>por grupo</em>. La función <code>aggregate</code> divide los datos en subconjuntos, calcula estadísticas para cada uno, y muestra el resultado de una manera fácil de leer. Esta función usa lenguaje de modelación (<em>modelling language</em>). Esto significa que se usa <code>(~)</code>, que se lee como “es una función de”. Por ejemplo, podemos calcular la expectativa de vida promedio por continente.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">aggregate</span>(lifeExp <span class="sc">~</span> continent , <span class="at">data=</span>gapminder, mean)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  continent  lifeExp
+1    Africa 48.86533
+2  Americas 64.65874
+3      Asia 60.06490
+4    Europe 71.90369
+5   Oceania 74.32621</code></pre>
+</div>
+</div>
+<p>No hay ninguna sorpresa en los datos. La expectativa de vida en Europa y Oceania es más alta que en el resto de continentes.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="fu">aggregate</span>(lifeExp <span class="sc">~</span> continent <span class="sc">+</span> year , <span class="at">data=</span>gapminder, mean)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   continent year  lifeExp
+1     Africa 1952 39.13550
+2   Americas 1952 53.27984
+3       Asia 1952 46.31439
+4     Europe 1952 64.40850
+5    Oceania 1952 69.25500
+6     Africa 1957 41.26635
+7   Americas 1957 55.96028
+8       Asia 1957 49.31854
+9     Europe 1957 66.70307
+10   Oceania 1957 70.29500
+11    Africa 1962 43.31944
+12  Americas 1962 58.39876
+13      Asia 1962 51.56322
+14    Europe 1962 68.53923
+15   Oceania 1962 71.08500
+16    Africa 1967 45.33454
+17  Americas 1967 60.41092
+18      Asia 1967 54.66364
+19    Europe 1967 69.73760
+20   Oceania 1967 71.31000
+21    Africa 1972 47.45094
+22  Americas 1972 62.39492
+23      Asia 1972 57.31927
+24    Europe 1972 70.77503
+25   Oceania 1972 71.91000
+26    Africa 1977 49.58042
+27  Americas 1977 64.39156
+28      Asia 1977 59.61056
+29    Europe 1977 71.93777
+30   Oceania 1977 72.85500
+31    Africa 1982 51.59287
+32  Americas 1982 66.22884
+33      Asia 1982 62.61794
+34    Europe 1982 72.80640
+35   Oceania 1982 74.29000
+36    Africa 1987 53.34479
+37  Americas 1987 68.09072
+38      Asia 1987 64.85118
+39    Europe 1987 73.64217
+40   Oceania 1987 75.32000
+41    Africa 1992 53.62958
+42  Americas 1992 69.56836
+43      Asia 1992 66.53721
+44    Europe 1992 74.44010
+45   Oceania 1992 76.94500
+46    Africa 1997 53.59827
+47  Americas 1997 71.15048
+48      Asia 1997 68.02052
+49    Europe 1997 75.50517
+50   Oceania 1997 78.19000
+51    Africa 2002 53.32523
+52  Americas 2002 72.42204
+53      Asia 2002 69.23388
+54    Europe 2002 76.70060
+55   Oceania 2002 79.74000
+56    Africa 2007 54.80604
+57  Americas 2007 73.60812
+58      Asia 2007 70.72848
+59    Europe 2007 77.64860
+60   Oceania 2007 80.71950</code></pre>
+</div>
+</div>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="fu">aggregate</span>(lifeExp <span class="sc">~</span> continent , <span class="at">data=</span>gapminder, median)</span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a><span class="fu">aggregate</span>(lifeExp <span class="sc">~</span> continent , <span class="at">data=</span>gapminder, sd)</span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a><span class="fu">aggregate</span>(lifeExp <span class="sc">~</span> continent , <span class="at">data=</span>gapminder, var)</span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a><span class="fu">aggregate</span>(lifeExp <span class="sc">~</span> continent , <span class="at">data=</span>gapminder, min)</span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a><span class="fu">aggregate</span>(lifeExp <span class="sc">~</span> continent , <span class="at">data=</span>gapminder, max)</span>
+<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a><span class="fu">aggregate</span>(lifeExp <span class="sc">~</span> continent , <span class="at">data=</span>gapminder, IQR)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+</section>
+<section id="visualizando-los-datos-con-ggplot" class="level3">
+<h3 class="anchored" data-anchor-id="visualizando-los-datos-con-ggplot">Visualizando los datos con `ggplot’</h3>
+<p>El paquete <code>ggplot2</code> es una herramienta poderosa en R para crear gráficos avanzados y visualizar datos. Desde su lanzamiento en 2007, <code>ggplot2</code> ha sido ampliamente adoptada y rápidamente ha reemplazado a las funciones integradas de R como <code>plot()</code>, <code>hist()</code> y <code>boxplot()</code> para la creación de gráficos, convirtiéndose en la herramienta dominante para la visualización de datos.</p>
+<p>Lo primero que se debe proporcionar a <code>ggplot()</code> es el nombre de los datos (data frame). Luego, se debe especificar <code>aes()</code>, que es la abreviatura de “estética” (aesthetics), es decir, las variables que se usarán en el gráfico y sus roles: la variable del eje <span class="math inline">\(x\)</span>, la variable del eje <span class="math inline">\(y\)</span>, la variable que define el color o la forma de los puntos, líneas, sombras, etc.</p>
+<p>Después, se debe especificar el tipo de gráfico que se quiere crear:</p>
+<ul>
+<li><code>geom_point()</code> para gráficos de puntos</li>
+<li><code>geom_line()</code> para gráficos de líneas</li>
+<li><code>geom_histogram()</code> para histogramas</li>
+<li><code>geom_bar()</code> para gráficos de barras</li>
+<li>y así sucesivamente.</li>
+</ul>
+<p>Por ejemplo, para graficar un histograma y un gráfico de barras, para la variable <code>lifeExp</code> en el conjunto de datos <code>gapminder</code>:</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(gapminder, <span class="fu">aes</span>(<span class="at">x=</span>lifeExp)) <span class="sc">+</span> <span class="fu">geom_histogram</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="intro_files/figure-html/unnamed-chunk-42-1.png" class="img-fluid figure-img" style="width:80.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(gapminder, <span class="fu">aes</span>(<span class="at">x=</span>lifeExp)) <span class="sc">+</span> <span class="fu">geom_boxplot</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="intro_files/figure-html/unnamed-chunk-43-1.png" class="img-fluid figure-img" style="width:80.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Solo deben especificar la variable en el eje <span class="math inline">\(x\)</span> para el histograma y el diagrama de caja.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(gapminder, <span class="fu">aes</span>(<span class="at">x=</span>lifeExp, <span class="at">y=</span>gdpPercap)) <span class="sc">+</span> <span class="fu">geom_point</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="intro_files/figure-html/unnamed-chunk-44-1.png" class="img-fluid figure-img" style="width:80.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Para un gráfico de dispersión de la relación entre la expectativa de vida y el gpd per capita, necesitan especificar ambos ejes <span class="math inline">\(x\)</span> y <span class="math inline">\(y\)</span>; <code>aes(x=lifeExp, y=gdpPercap)</code>. En la siquiente subsección hablaremos más de histogramas, diagramas de caja y gráficos de dispersión.</p>
+<section id="histogramas" class="level4">
+<h4 class="anchored" data-anchor-id="histogramas">Histogramas</h4>
+<p>Pueden ajustar el ancho de las barras con la opción binwidth al interior de <code>geom_histogram()</code>.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(gapminder, <span class="fu">aes</span>(<span class="at">x=</span>lifeExp)) <span class="sc">+</span> <span class="fu">geom_histogram</span>(<span class="at">binwidth=</span><span class="fl">0.1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="intro_files/figure-html/unnamed-chunk-45-1.png" class="img-fluid figure-img" style="width:80.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(gapminder, <span class="fu">aes</span>(<span class="at">x=</span>lifeExp)) <span class="sc">+</span> <span class="fu">geom_histogram</span>(<span class="at">binwidth=</span><span class="fl">0.02</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="intro_files/figure-html/unnamed-chunk-46-1.png" class="img-fluid figure-img" style="width:80.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="diagrama-de-caja" class="level4">
+<h4 class="anchored" data-anchor-id="diagrama-de-caja">Diagrama de Caja</h4>
+<p>Pueden cambiar la orientación del diagrama de caja de horizontal a vertical al cambiar <code>lifeExp</code> de la variable <span class="math inline">\(x\)</span> a la variable <span class="math inline">\(y\)</span>.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(gapminder, <span class="fu">aes</span>(<span class="at">x=</span>lifeExp)) <span class="sc">+</span> <span class="fu">geom_boxplot</span>()</span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(gapminder, <span class="fu">aes</span>(<span class="at">y=</span>lifeExp)) <span class="sc">+</span> <span class="fu">geom_boxplot</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="intro_files/figure-html/unnamed-chunk-48-1.png" class="img-fluid figure-img" style="width:80.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+<section id="diagrama-de-caja---lado-a-lado" class="level5">
+<h5 class="anchored" data-anchor-id="diagrama-de-caja---lado-a-lado">Diagrama de Caja - Lado a lado</h5>
+<p>Pueden dibujar diagramas de caja lado a lado para evaluar la relación entra una variable categórica y una variable numérica. Por ejemplo, comparen la relación de la expectativa de vida entre continentes. La gráfica nos muestra que la dispersión en la expectativa de vida para África, América y Asia es mayor que para Europa y Oceanía.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(gapminder, <span class="fu">aes</span>(<span class="at">x=</span>lifeExp, <span class="at">y=</span>continent)) <span class="sc">+</span> <span class="fu">geom_boxplot</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="intro_files/figure-html/unnamed-chunk-49-1.png" class="img-fluid figure-img" style="width:80.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Si intercambian <code>lifeExp</code> y <code>continent</code>, los diagramas de caja se vuelven verticales.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(gapminder, <span class="fu">aes</span>(<span class="at">x=</span>continent, <span class="at">y=</span>lifeExp)) <span class="sc">+</span> <span class="fu">geom_boxplot</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="intro_files/figure-html/unnamed-chunk-50-1.png" class="img-fluid figure-img" style="width:80.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>¿Qué sucede si restringimos los datos a la década de 1990 al 2000? Aunque la varianza para todos los continentes se reduce, la dispersión de los datos para Oceanía se reduce considerablemente más. Seguramente la mejora en las condiciones económicas llevó a un aumento de la expectativa de vida en esa década en comparasión con las 3 decadas previas.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="fu">subset</span>(gapminder, year <span class="sc">&gt;=</span> <span class="dv">1990</span> <span class="sc">&amp;</span> year <span class="sc">&lt;</span> <span class="dv">2000</span>), </span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>       <span class="fu">aes</span>(<span class="at">x=</span>continent, <span class="at">y=</span>lifeExp)) <span class="sc">+</span> </span>
+<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="intro_files/figure-html/unnamed-chunk-51-1.png" class="img-fluid figure-img" style="width:80.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="diagramas-de-dispersión" class="level4">
+<h4 class="anchored" data-anchor-id="diagramas-de-dispersión">Diagramas de Dispersión</h4>
+<p>Adicional a un simple <span class="math inline">\(x-y\)</span> diagrama de dispersión, se puede cambiar el color de los puntos para indicar el continente al incluir el código <code>color=continent</code> dentro de <code>aes()</code>. Las observaciones para Europa (los puntos azules) en una gran proporción se ubican en la parte superior derecha mientras que los puntos rojos en la parte inferior izquierda.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(gapminder, <span class="fu">aes</span>(<span class="at">x=</span>gdpPercap, <span class="at">y=</span>lifeExp, <span class="at">color=</span>continent)) <span class="sc">+</span> <span class="fu">geom_point</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="intro_files/figure-html/unnamed-chunk-52-1.png" class="img-fluid figure-img" style="width:80.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Pueden transformar las variables al interior del mismo comando. Por ejemplo, algunas variables no se distribuyen normal pero el logaritmo de la variable sí. Estas variables se dice que que se distribuyen log-normal. Al comparar los histogramas de <code>gdpPercap</code> y <code>log(gdpPercap)</code>, podemos concluir que el gdp per cápita se distribuye log-normal.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a>p1 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(gapminder, <span class="fu">aes</span>(<span class="at">x=</span>gdpPercap)) <span class="sc">+</span> <span class="fu">geom_histogram</span>()</span>
+<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a>p2 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(gapminder, <span class="fu">aes</span>(<span class="at">x=</span><span class="fu">log</span>(gdpPercap))) <span class="sc">+</span> <span class="fu">geom_histogram</span>()</span>
+<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a>p1<span class="sc">+</span>p2</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="intro_files/figure-html/unnamed-chunk-53-1.png" class="img-fluid figure-img" style="width:80.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Al usar <code>log(gdpPercap)</code> se suaviza la relación entre las dos variables, haciendo más clara la correlación positiva entre pib per cápita y expectiva de vida. Las observaciones para Europa y África son más mucho más evidente en comparación con el gráfico para <code>gdpPercap</code>.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(gapminder, <span class="fu">aes</span>(<span class="at">x=</span><span class="fu">log</span>(gdpPercap), <span class="at">y=</span>lifeExp, <span class="at">color=</span>continent)) <span class="sc">+</span> </span>
+<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="intro_files/figure-html/unnamed-chunk-54-1.png" class="img-fluid figure-img" style="width:80.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Además de modificar <code>color</code>, también pueden usar <code>shape</code> o <code>size</code> para representar una tercera variable en el gráfico de dispersión.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(gapminder, <span class="fu">aes</span>(<span class="at">x=</span><span class="fu">log</span>(gdpPercap), <span class="at">y=</span>lifeExp, <span class="at">shape=</span>continent)) <span class="sc">+</span> <span class="fu">geom_point</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="intro_files/figure-html/unnamed-chunk-55-1.png" class="img-fluid figure-img" style="width:80.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(gapminder, <span class="fu">aes</span>(<span class="at">x=</span><span class="fu">log</span>(gdpPercap), <span class="at">y=</span>lifeExp, <span class="at">size=</span>continent)) <span class="sc">+</span> <span class="fu">geom_point</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="intro_files/figure-html/unnamed-chunk-56-1.png" class="img-fluid figure-img" style="width:80.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Sin embargo, para los datos <code>gapminder</code>, cambiar la forma o el tamaño de los puntos para representar el continente no es tan claro como modificar el color. En la gráfica de abajo se modifica el color y la forma para hacer aún más clara la diferencia entre la categoría continente.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(gapminder, <span class="fu">aes</span>(<span class="at">x=</span><span class="fu">log</span>(gdpPercap), <span class="at">y=</span>lifeExp, <span class="at">color=</span>continent, <span class="at">shape=</span>continent)) <span class="sc">+</span> <span class="fu">geom_point</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="intro_files/figure-html/unnamed-chunk-57-1.png" class="img-fluid figure-img" style="width:80.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>El paquete <code>ggplot</code> se puede combinar con otros para enfatizar o mejorar la historia que se quiere contar con el gráfico. En el ejemplo de abajo se usan los paquetes <code>gganimate</code> y <code>magick</code> para hacer una animación mostrando la evolución de la relación entre <code>lifeExp</code> y <code>gdpPercap</code> para los países de América y Europa desde 1957 hasta 2007.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(gganimate)</span>
+<span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(magick)</span>
+<span id="cb42-3"><a href="#cb42-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb42-4"><a href="#cb42-4" aria-hidden="true" tabindex="-1"></a>continents <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"Europe"</span>, <span class="st">"Americas"</span>)</span>
+<span id="cb42-5"><a href="#cb42-5" aria-hidden="true" tabindex="-1"></a>anim <span class="ot">&lt;-</span>gapminder <span class="sc">%&gt;%</span> </span>
+<span id="cb42-6"><a href="#cb42-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(continent <span class="sc">%in%</span> continents) <span class="sc">%&gt;%</span></span>
+<span id="cb42-7"><a href="#cb42-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>( <span class="fu">aes</span>(<span class="fu">log</span>(gdpPercap), lifeExp, <span class="at">col =</span> continent)) <span class="sc">+</span></span>
+<span id="cb42-8"><a href="#cb42-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb42-9"><a href="#cb42-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="st">"Life Expectancy versus Ferility: the Americas and Europe {frame_time}"</span>) <span class="sc">+</span> </span>
+<span id="cb42-10"><a href="#cb42-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">transition_time</span>(year)</span>
+<span id="cb42-11"><a href="#cb42-11" aria-hidden="true" tabindex="-1"></a><span class="fu">animate</span>(anim)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="intro_files/figure-html/unnamed-chunk-58-1.gif" class="img-fluid figure-img" style="width:80.0%"></p>
+</figure>
+</div>
+</div>
+<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Podrían guardar el gif así:</span></span>
+<span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a><span class="co"># image &lt;- animate(anim)</span></span>
+<span id="cb43-3"><a href="#cb43-3" aria-hidden="true" tabindex="-1"></a><span class="co"># anim_save("lifeExp_evolution.gif")</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>En el gráfico de abajo usamos el paquete <code>patchwork</code> y <code>animation</code> para añadir un gráfico abajo indicando el año de los datos.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(patchwork)</span>
+<span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(animation)</span>
+<span id="cb44-3"><a href="#cb44-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb44-4"><a href="#cb44-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Save the GIF</span></span>
+<span id="cb44-5"><a href="#cb44-5" aria-hidden="true" tabindex="-1"></a><span class="fu">invisible</span>(<span class="fu">saveGIF</span>({</span>
+<span id="cb44-6"><a href="#cb44-6" aria-hidden="true" tabindex="-1"></a>  selected_years <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="dv">1952</span>, <span class="dv">2007</span>, <span class="at">by =</span> <span class="dv">5</span>) <span class="co"># Define the selected years</span></span>
+<span id="cb44-7"><a href="#cb44-7" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb44-8"><a href="#cb44-8" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (i <span class="cf">in</span> selected_years) { <span class="co"># Loop through the selected years</span></span>
+<span id="cb44-9"><a href="#cb44-9" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb44-10"><a href="#cb44-10" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Plot 1: Gapminder data for the specified year</span></span>
+<span id="cb44-11"><a href="#cb44-11" aria-hidden="true" tabindex="-1"></a>    p1 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="fu">subset</span>(gapminder, year <span class="sc">==</span> i),</span>
+<span id="cb44-12"><a href="#cb44-12" aria-hidden="true" tabindex="-1"></a>                 <span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">log</span>(gdpPercap), <span class="at">y =</span> lifeExp, <span class="at">color =</span> continent)) <span class="sc">+</span></span>
+<span id="cb44-13"><a href="#cb44-13" aria-hidden="true" tabindex="-1"></a>      <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb44-14"><a href="#cb44-14" aria-hidden="true" tabindex="-1"></a>      <span class="fu">labs</span>(<span class="at">title =</span> <span class="fu">paste</span>(<span class="st">"Life Expectancy and GDP -"</span>, i)) <span class="sc">+</span></span>
+<span id="cb44-15"><a href="#cb44-15" aria-hidden="true" tabindex="-1"></a>      <span class="fu">xlim</span>(<span class="fu">range</span>(<span class="fu">log</span>(gapminder<span class="sc">$</span>gdpPercap))) <span class="sc">+</span>  <span class="co"># Set fixed x-axis limits</span></span>
+<span id="cb44-16"><a href="#cb44-16" aria-hidden="true" tabindex="-1"></a>      <span class="fu">ylim</span>(<span class="fu">range</span>(gapminder<span class="sc">$</span>lifeExp))    <span class="co"># Set fixed y-axis limits</span></span>
+<span id="cb44-17"><a href="#cb44-17" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb44-18"><a href="#cb44-18" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Plot 2: Line plot with only the selected years</span></span>
+<span id="cb44-19"><a href="#cb44-19" aria-hidden="true" tabindex="-1"></a>    p2 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data =</span> <span class="cn">NULL</span>, <span class="fu">aes</span>(<span class="at">x =</span> selected_years, <span class="at">y =</span> <span class="dv">1</span>)) <span class="sc">+</span></span>
+<span id="cb44-20"><a href="#cb44-20" aria-hidden="true" tabindex="-1"></a>      <span class="fu">geom_line</span>() <span class="sc">+</span></span>
+<span id="cb44-21"><a href="#cb44-21" aria-hidden="true" tabindex="-1"></a>      <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">x =</span> selected_years, <span class="at">fill =</span> (selected_years <span class="sc">&gt;</span> i)), <span class="at">shape =</span> <span class="dv">21</span>, <span class="at">size =</span> <span class="dv">5</span>) <span class="sc">+</span></span>
+<span id="cb44-22"><a href="#cb44-22" aria-hidden="true" tabindex="-1"></a>      <span class="fu">theme_void</span>() <span class="sc">+</span></span>
+<span id="cb44-23"><a href="#cb44-23" aria-hidden="true" tabindex="-1"></a>      <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"none"</span>) <span class="sc">+</span></span>
+<span id="cb44-24"><a href="#cb44-24" aria-hidden="true" tabindex="-1"></a>      <span class="fu">scale_fill_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">"#b2d1e0"</span>, <span class="st">"gold"</span>)) <span class="sc">+</span></span>
+<span id="cb44-25"><a href="#cb44-25" aria-hidden="true" tabindex="-1"></a>      <span class="fu">geom_text</span>(<span class="fu">aes</span>(<span class="at">x =</span> i, <span class="at">y =</span> <span class="dv">1</span>, <span class="at">label =</span> i), <span class="at">vjust =</span> <span class="sc">-</span><span class="dv">1</span>, <span class="at">size =</span> <span class="dv">9</span>) <span class="sc">+</span></span>
+<span id="cb44-26"><a href="#cb44-26" aria-hidden="true" tabindex="-1"></a>      <span class="fu">theme</span>(<span class="at">panel.background =</span> <span class="fu">element_rect</span>(<span class="at">fill =</span> <span class="st">"grey99"</span>, <span class="at">colour =</span> <span class="st">"grey80"</span>)) <span class="sc">+</span></span>
+<span id="cb44-27"><a href="#cb44-27" aria-hidden="true" tabindex="-1"></a>      <span class="fu">scale_x_continuous</span>(<span class="at">breaks =</span> selected_years)  <span class="co"># Ensure consistent x-axis breaks</span></span>
+<span id="cb44-28"><a href="#cb44-28" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb44-29"><a href="#cb44-29" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Print plots using patchwork</span></span>
+<span id="cb44-30"><a href="#cb44-30" aria-hidden="true" tabindex="-1"></a>    <span class="fu">print</span>(p1 <span class="sc">-</span> p2 <span class="sc">+</span> <span class="fu">plot_layout</span>(<span class="at">ncol =</span> <span class="dv">1</span>, <span class="at">heights =</span> <span class="fu">c</span>(<span class="dv">5</span>, <span class="dv">1</span>)))</span>
+<span id="cb44-31"><a href="#cb44-31" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb44-32"><a href="#cb44-32" aria-hidden="true" tabindex="-1"></a>}, <span class="at">movie.name =</span> <span class="st">"gapminder_animation.gif"</span>, <span class="at">interval =</span> <span class="fl">0.5</span>, <span class="at">ani.width =</span> <span class="dv">800</span>, <span class="at">ani.height =</span> <span class="dv">600</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/gapminder_animation.gif" class="img-fluid figure-img" style="width:100.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="gráficos-separados-por-característica" class="level4">
+<h4 class="anchored" data-anchor-id="gráficos-separados-por-característica">Gráficos separados por característica</h4>
+<p>La opción <code>facet_wrap()</code> permite separar el mismo gráfico para cada categoría de la variable que se indique al interior de los paréntesis. En el ejemplo de abajo dividimos la gráfica de dispersión por continente.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb45"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(gapminder, <span class="fu">aes</span>(<span class="at">x=</span><span class="fu">log</span>(gdpPercap), lifeExp)) <span class="sc">+</span> </span>
+<span id="cb45-2"><a href="#cb45-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="fl">0.5</span>)<span class="sc">+</span></span>
+<span id="cb45-3"><a href="#cb45-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>continent)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="intro_files/figure-html/unnamed-chunk-61-1.png" class="img-fluid figure-img" style="width:80.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>También se puede hacer la separación para <code>geom_histogram()</code>.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb46"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(gapminder, <span class="fu">aes</span>(<span class="at">x=</span>lifeExp)) <span class="sc">+</span> </span>
+<span id="cb46-2"><a href="#cb46-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">binwidth=</span><span class="fl">0.5</span>) <span class="sc">+</span></span>
+<span id="cb46-3"><a href="#cb46-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>continent)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="intro_files/figure-html/unnamed-chunk-62-1.png" class="img-fluid figure-img" style="width:80.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Generalmente es mejor ubicar los cinco histogramas en la misma escala horizontal. Pueden hacerlo especificando <code>nrow=2</code> dentro de <code>facet_wrap()</code>, lo que organizará los 5 gráficos en 5 filas.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb47"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(gapminder, <span class="fu">aes</span>(<span class="at">x=</span>lifeExp)) <span class="sc">+</span> </span>
+<span id="cb47-2"><a href="#cb47-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">binwidth=</span><span class="fl">0.5</span>) <span class="sc">+</span></span>
+<span id="cb47-3"><a href="#cb47-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>continent, <span class="at">nrow=</span><span class="dv">5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="intro_files/figure-html/unnamed-chunk-63-1.png" class="img-fluid figure-img" style="width:80.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Se puede hacer lo mismo con <code>geom_boxplot()</code>. Por ejemplo, el siguiente gráfica muestra las 5 distribuciones de <code>lifeExp</code> para cada continente.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb48"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(gapminder, <span class="fu">aes</span>(<span class="at">x=</span>lifeExp)) <span class="sc">+</span> </span>
+<span id="cb48-2"><a href="#cb48-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>() <span class="sc">+</span></span>
+<span id="cb48-3"><a href="#cb48-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>continent, <span class="at">nrow=</span><span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="intro_files/figure-html/unnamed-chunk-64-1.png" class="img-fluid figure-img" style="width:80.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+</section>
+</section>
+<section id="datos_categoricos" class="level2">
+<h2 class="anchored" data-anchor-id="datos_categoricos"><svg aria-label="Cubes" role="img" viewbox="0 0 576 512" style="height:1em;width:1.12em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:#2e3175;overflow:visible;position:relative;"><title>Cubes</title><path d="M290.8 48.6l78.4 29.7L288 109.5 206.8 78.3l78.4-29.7c1.8-.7 3.8-.7 5.7 0zM136 92.5V204.7c-1.3 .4-2.6 .8-3.9 1.3l-96 36.4C14.4 250.6 0 271.5 0 294.7V413.9c0 22.2 13.1 42.3 33.5 51.3l96 42.2c14.4 6.3 30.7 6.3 45.1 0L288 457.5l113.5 49.9c14.4 6.3 30.7 6.3 45.1 0l96-42.2c20.3-8.9 33.5-29.1 33.5-51.3V294.7c0-23.3-14.4-44.1-36.1-52.4l-96-36.4c-1.3-.5-2.6-.9-3.9-1.3V92.5c0-23.3-14.4-44.1-36.1-52.4l-96-36.4c-12.8-4.8-26.9-4.8-39.7 0l-96 36.4C150.4 48.4 136 69.3 136 92.5zM392 210.6l-82.4 31.2V152.6L392 121v89.6zM154.8 250.9l78.4 29.7L152 311.7 70.8 280.6l78.4-29.7c1.8-.7 3.8-.7 5.7 0zm18.8 204.4V354.8L256 323.2v95.9l-82.4 36.2zM421.2 250.9c1.8-.7 3.8-.7 5.7 0l78.4 29.7L424 311.7l-81.2-31.1 78.4-29.7zM523.2 421.2l-77.6 34.1V354.8L528 323.2v90.7c0 3.2-1.9 6-4.8 7.3z"></path></svg> Explorando Datos Categóricos</h2>
+<section id="datos-starbucks" class="level3">
+<h3 class="anchored" data-anchor-id="datos-starbucks">Datos <code>Starbucks</code></h3>
+<p>Usaremos estos datos que contienen información sobre el contenido calórico de todas las bebidas en Starbucks. Pueden encontrar más información sobre los datos en este <a href="https://github.com/rfordatascience/tidytuesday/blob/master/data/2021/2021-12-21/readme.md">link</a>.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb49"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a>starbucks <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">'https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2021/2021-12-21/starbucks.csv'</span>)</span>
+<span id="cb49-2"><a href="#cb49-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb49-3"><a href="#cb49-3" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(starbucks)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Rows: 1,147
+Columns: 15
+$ product_name    &lt;chr&gt; "brewed coffee - dark roast", "brewed coffee - dark ro~
+$ size            &lt;chr&gt; "short", "tall", "grande", "venti", "short", "tall", "~
+$ milk            &lt;dbl&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 2, ~
+$ whip            &lt;dbl&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, ~
+$ serv_size_m_l   &lt;dbl&gt; 236, 354, 473, 591, 236, 354, 473, 591, 236, 354, 473,~
+$ calories        &lt;dbl&gt; 3, 4, 5, 5, 3, 4, 5, 5, 3, 4, 5, 5, 3, 4, 5, 5, 35, 50~
+$ total_fat_g     &lt;dbl&gt; 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1,~
+$ saturated_fat_g &lt;dbl&gt; 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,~
+$ trans_fat_g     &lt;chr&gt; "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0",~
+$ cholesterol_mg  &lt;dbl&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 10,~
+$ sodium_mg       &lt;dbl&gt; 5, 10, 10, 10, 5, 10, 10, 10, 5, 5, 5, 5, 5, 5, 5, 5, ~
+$ total_carbs_g   &lt;dbl&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 5, ~
+$ fiber_g         &lt;chr&gt; "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0",~
+$ sugar_g         &lt;dbl&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 5, ~
+$ caffeine_mg     &lt;dbl&gt; 130, 193, 260, 340, 15, 20, 25, 30, 155, 235, 310, 410~</code></pre>
+</div>
+</div>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb51"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a>starbucks<span class="sc">$</span>milk_factor <span class="ot">&lt;-</span> <span class="fu">factor</span>(starbucks<span class="sc">$</span>milk,</span>
+<span id="cb51-2"><a href="#cb51-2" aria-hidden="true" tabindex="-1"></a>                      <span class="at">levels =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>, <span class="dv">5</span>),</span>
+<span id="cb51-3"><a href="#cb51-3" aria-hidden="true" tabindex="-1"></a>                      <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">"no milk"</span>, <span class="st">"nonfat"</span>, <span class="st">"2%"</span>, <span class="st">"soy"</span>, <span class="st">"coconut"</span>, <span class="st">"whole"</span>))</span>
+<span id="cb51-4"><a href="#cb51-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb51-5"><a href="#cb51-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb51-6"><a href="#cb51-6" aria-hidden="true" tabindex="-1"></a>starbucks<span class="sc">$</span>whip <span class="ot">&lt;-</span> <span class="fu">factor</span>(starbucks<span class="sc">$</span>whip,</span>
+<span id="cb51-7"><a href="#cb51-7" aria-hidden="true" tabindex="-1"></a>               <span class="at">levels =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>),</span>
+<span id="cb51-8"><a href="#cb51-8" aria-hidden="true" tabindex="-1"></a>               <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">"no cream"</span>, <span class="st">"cream"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="tablas" class="level3">
+<h3 class="anchored" data-anchor-id="tablas">Tablas</h3>
+<p>Si bien tiene sentido describir una variable numérica como el <strong>peso</strong> en términos de estadísticas descriptivas como la media o la desviación estándar, para variables categóricas, simplemente hacemos una tabla de frecuencias que muestre el número de observaciones en cada categoría de la variable. La función <code>xtabs()</code> en R puede hacer el conteo por nosotros. Por ejemplo, las 3 líneas a continuación producen la tabla de frecuencias para las siguientes variables: <code>size</code> y <code>milk_factor</code>.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb52"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a><span class="fu">xtabs</span>(<span class="sc">~</span>size, <span class="at">data=</span>starbucks)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>size
+1 scoop  1 shot  doppio  grande    quad   short    solo    tall  trenta  triple 
+      2       1       7     334       7     123       7     318      21       7 
+  venti 
+    320 </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb54"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb54-1"><a href="#cb54-1" aria-hidden="true" tabindex="-1"></a><span class="fu">xtabs</span>(<span class="sc">~</span>milk_factor, <span class="at">data=</span>starbucks)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>milk_factor
+no milk  nonfat      2%     soy coconut   whole 
+    165     222     190     190     190     190 </code></pre>
+</div>
+</div>
+<p>Se puede convertir la tabla de frecuencias a proporciones usando la función <code>prop.table</code></p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb56"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb56-1"><a href="#cb56-1" aria-hidden="true" tabindex="-1"></a><span class="fu">prop.table</span>(<span class="fu">xtabs</span>(<span class="sc">~</span>milk_factor, <span class="at">data=</span>starbucks))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>milk_factor
+  no milk    nonfat        2%       soy   coconut     whole 
+0.1438535 0.1935484 0.1656495 0.1656495 0.1656495 0.1656495 </code></pre>
+</div>
+</div>
+<p>Con la función <code>xtabs</code>podemos tabular cualquier número de variables. Por ejemplo, para hacer una tabulación cruzada con las variables <code>whip</code> y <code>milk_factor</code> escribimos:</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb58"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb58-1"><a href="#cb58-1" aria-hidden="true" tabindex="-1"></a><span class="fu">xtabs</span>(<span class="sc">~</span> whip <span class="sc">+</span> milk_factor, <span class="at">data=</span>starbucks)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>          milk_factor
+whip       no milk nonfat  2% soy coconut whole
+  no cream     157    166 134 139     134   134
+  cream          8     56  56  51      56    56</code></pre>
+</div>
+</div>
+<p>La función <code>addmargins</code> agrega los totales para cada fila y columna.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb60"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb60-1"><a href="#cb60-1" aria-hidden="true" tabindex="-1"></a><span class="fu">addmargins</span>(<span class="fu">xtabs</span>(<span class="sc">~</span> whip <span class="sc">+</span> milk_factor, <span class="at">data=</span>starbucks))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>          milk_factor
+whip       no milk nonfat   2%  soy coconut whole  Sum
+  no cream     157    166  134  139     134   134  864
+  cream          8     56   56   51      56    56  283
+  Sum          165    222  190  190     190   190 1147</code></pre>
+</div>
+</div>
+<p>La función <code>prop.table()</code> puede calcular:</p>
+<ol type="1">
+<li>las proporciones generales = (conteos de celdas) / (número total de casos),</li>
+<li>las proporciones por fila = (conteos de celdas) / (total de la fila), y</li>
+<li>las proporciones por columna = (conteos de celdas) / (total de la columna).</li>
+</ol>
+<p>de la siguiente manera respectivamente:</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb62"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb62-1"><a href="#cb62-1" aria-hidden="true" tabindex="-1"></a><span class="fu">prop.table</span>(<span class="fu">xtabs</span>(<span class="sc">~</span> whip <span class="sc">+</span> milk_factor, <span class="at">data=</span>starbucks))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>          milk_factor
+whip           no milk      nonfat          2%         soy     coconut
+  no cream 0.136878814 0.144725371 0.116826504 0.121185702 0.116826504
+  cream    0.006974717 0.048823017 0.048823017 0.044463819 0.048823017
+          milk_factor
+whip             whole
+  no cream 0.116826504
+  cream    0.048823017</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb64"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb64-1"><a href="#cb64-1" aria-hidden="true" tabindex="-1"></a><span class="fu">prop.table</span>(<span class="fu">xtabs</span>(<span class="sc">~</span> whip <span class="sc">+</span> milk_factor, <span class="at">data=</span>starbucks),<span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>          milk_factor
+whip          no milk     nonfat         2%        soy    coconut      whole
+  no cream 0.18171296 0.19212963 0.15509259 0.16087963 0.15509259 0.15509259
+  cream    0.02826855 0.19787986 0.19787986 0.18021201 0.19787986 0.19787986</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb66"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb66-1"><a href="#cb66-1" aria-hidden="true" tabindex="-1"></a><span class="fu">prop.table</span>(<span class="fu">xtabs</span>(<span class="sc">~</span> whip <span class="sc">+</span> milk_factor, <span class="at">data=</span>starbucks),<span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>          milk_factor
+whip          no milk     nonfat         2%        soy    coconut      whole
+  no cream 0.95151515 0.74774775 0.70526316 0.73157895 0.70526316 0.70526316
+  cream    0.04848485 0.25225225 0.29473684 0.26842105 0.29473684 0.29473684</code></pre>
+</div>
+</div>
+<p>La función <code>xtabs()</code> puede hacer una tabulación cruzada con 3 variables de la siguiente manera:</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb68"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb68-1"><a href="#cb68-1" aria-hidden="true" tabindex="-1"></a><span class="fu">xtabs</span>(<span class="sc">~</span> size <span class="sc">+</span> milk_factor <span class="sc">+</span> whip, <span class="at">data=</span>starbucks)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>, , whip = no cream
+
+         milk_factor
+size      no milk nonfat 2% soy coconut whole
+  1 scoop       2      0  0   0       0     0
+  1 shot        1      0  0   0       0     0
+  doppio        1      1  1   1       1     1
+  grande       38     50 40  40      40    40
+  quad          1      1  1   1       1     1
+  short        20     17 15  18      15    15
+  solo          1      1  1   1       1     1
+  tall         37     47 37  39      37    37
+  trenta       16      1  1   1       1     1
+  triple        1      1  1   1       1     1
+  venti        39     47 37  37      37    37
+
+, , whip = cream
+
+         milk_factor
+size      no milk nonfat 2% soy coconut whole
+  1 scoop       0      0  0   0       0     0
+  1 shot        0      0  0   0       0     0
+  doppio        1      0  0   0       0     0
+  grande        1     17 17  17      17    17
+  quad          1      0  0   0       0     0
+  short         1      5  5   2       5     5
+  solo          1      0  0   0       0     0
+  tall          1     17 17  15      17    17
+  trenta        0      0  0   0       0     0
+  triple        1      0  0   0       0     0
+  venti         1     17 17  17      17    17</code></pre>
+</div>
+</div>
+</section>
+<section id="gráficos-de-barras" class="level3">
+<h3 class="anchored" data-anchor-id="gráficos-de-barras">Gráficos de Barras</h3>
+<p>La capa (layer) del comando <code>ggplot</code> para hacer gráficos de barras es <code>geom_bar</code>. En este caso, la altura de la barra es la frecuencia en cada categoría.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb70"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb70-1"><a href="#cb70-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(starbucks, <span class="fu">aes</span>(<span class="at">x=</span>milk_factor))<span class="sc">+</span><span class="fu">geom_bar</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="intro_files/figure-html/unnamed-chunk-73-1.png" class="img-fluid figure-img" style="width:60.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Para hacer un gráfico de barras segmentadas donde las barras representen <code>whip</code> y los segmentos representen <code>milk_factor</code>, necesitamos establecer <code>whip</code> como la variable en el eje <span class="math inline">\(x\)</span> y <code>milk_factor</code> como la variable <span class="math inline">\(fill\)</span>.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb71"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb71-1"><a href="#cb71-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(starbucks, <span class="fu">aes</span>(<span class="at">fill=</span>milk_factor, <span class="at">x=</span>whip)) <span class="sc">+</span> <span class="fu">geom_bar</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="intro_files/figure-html/unnamed-chunk-74-1.png" class="img-fluid figure-img" style="width:60.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Para estandarizar la gráfica de barras segmentada (es decir, que la suma al interior de cada barra sea 1), solo agreguen <code>position=fill</code> dentro de la capa <code>geom_bar</code>.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb72"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb72-1"><a href="#cb72-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(starbucks, <span class="fu">aes</span>(<span class="at">fill=</span>milk_factor, <span class="at">x=</span>whip)) <span class="sc">+</span> </span>
+<span id="cb72-2"><a href="#cb72-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">position=</span><span class="st">"fill"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="intro_files/figure-html/unnamed-chunk-75-1.png" class="img-fluid figure-img" style="width:60.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Uno puede cambiar el título de la leyenda para <code>milk_factor</code> a “Types of Milk”.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb73"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb73-1"><a href="#cb73-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(starbucks, <span class="fu">aes</span>(<span class="at">fill=</span>milk_factor, <span class="at">x=</span>whip)) <span class="sc">+</span> </span>
+<span id="cb73-2"><a href="#cb73-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">position=</span><span class="st">"fill"</span>) <span class="sc">+</span></span>
+<span id="cb73-3"><a href="#cb73-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">fill=</span><span class="st">'Types of Milk'</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="intro_files/figure-html/unnamed-chunk-76-1.png" class="img-fluid figure-img" style="width:60.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="gráfico-de-barras-para-datos-tabulados" class="level3">
+<h3 class="anchored" data-anchor-id="gráfico-de-barras-para-datos-tabulados">Gráfico de Barras para Datos Tabulados</h3>
+<p>Supongamos que solo se dispone de datos tabulados y no los valores para cada bebida.Los datos que tienen son los de la tabla a continuación:</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<table class="table table-sm table-striped small" data-quarto-postprocess="true">
+<colgroup>
+<col style="width: 14%">
+<col style="width: 14%">
+<col style="width: 14%">
+<col style="width: 14%">
+<col style="width: 14%">
+<col style="width: 14%">
+<col style="width: 14%">
+</colgroup>
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th" style="text-align: left; empty-cells: hide; border-bottom: hidden;"></th>
+<th colspan="6" data-quarto-table-cell-role="th" style="text-align: center; border-bottom: hidden; padding-bottom: 0; padding-left: 3px; padding-right: 3px;"><div style="border-bottom: 1px solid #ddd; padding-bottom: 5px; ">
+Types of Milk
+</div></th>
+</tr>
+<tr class="odd">
+<th style="text-align: left;" data-quarto-table-cell-role="th"></th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">no milk</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">nonfat</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">2%</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">soy</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">coconut</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">whole</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">No Cream</td>
+<td style="text-align: right;">157</td>
+<td style="text-align: right;">166</td>
+<td style="text-align: right;">134</td>
+<td style="text-align: right;">139</td>
+<td style="text-align: right;">134</td>
+<td style="text-align: right;">134</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Cream</td>
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">56</td>
+<td style="text-align: right;">56</td>
+<td style="text-align: right;">51</td>
+<td style="text-align: right;">56</td>
+<td style="text-align: right;">56</td>
+</tr>
+</tbody>
+</table>
+
+
+</div>
+</div>
+<p>Necesitan ingresar los datos tabulados en R ustedes mismos. Primero, crean una matriz de 2x6. Noten que los valores en la tabla se ingresan <strong>por columnas</strong>, y especificamos que hay 2 filas en la matriz. Entonces, R sabe automáticamente que hay 6 columnas, ya que hay 12 entradas en la matriz.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb74"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb74-1"><a href="#cb74-1" aria-hidden="true" tabindex="-1"></a>starbucks_tabulated <span class="ot">&lt;-</span>  <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="dv">157</span>, <span class="dv">8</span>, <span class="dv">166</span>, <span class="dv">56</span>, <span class="dv">134</span>, <span class="dv">56</span>, <span class="dv">139</span>, <span class="dv">51</span>,<span class="dv">134</span>, <span class="dv">56</span>, <span class="dv">134</span>, <span class="dv">56</span>), <span class="at">nrow=</span><span class="dv">2</span>)</span>
+<span id="cb74-2"><a href="#cb74-2" aria-hidden="true" tabindex="-1"></a>starbucks_tabulated</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>     [,1] [,2] [,3] [,4] [,5] [,6]
+[1,]  157  166  134  139  134  134
+[2,]    8   56   56   51   56   56</code></pre>
+</div>
+</div>
+<p>Luego, especifican los nombres de las variables de las filas y las columnas, así como sus categorías.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb76"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb76-1"><a href="#cb76-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dimnames</span>(starbucks_tabulated) <span class="ot">=</span> <span class="fu">list</span>(<span class="at">Whip=</span><span class="fu">c</span>(<span class="st">"No Cream"</span>,<span class="st">"Cream"</span>),  </span>
+<span id="cb76-2"><a href="#cb76-2" aria-hidden="true" tabindex="-1"></a>                         <span class="at">Milk=</span><span class="fu">c</span>(<span class="st">"no milk"</span>, <span class="st">"nonfat"</span>, <span class="st">"2%"</span>, <span class="st">"soy"</span>, <span class="st">"coconut"</span>, <span class="st">"whole"</span>))</span>
+<span id="cb76-3"><a href="#cb76-3" aria-hidden="true" tabindex="-1"></a>starbucks_tabulated</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>          Milk
+Whip       no milk nonfat  2% soy coconut whole
+  No Cream     157    166 134 139     134   134
+  Cream          8     56  56  51      56    56</code></pre>
+</div>
+</div>
+<p>Convierten la matriz en una tabla usando <code>as.table()</code> y luego convierten la tabla en un data frame usando <code>as.data.frame()</code>. Necesitan convertir la tabla en un data frame porque <code>ggplot</code> solo acepta data frames.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb78"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb78-1"><a href="#cb78-1" aria-hidden="true" tabindex="-1"></a>starbucks_tabulated <span class="ot">&lt;-</span>  <span class="fu">as.table</span>(starbucks_tabulated)</span>
+<span id="cb78-2"><a href="#cb78-2" aria-hidden="true" tabindex="-1"></a>starbucks_tabulated <span class="ot">&lt;-</span>  <span class="fu">as.data.frame</span>(starbucks_tabulated)</span>
+<span id="cb78-3"><a href="#cb78-3" aria-hidden="true" tabindex="-1"></a>starbucks_tabulated</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>       Whip    Milk Freq
+1  No Cream no milk  157
+2     Cream no milk    8
+3  No Cream  nonfat  166
+4     Cream  nonfat   56
+5  No Cream      2%  134
+6     Cream      2%   56
+7  No Cream     soy  139
+8     Cream     soy   51
+9  No Cream coconut  134
+10    Cream coconut   56
+11 No Cream   whole  134
+12    Cream   whole   56</code></pre>
+</div>
+</div>
+<p>La base de datos <code>starbucks_tabulated</code>contiene una columna <code>Freq</code>que es igual al número de observaciones en la tabla. Con esta información se puede hacer el gráfico de barras con <code>ggplot</code>. Deben especificar <code>weight=Freq</code></p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb80"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb80-1"><a href="#cb80-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(starbucks_tabulated, <span class="fu">aes</span>(<span class="at">fill=</span>Milk, <span class="at">x=</span>Whip, <span class="at">weight=</span>Freq)) <span class="sc">+</span> </span>
+<span id="cb80-2"><a href="#cb80-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="intro_files/figure-html/unnamed-chunk-81-1.png" class="img-fluid figure-img" style="width:60.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Para estandarizar como antes, solo añaden <code>position="fill"</code> en la capa <code>geom_bar()</code>.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb81"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb81-1"><a href="#cb81-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(starbucks_tabulated, <span class="fu">aes</span>(<span class="at">fill=</span>Milk, <span class="at">x=</span>Whip, <span class="at">weight=</span>Freq)) <span class="sc">+</span> </span>
+<span id="cb81-2"><a href="#cb81-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">position=</span><span class="st">"fill"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="intro_files/figure-html/unnamed-chunk-82-1.png" class="img-fluid figure-img" style="width:60.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="gráficos-en-mosaico" class="level3">
+<h3 class="anchored" data-anchor-id="gráficos-en-mosaico">Gráficos en Mosaico</h3>
+<p>No hay una función específica <code>geom_XXX()</code> en el paquete <code>ggplot</code> para hacer gráficos de mosaico. Por lo tanto, usen la función <code>mosaicplot()</code> la base de R. Los gráficos producidos por <code>mosaicplot</code>() no son tan estéticos como los de <code>ggplot</code>, pero funcionan.</p>
+<p>A diferencia de <code>ggplot</code>, que requiere que los datos de entrada sean un data frame, <code>mosaicplot()</code> requiere que los datos sean una tabla.</p>
+<p>Recuerda que la tabla bidimensional de <code>whip</code> y <code>milk_factor</code> es:</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb82"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb82-1"><a href="#cb82-1" aria-hidden="true" tabindex="-1"></a><span class="fu">xtabs</span>(<span class="sc">~</span> whip <span class="sc">+</span> milk_factor, <span class="at">data=</span>starbucks)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>          milk_factor
+whip       no milk nonfat  2% soy coconut whole
+  no cream     157    166 134 139     134   134
+  cream          8     56  56  51      56    56</code></pre>
+</div>
+</div>
+<p>Para crear un gráfico de mosaicos de la tabla anterior, solo inserten el código en el comando <code>mosaicplot</code>.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb84"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb84-1"><a href="#cb84-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mosaicplot</span>(<span class="fu">xtabs</span>(<span class="sc">~</span> whip<span class="sc">+</span>milk_factor, <span class="at">data=</span>starbucks), <span class="at">color=</span><span class="cn">TRUE</span>, <span class="at">main=</span><span class="st">""</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="intro_files/figure-html/unnamed-chunk-84-1.png" class="img-fluid figure-img" style="width:60.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Como los gráficos siempre deben estar bien etiquetados, la siguiente línea muestra cómo cambiar el título, la etiqueta del eje <span class="math inline">\(x\)</span> y la etiqueta del eje <span class="math inline">\(y\)</span> del gráfico. La opción <code>las=1</code> hace que las etiquetas sean perpendiculares a los ejes para que no se superpongan.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb85"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb85-1"><a href="#cb85-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mosaicplot</span>(<span class="fu">xtabs</span>(<span class="sc">~</span>whip<span class="sc">+</span>milk_factor, <span class="at">data=</span>starbucks), </span>
+<span id="cb85-2"><a href="#cb85-2" aria-hidden="true" tabindex="-1"></a>           <span class="at">main=</span><span class="st">"Cream by Type of Milk"</span>, </span>
+<span id="cb85-3"><a href="#cb85-3" aria-hidden="true" tabindex="-1"></a>           <span class="at">ylab=</span><span class="st">"Type of Milk"</span>, </span>
+<span id="cb85-4"><a href="#cb85-4" aria-hidden="true" tabindex="-1"></a>           <span class="at">xlab=</span><span class="st">"Cream in the Beverage"</span>,</span>
+<span id="cb85-5"><a href="#cb85-5" aria-hidden="true" tabindex="-1"></a>           <span class="at">las=</span><span class="dv">2</span>, <span class="at">color=</span><span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="intro_files/figure-html/unnamed-chunk-85-1.png" class="img-fluid figure-img" style="width:60.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Podemos usar <code>mosaicplot</code> con el conjunto de datos tabulados (en caso de no tener los casos individuales) para crear un gráfico de mosaico.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb86"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb86-1"><a href="#cb86-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mosaicplot</span>(starbucks_tabulated, <span class="at">main=</span><span class="st">""</span>, <span class="at">color=</span><span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="intro_files/figure-html/unnamed-chunk-86-1.png" class="img-fluid figure-img" style="width:60.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>El gráfico de arriba claramente no es útil y no es el que se espera. Se puede cambiar la posición de los ejes usando el comando <code>xtabs</code> nuevamente.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb87"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb87-1"><a href="#cb87-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mosaicplot</span>(<span class="fu">xtabs</span>(Freq <span class="sc">~</span> Whip <span class="sc">+</span> Milk, <span class="at">data =</span> starbucks_tabulated), <span class="at">main =</span> <span class="st">""</span>, <span class="at">color =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="intro_files/figure-html/unnamed-chunk-87-1.png" class="img-fluid figure-img" style="width:60.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>El resultado ha mejorado considerablemente. Sin embargo, podríamos refinar aún más la presentación trasponiendo la tabla para cambiar la ubicación de los ejes. Al final, cada quien tiene la libertad de elegir la gráfica que, a su juicio, presenta la información de manera más clara y atractiva.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb88"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb88-1"><a href="#cb88-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mosaicplot</span>(<span class="fu">t</span>(<span class="fu">xtabs</span>(Freq <span class="sc">~</span> Whip <span class="sc">+</span> Milk, <span class="at">data =</span> starbucks_tabulated)), <span class="at">main =</span> <span class="st">""</span>, <span class="at">color =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="intro_files/figure-html/unnamed-chunk-88-1.png" class="img-fluid figure-img" style="width:60.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+<script src="intro_files/libs/quarto-html/zenscroll-min.js"></script>
+</body></html>

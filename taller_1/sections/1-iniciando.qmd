@@ -1,0 +1,156 @@
+---
+  format: html
+---
+  
+## `r fontawesome::fa("laptop-code", fill = "#2e3175", a11y = "sem")` Iniciando un proyecto {#inicio}
+
+### El directorio de trabajo
+
+Su directorio de trabajo es la carpeta en su computadora en la que están trabajando actualmente. Cuando le piden a R que abra un archivo determinado, buscará ese archivo en el directorio de trabajo, y cuando le indiquen a R que guarde un archivo de datos o una figura, lo guardará en el directorio de trabajo.
+
+Antes de empezar a trabajar, por favor establezcan su directorio de trabajo en la carpeta donde se encuentra almacenado su archivo de datos de la siguiente manera:
+
+#### 1. Mediante el comando `setwd()`
+
+```{r}
+#| eval: false
+#| echo: true
+#| fig-align: "center"
+#| out-width: "100%"
+setwd("C:/Users/nombre_apellido/OneDrive/Documentos/analisis_de_datos/")
+```
+
+
+#### 2. Manualmente desde el visualizador de archivos
+
+  
+Primero, van al panel [Files] en la parte inferior derecha.
+
+```{r}
+#| eval: true
+#| echo: false
+#| fig-align: "center"
+#| out-width: "100%"
+knitr::include_graphics("images/paso1.png")
+```
+
+
+Luego en la parte derecha, dan click en `...` que es "go to directory".
+
+
+```{r}
+#| eval: true
+#| echo: false
+#| fig-align: "center"
+#| out-width: "100%"
+knitr::include_graphics("images/paso2.png")
+```
+
+Seleccionen la carpeta donde van a tener sus archivos. El directorio deberá aparecer en [Files].
+
+```{r}
+#| eval: true
+#| echo: false
+#| fig-align: "center"
+#| out-width: "100%"
+knitr::include_graphics("images/paso3.png")
+```
+
+Seleccionen la tuerca en [FILES] y establezcan la carpeta como directorio de trabajo.
+
+```{r}
+#| eval: true
+#| echo: false
+#| fig-align: "center"
+#| out-width: "100%"
+knitr::include_graphics("images/paso4.png")
+```
+
+
+### Cargar datos a R
+
+Existen diferentes maneras de cargar datos a R:
+
+1. Algunos paquetes incluyen sus propias bases de datos. Por ejemplo:
+
+```{r}
+#| eval: true
+#| echo: false
+#| fig-align: "center"
+#| out-width: "100%"
+library(tidyverse)
+```
+
+```{r}
+#| eval: true
+#| echo: true
+#| fig-align: "center"
+#| out-width: "100%"
+library(gapminder)
+str(gapminder)
+```
+
+2. La otra manera es descargando el archivo y guardarlo en el **directorio de trabajo** que ya establecieron. Los archivos se importan a R usando una función que dependerá del tipo de archivo que van a importar.
+
+```{r}
+#| eval: false
+#| echo: true
+#| fig-align: "center"
+#| out-width: "100%"
+
+nombre_datos <- read.csv("nombre_del_archivo.csv")
+
+```
+
+
+Revisen [acá](https://intro2r.com/importing-data.html) para una explicación más detallada.
+
+### Una mirada a los datos
+
+Podemos ver los datos escribiendo el nombre de los datos:
+
+```{r}
+#| eval: true
+#| echo: true
+#| fig-align: "center"
+#| out-width: "100%"
+gapminder
+```
+
+Nombremos la base de datos para que aparezca en el espacio de trabajo (Environment). Pueden ver las dimensiones de los datos con el siguiente código:
+
+
+```{r}
+#| eval: true
+#| echo: true
+#| fig-align: "center"
+#| out-width: "100%"
+gapminder <- gapminder
+dim(gapminder)
+```
+
+
+Este comando debería mostrar [1] 1704 6, indicando que hay 1704 filas y 6 columnas (el [1] lo explico más adelante), tal como se indica al lado del objeto en tu espacio de trabajo. Puedes ver los nombres de estas columnas (o variables) escribiendo:
+
+```{r}
+#| eval: true
+#| echo: true
+#| fig-align: "center"
+#| out-width: "100%"
+names(gapminder)
+```
+
+
+Una ventaja de RStudio es que viene con un visor de datos incorporado. Haz clic en el nombre `gapminder` en el panel de espacio de trabajo (ventana superior derecha) que enumera los objetos en tu espacio de trabajo. Esto abrirá una visualización alternativa del conjunto de datos en el Visor de Datos (ventana superior izquierda). Puedes cerrar el visor de datos haciendo clic en la 'x' en la esquina superior izquierda.
+
+Podemos acceder a una sola variable de un marco de datos utilizando la notación del signo de dólar $. Por ejemplo, el siguiente comando
+
+
+```{r}
+#| eval: true
+#| echo: true
+#| fig-align: "center"
+#| out-width: "100%"
+gapminder$continent %>%
+  head(5)
+```

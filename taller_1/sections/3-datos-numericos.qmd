@@ -1,0 +1,444 @@
+---
+  format: html
+---
+  
+## `r fontawesome::fa("object-group", fill = "#2e3175", a11y = "sem")` Explorando Datos Numéricos {#datos_numericos}
+  
+### Los datos `gapminder` 
+
+### Estadísticas Descriptivas
+
+Para calcular la media, mediana, desviación estándar, varianza, cuartiles, rango intercuartílico, mínimo y máximo de la variable de precio en el conjunto de datos diamonds, escriba
+
+```{r}
+#| eval: false
+#| echo: true
+#| fig-align: "center"
+#| out-width: "100%"
+
+mean(gapminder$lifeExp)
+median(gapminder$lifeExp)
+sd(gapminder$lifeExp)
+var(gapminder$lifeExp)
+fivenum(gapminder$lifeExp)
+IQR(gapminder$lifeExp)
+min(gapminder$lifeExp)
+max(gapminder$lifeExp)
+
+```
+
+
+#### Función `aggregate` para resumir datos "por grupo"
+
+En vez de resumir todo el conjunto de datos, quizás estén interesados en resumir los datos *por grupo*. La función `aggregate` divide los datos en subconjuntos, calcula estadísticas para cada uno, y muestra el resultado de una manera fácil de leer. Esta función usa lenguaje de modelación (*modelling language*). Esto significa que se usa `(~)`, que se lee como "es una función de". Por ejemplo, podemos calcular la expectativa de vida promedio por continente. 
+
+```{r}
+#| eval: true
+#| echo: true
+#| fig-align: "center"
+#| out-width: "100%"
+
+aggregate(lifeExp ~ continent , data=gapminder, mean)
+
+
+```
+
+No hay ninguna sorpresa en los datos. La expectativa de vida en Europa y Oceania es más alta que en el resto de continentes.
+
+```{r}
+#| eval: true
+#| echo: true
+#| fig-align: "center"
+#| out-width: "100%"
+
+aggregate(lifeExp ~ continent + year , data=gapminder, mean)
+
+
+```
+
+
+```{r}
+#| eval: false
+#| echo: true
+#| fig-align: "center"
+#| out-width: "100%"
+
+aggregate(lifeExp ~ continent , data=gapminder, median)
+aggregate(lifeExp ~ continent , data=gapminder, sd)
+aggregate(lifeExp ~ continent , data=gapminder, var)
+aggregate(lifeExp ~ continent , data=gapminder, min)
+aggregate(lifeExp ~ continent , data=gapminder, max)
+aggregate(lifeExp ~ continent , data=gapminder, IQR)
+
+```
+
+
+### Visualizando los datos con `ggplot'
+
+
+El paquete `ggplot2` es una herramienta poderosa en R para crear gráficos avanzados y visualizar datos. Desde su lanzamiento en 2007, `ggplot2` ha sido ampliamente adoptada y rápidamente ha reemplazado a las funciones integradas de R como `plot()`, `hist()` y `boxplot()` para la creación de gráficos, convirtiéndose en la herramienta dominante para la visualización de datos.
+
+
+Lo primero que se debe proporcionar a `ggplot()` es el nombre de los datos (data frame). Luego, se debe especificar `aes()`, que es la abreviatura de "estética" (aesthetics), es decir, las variables que se usarán en el gráfico y sus roles: la variable del eje $x$, la variable del eje $y$, la variable que define el color o la forma de los puntos, líneas, sombras, etc.
+
+Después, se debe especificar el tipo de gráfico que se quiere crear:
+
+- `geom_point()` para gráficos de puntos
+- `geom_line()` para gráficos de líneas
+- `geom_histogram()` para histogramas
+- `geom_bar()` para gráficos de barras
+- y así sucesivamente.
+
+Por ejemplo, para graficar un histograma y un gráfico de barras, para la variable `lifeExp` en el conjunto de datos `gapminder`:
+
+```{r}
+#| eval: true
+#| echo: true
+#| fig-align: "center"
+#| out-width: "80%"
+#| warning: false
+
+ggplot(gapminder, aes(x=lifeExp)) + geom_histogram()
+
+
+```
+
+
+```{r}
+#| eval: true
+#| echo: true
+#| fig-align: "center"
+#| out-width: "80%"
+
+ggplot(gapminder, aes(x=lifeExp)) + geom_boxplot()
+
+
+```
+
+Solo deben especificar la variable en el eje $x$ para el histograma y el diagrama de caja.
+
+```{r}
+#| eval: true
+#| echo: true
+#| fig-align: "center"
+#| out-width: "80%"
+
+ggplot(gapminder, aes(x=lifeExp, y=gdpPercap)) + geom_point()
+
+
+```
+
+Para un gráfico de dispersión de la relación entre la expectativa de vida y el gpd per capita, necesitan especificar ambos ejes $x$ y $y$; `aes(x=lifeExp, y=gdpPercap)`. En la siquiente subsección hablaremos más de histogramas, diagramas de caja y gráficos de dispersión.
+
+
+#### Histogramas
+
+Pueden ajustar el ancho de las barras con la opción binwidth al interior de `geom_histogram()`.
+
+```{r}
+#| eval: true
+#| echo: true
+#| fig-align: "center"
+#| out-width: "80%"
+
+ggplot(gapminder, aes(x=lifeExp)) + geom_histogram(binwidth=0.1)
+
+
+```
+
+
+```{r}
+#| eval: true
+#| echo: true
+#| fig-align: "center"
+#| out-width: "80%"
+
+ggplot(gapminder, aes(x=lifeExp)) + geom_histogram(binwidth=0.02)
+
+```
+
+
+#### Diagrama de Caja
+
+Pueden cambiar la orientación del diagrama de caja de horizontal a vertical al cambiar `lifeExp` de la variable $x$ a la variable $y$.
+
+
+```{r}
+#| eval: false
+#| echo: true
+#| fig-align: "center"
+#| out-width: "80%"
+
+ggplot(gapminder, aes(x=lifeExp)) + geom_boxplot()
+ggplot(gapminder, aes(y=lifeExp)) + geom_boxplot()
+
+```
+
+
+```{r}
+#| eval: true
+#| echo: false
+#| fig-align: "center"
+#| out-width: "80%"
+library(patchwork)
+p1 <- ggplot(gapminder, aes(x=lifeExp)) + geom_boxplot()
+p2 <- ggplot(gapminder, aes(y=lifeExp)) + geom_boxplot()
+p1+p2
+```
+
+
+##### Diagrama de Caja - Lado a lado
+
+Pueden dibujar diagramas de caja lado a lado para evaluar la relación entra una variable categórica y una variable numérica. Por ejemplo, comparen la relación de la expectativa de vida entre continentes. La gráfica nos muestra que la dispersión en la expectativa de vida para África, América y Asia es mayor que para Europa y Oceanía.
+
+```{r}
+#| eval: true
+#| echo: true
+#| fig-align: "center"
+#| out-width: "80%"
+
+ggplot(gapminder, aes(x=lifeExp, y=continent)) + geom_boxplot()
+
+```
+
+Si intercambian `lifeExp` y `continent`, los diagramas de caja se vuelven verticales.
+
+```{r}
+#| eval: true
+#| echo: true
+#| fig-align: "center"
+#| out-width: "80%"
+
+ggplot(gapminder, aes(x=continent, y=lifeExp)) + geom_boxplot()
+
+```
+
+¿Qué sucede si restringimos los datos a la década de 1990 al 2000? Aunque la varianza para todos los continentes se reduce, la dispersión de los datos para Oceanía se reduce considerablemente más. Seguramente la mejora en las condiciones económicas llevó a un aumento de la expectativa de vida en esa década en comparasión con las 3 decadas previas.
+
+```{r}
+#| eval: true
+#| echo: true
+#| fig-align: "center"
+#| out-width: "80%"
+
+ggplot(subset(gapminder, year >= 1990 & year < 2000), 
+       aes(x=continent, y=lifeExp)) + 
+  geom_boxplot()
+```
+
+#### Diagramas de Dispersión
+
+Adicional a un simple $x-y$ diagrama de dispersión, se puede cambiar el color de los puntos para indicar el continente al incluir el código `color=continent` dentro de `aes()`. Las observaciones para Europa (los puntos azules) en una gran proporción se ubican en la parte superior derecha mientras que los puntos rojos en la parte inferior izquierda.
+
+
+```{r}
+#| eval: true
+#| echo: true
+#| fig-align: "center"
+#| out-width: "80%"
+
+ggplot(gapminder, aes(x=gdpPercap, y=lifeExp, color=continent)) + geom_point()
+
+```
+
+
+Pueden transformar las variables al interior del mismo comando. Por ejemplo, algunas variables no se distribuyen normal pero el logaritmo de la variable sí. Estas variables se dice que que se distribuyen log-normal. Al comparar los histogramas de `gdpPercap` y `log(gdpPercap)`, podemos concluir que el gdp per cápita se distribuye log-normal.
+
+```{r}
+#| eval: true
+#| echo: true
+#| fig-align: "center"
+#| out-width: "80%"
+#| warning: false
+
+p1 <- ggplot(gapminder, aes(x=gdpPercap)) + geom_histogram()
+p2 <- ggplot(gapminder, aes(x=log(gdpPercap))) + geom_histogram()
+p1+p2
+
+```
+
+
+Al usar `log(gdpPercap)` se suaviza la relación entre las dos variables, haciendo más clara la correlación positiva entre pib per cápita y expectiva de vida. Las observaciones para Europa y África son más mucho más evidente en comparación con el gráfico para `gdpPercap`.    
+
+```{r}
+#| eval: true
+#| echo: true
+#| fig-align: "center"
+#| out-width: "80%"
+ggplot(gapminder, aes(x=log(gdpPercap), y=lifeExp, color=continent)) + 
+  geom_point()
+
+```
+
+Además de modificar `color`, también pueden usar `shape` o `size` para representar una tercera variable en el gráfico de dispersión. 
+
+```{r}
+#| eval: true
+#| echo: true
+#| fig-align: "center"
+#| out-width: "80%"
+ggplot(gapminder, aes(x=log(gdpPercap), y=lifeExp, shape=continent)) + geom_point()
+
+```
+
+
+```{r}
+#| eval: true
+#| echo: true
+#| fig-align: "center"
+#| out-width: "80%"
+#| warning: false
+
+ggplot(gapminder, aes(x=log(gdpPercap), y=lifeExp, size=continent)) + geom_point()
+
+```
+
+Sin embargo, para los datos `gapminder`, cambiar la forma o el tamaño de los puntos para representar el continente no es tan claro como modificar el color. En la gráfica de abajo se modifica el color y la forma para hacer aún más clara la diferencia entre la categoría continente.
+
+
+```{r}
+#| eval: true
+#| echo: true
+#| fig-align: "center"
+#| out-width: "80%"
+#| warning: false
+
+ggplot(gapminder, aes(x=log(gdpPercap), y=lifeExp, color=continent, shape=continent)) + geom_point()
+
+```
+
+El paquete `ggplot` se puede combinar con otros para enfatizar o mejorar la historia que se quiere contar con el gráfico. En el ejemplo de abajo se usan los paquetes `gganimate` y `magick` para hacer una animación mostrando la evolución de la relación entre `lifeExp` y `gdpPercap` para los países de América y Europa desde 1957 hasta 2007. 
+
+```{r}
+#| eval: true
+#| echo: true
+#| fig-align: "center"
+#| out-width: "80%"
+#| warning: false
+library(gganimate)
+library(magick)
+
+continents <- c("Europe", "Americas")
+anim <-gapminder %>% 
+  filter(continent %in% continents) %>%
+  ggplot( aes(log(gdpPercap), lifeExp, col = continent)) +
+  geom_point() +
+  ggtitle("Life Expectancy versus Ferility: the Americas and Europe {frame_time}") + 
+  transition_time(year)
+animate(anim)
+
+# Podrían guardar el gif así:
+# image <- animate(anim)
+# anim_save("lifeExp_evolution.gif")
+
+```
+
+En el gráfico de abajo usamos el paquete `patchwork` y `animation` para añadir un gráfico abajo indicando el año de los datos. 
+
+```{r}
+#| eval: false
+#| echo: true
+#| fig-align: "center"
+#| out-width: "80%"
+#| warning: false
+library(patchwork)
+library(animation)
+
+# Save the GIF
+invisible(saveGIF({
+  selected_years <- seq(1952, 2007, by = 5) # Define the selected years
+  
+  for (i in selected_years) { # Loop through the selected years
+    
+    # Plot 1: Gapminder data for the specified year
+    p1 <- ggplot(subset(gapminder, year == i),
+                 aes(x = log(gdpPercap), y = lifeExp, color = continent)) +
+      geom_point() +
+      labs(title = paste("Life Expectancy and GDP -", i)) +
+      xlim(range(log(gapminder$gdpPercap))) +  # Set fixed x-axis limits
+      ylim(range(gapminder$lifeExp))    # Set fixed y-axis limits
+    
+    # Plot 2: Line plot with only the selected years
+    p2 <- ggplot(data = NULL, aes(x = selected_years, y = 1)) +
+      geom_line() +
+      geom_point(aes(x = selected_years, fill = (selected_years > i)), shape = 21, size = 5) +
+      theme_void() +
+      theme(legend.position = "none") +
+      scale_fill_manual(values = c("#b2d1e0", "gold")) +
+      geom_text(aes(x = i, y = 1, label = i), vjust = -1, size = 9) +
+      theme(panel.background = element_rect(fill = "grey99", colour = "grey80")) +
+      scale_x_continuous(breaks = selected_years)  # Ensure consistent x-axis breaks
+    
+    # Print plots using patchwork
+    print(p1 - p2 + plot_layout(ncol = 1, heights = c(5, 1)))
+  }
+}, movie.name = "gapminder_animation.gif", interval = 0.5, ani.width = 800, ani.height = 600))
+
+
+```
+
+
+```{r}
+#| eval: true
+#| echo: false
+#| fig-align: "center"
+#| out-width: "100%"
+knitr::include_graphics("images/gapminder_animation.gif")
+```
+
+
+#### Gráficos separados por característica
+
+La opción `facet_wrap()` permite separar el mismo gráfico para cada categoría de la variable que se indique al interior de los paréntesis. En el ejemplo de abajo dividimos la gráfica de dispersión por continente.
+
+
+```{r}
+#| eval: true
+#| echo: true
+#| fig-align: "center"
+#| out-width: "80%"
+ggplot(gapminder, aes(x=log(gdpPercap), lifeExp)) + 
+  geom_point(size = 0.5)+
+  facet_wrap(~continent)
+
+```
+
+También se puede hacer la separación para `geom_histogram()`.
+
+```{r}
+#| eval: true
+#| echo: true
+#| fig-align: "center"
+#| out-width: "80%"
+ggplot(gapminder, aes(x=lifeExp)) + 
+  geom_histogram(binwidth=0.5) +
+  facet_wrap(~continent)
+
+```
+
+Generalmente es mejor ubicar los cinco histogramas en la misma escala horizontal. Pueden hacerlo especificando `nrow=2` dentro de `facet_wrap()`, lo que organizará los 5 gráficos en 5 filas.
+
+```{r}
+#| eval: true
+#| echo: true
+#| fig-align: "center"
+#| out-width: "80%"
+ggplot(gapminder, aes(x=lifeExp)) + 
+  geom_histogram(binwidth=0.5) +
+  facet_wrap(~continent, nrow=5)
+
+```
+
+Se puede hacer lo mismo con `geom_boxplot()`. Por ejemplo, el siguiente gráfica muestra las 5 distribuciones de `lifeExp` para cada continente.
+
+
+```{r}
+#| eval: true
+#| echo: true
+#| fig-align: "center"
+#| out-width: "80%"
+ggplot(gapminder, aes(x=lifeExp)) + 
+  geom_boxplot() +
+  facet_wrap(~continent, nrow=2)
+
+```

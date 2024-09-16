@@ -1,0 +1,34 @@
+---
+title: "Introducción a R y RStudio"
+subtitle: "Taller I"
+author: 
+  - name: Carlos Cardona Andrade
+    url: https://ccardonaandrade.github.io/
+date: Septiembre 5, 2024
+format: 
+  html:
+    theme: OHI-styles.scss
+    title-block-banner-color: "#E3F1F2"
+    toc: true
+    toc-location: left
+    toc-depth: 3
+    smooth-scroll: true
+---
+    
+    
+<br>
+    
+* La idea es crear un taller con esto. Vamos a ver!*
+    
+
+{{< include /sections/0-preliminares.qmd >}}
+
+{{< include /sections/1-iniciando.qmd >}}
+
+{{< include /sections/2-transformando.qmd >}}
+
+{{< include /sections/3-datos-numericos.qmd >}}
+
+{{< include /sections/4-datos-categoricos.qmd >}}
+
+  

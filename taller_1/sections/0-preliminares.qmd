@@ -1,0 +1,119 @@
+---
+  format: html
+---
+  
+## `r fontawesome::fa("gear", fill = "#2e3175", a11y = "sem")` Preliminares {#preliminares}
+  
+### Introducción
+  
+El objetivo de este taller es introducirlos a R y RStudio, que utilizarán a lo largo del curso tanto para aprender los conceptos estadísticos discutidos en el libro de texto como para analizar datos reales y llegar a conclusiones informadas. Para aclarar la diferencia entre ambos: R es el nombre del lenguaje de programación en sí, y RStudio es una interfaz conveniente. Como analogía:
+  
+  - R es como el motor de un coche.
+  - RStudio es como la carrocería.
+  
+### Sean pacientes con R y con ustedes mismos
+
+::::: {.columns}
+
+:::: {.column width="50%"}
+```{r}
+#| eval: true
+#| echo: false
+#| fig-align: "center"
+#| out-width: "100%"
+knitr::include_graphics("images/jake_sucking.png")
+```
+::::
+
+:::: {.column width="50%"}
+```{r}
+#| eval: true
+#| echo: false
+#| fig-align: "center"
+#| out-width: "100%"
+#| fig-cap: "<a href='https://www.nytimes.com/2017/04/28/opinion/its-great-to-suck-at-surfing.html'>Karen Rinaldi, (It's Great to) Suck at Something</a>"
+knitr::include_graphics("images/newyorktimes.png")
+```
+::::
+
+:::::
+
+
+### Instalación de R y RStudio
+
+Si han utilizado R o RStudio antes, les recomiendo desinstalar las versiones antiguas e instalar la última versión de R y RStudio, ya que algunos paquetes que instalaremos podrían no ser compatibles con versiones anteriores de R.
+
+Vean los siguientes videos de [OpenIntro Statistics](https://www.openintro.org/book/os/) para un tutorial de:
+
+  - [Cómo instalar R y RStudio  en Windows](https://www.youtube.com/watch?v=rHZ9MGWxU5I&feature=youtu.be)
+  - [Cómo instalar R y RStudio en Mac OS X](https://www.youtube.com/watch?v=AEebOXiMyyI&feature=youtu.be)
+  
+o pueden simplemente sequir las instrucciones a continuación:
+
+#### 1. Instalen la última versión de R
+
+Descarguen el archivo de instalación aquí para...
+
+  - [Windows](https://cran.r-project.org/bin/windows/base/): Hagan clic en “Download R x.y.z for Windows”. Luego, ejecuten el archivo .exe descargado para instalar. Acepten todas las opciones predeterminadas de instalación (a menos que ya sepan cómo personalizar R).
+  - [Mac](https://cran.r-project.org/bin/macosx/) y [Linux](https://cran.r-project.org/bin/linux/): Acá van los links y asumo que ustedes lo saben instalar porque yo no :D
+  
+#### 2. Instalen el último RStudio
+
+RStudio proporciona un entorno de trabajo más amigable para R.
+
+[Descarguen RStudio Destkop](https://posit.co/download/rstudio-desktop/#download). Instalenlo seleccionando la instalación dependiendo de su sistema operativo.
+
+#### 3. Ambiente de RStudio 
+
+El interfaz de RStudio consiste en diferentes ventanas como se ve en el siguiente gráfico.
+
+```{r}
+#| eval: true
+#| echo: false
+#| fig-align: "center"
+#| out-width: "100%"
+knitr::include_graphics("images/layout_rstudio.png")
+# Esta imagen sale de:
+# https://rpubs.com/tracelac/1082623
+```
+
+1. Editor (sección superior izquierda): esta sección es fundamental para la reproducibilidad del código. Este editor permite guardar el código para que sea usado en futuras ocasiones. El código puede ser ejecutado en esta sección posicionando el cursor de texto al final de la línea de código que se ejecutará; otra opción es seleccionando la misma y empleando el comando Control+Enter para Windows o Command+Enter para Mac.
+
+2. Entorno (sección superior derecha): en esta sección se pueden visualizar los objetos y funciones creados o importados en la sección de R. Objetos como vectores, matrices, arreglos, data frames, listas, objetos tipo ggplot, entre otros.
+
+3. Consola (sección inferior izquierda): esta sección es donde se ejecuta el código. No solo se ejecuta el código que escrito en el editor, sino que también el código puede escribirse y ejecutarse aquí directamente presionando Enter. Sin embargo, cuando el código se ejecuta directamente en la consola, este no se almacena y cuando se cierra la sesión de R este se pierde.
+
+4. Visualizador (sección inferior derecha): en esta sección se pueden visualizar los archivos en “Files”, los gráficos en “Plots”, los paquetes que ya están instalados en “Packages”, la ayuda de R con información de los paquetes y el funcionamiento en “Help”, y páginas web en “Viewer”.
+
+::: {.callout-note collapse=true}
+## Algunos recursos de utilidad
+Existen muchos recursos para empezar a programar en R. Esta sección se basa en material principalmente de [esta introducción](https://rpubs.com/tracelac/1082623) y de [Getting Started](https://socviz.co/gettingstarted.html#gettingstarted) en *Data Visualization* de Kieran Healy.
+:::
+
+### Algunos fundamentos básicos
+
+1. Las **funciones** son (usualmente) verbos, seguidos por los objetos a los cuales serán aplicados:
+
+
+```{r}
+#| eval: false
+#| echo: true
+#| fig-align: "center"
+#| out-width: "100%"
+haz_esto(a_esto)
+haz_esto(a_esto, a_aquello, con_esto)
+```
+
+2. Existen muchos *paquetes* (libraries) que se instalan para expandir las funciones estándar de R. Se instalan con la función `install.packages` y el nombre del paquete entre comillas. Siempre que se inicie una sesión en R se deben cargan con la función `library` sin comillas.
+
+
+```{r}
+#| eval: false
+#| echo: true
+#| fig-align: "center"
+#| out-width: "100%"
+install.packages("package_name")
+library(package_name)
+```
+
+

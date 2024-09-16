@@ -1,0 +1,357 @@
+---
+  format: html
+---
+  
+## `r fontawesome::fa("compass-drafting", fill = "#2e3175", a11y = "sem")` Transformar datos con dplyr {#transformar_datos}
+
+  
+### El tidyverse
+
+
+### Los verbos del dlpyr
+
+::: {.cell}
+
+|                                                         |                                              |
+|---------------------------------------------------------|----------------------------------------------|
+| Extract rows with `filter()`                            | ![filter](images/filter.png){height=80px} |
+| Extract columns with `select()`                         | ![select](images/select.png){height=80px} |
+| Arrange/sort rows with `arrange()`                      | ![arrange](images/arrange.png){height=80px} |
+| Make new columns with `mutate()`                        | ![mutate](images/mutate.png){height=80px} |
+| Make group summaries with `group_by() |> summarize()`   | ![summarize](images/summarize.png){height=80px} |
+
+:::
+
+
+### `filter`
+
+
+::::: {.columns}
+
+:::: {.column width="50%"}
+```{r}
+#| echo: false
+#| results: asis
+
+cat('<code>filter(.data = <span style="background-color: #FFDFD1; font-weight: bold;">DATA</span>, 
+<span style="background-color: #FFD0CF; font-weight: bold;">...</span>)</code>')
+```
+
+::::
+
+
+:::: {.column width="50%"}
+- <span style="background-color: #FFDFD1; font-weight: bold;">DATA</span> = Data frame to transform
+- <span style="background-color: #FFD0CF; font-weight: bold;">...</span> = One or more tests<br>.`filter()` returns each row for which the test is TRUE.
+
+::::
+::::
+
+
+
+
+De la base original:
+
+```{r}
+#| echo: false
+gapminder |> 
+  select(country, continent, year) |> 
+  head(5) |> 
+  mutate(year = as.character(year)) |> 
+  bind_rows(tibble(country = "…", continent = "…", year = "…")) |> 
+  knitr::kable(format = "html")
+```
+
+
+Podemos seleccionar
+
+
+::::: {.columns}
+
+:::: {.column width="50%"}
+::: {.cell}
+```{r}
+#| echo: false
+#| results: asis
+
+cat('<code>filter(.data = <span style="background-color: #FFDFD1; font-weight: bold;">gapminder</span>, 
+<span style="background-color: #FFD0CF; font-weight: bold;">country == "Denmark"</span>)</code>')
+```
+:::
+
+::::
+
+
+:::: {.column width="50%"}
+```{r}
+#| echo: false
+gapminder |> 
+  select(country, continent, year) |> 
+  filter(country == "Denmark") |> 
+  head(6) |> 
+  knitr::kable(format = "html")
+```
+
+::::
+::::
+
+
+
+
+#### Símbolos Lógicos
+
+::: {.cell}
+
+| Test                   | Meaning                    | Test                   | Meaning                  |
+|:----------------------:|:---------------------------|:----------------------:|:--------------------------|
+| `x < y`                | Less than                  | `x %in% y`             | In (group membership)     |
+| `x > y`                | Greater than               | `is.na(x)`             | Is missing                |
+| `==`                   | Equal to                   | `!is.na(x)`            | Is not missing            |
+| `x <= y`               | Less than or equal to      |                        |                           |
+| `x >= y`               | Greater than or equal to   |                        |                           |
+| `x != y`               | Not equal to               |                        |                           |
+
+:::
+
+
+
+::: {.callout-tip}
+## Ejercicio
+
+Utilicen `filter()`y los condicionales para mostrar:
+
+1. Los datos para Canadá
+2. Todos los datos para los países de Oceanía
+3. Filas donde la expectativa de vida es mayor a 82
+:::
+
+
+#### Errores comunes
+
+Dos de los errores más comunes son:
+
+  1. Usar "=" en vez de "=="
+  2. No usar las comillas cuando las variables son de tipo texto
+
+::::: {.columns}
+
+:::: {.column width="50%"}
+
+- Incorrecto 
+
+```{r}
+#| echo: false
+#| results: asis
+cat('<code>filter(gapminder,<br>country <span style="color: #3f56b0;">=</span> "Canada")</code>')
+```
+
+```{r}
+#| echo: false
+#| results: asis
+cat('<code>filter(gapminder,<br>country = <span style="color: #3f56b0;">Canada</span>)</code>')
+```
+
+::::
+
+
+:::: {.column width="50%"}
+
+- Correcto
+
+```{r}
+#| echo: false
+#| results: asis
+cat('<code>filter(gapminder,<br>country <span style="color: #4db070;">==</span> "Canada")</code>')
+```
+
+
+```{r}
+#| echo: false
+#| results: asis
+cat('<code>filter(gapminder,<br>country = <span style="color: #4db070;">"Canada"</span>)</code>')
+```
+::::
+::::
+
+
+
+::::: {.columns}
+
+:::: {.column width="50%"}
+```{r}
+#| echo: false
+#| results: asis
+
+cat('<code>filter(.data = <span style="background-color: #FFDFD1; font-weight: bold;">gapminder</span>, 
+<span style="background-color: #FFD0CF; font-weight: bold;">country == "Denmark", year > 2000</span>)</code>')
+```
+::::
+
+:::: {.column width="50%"}
+```{r}
+#| echo: false
+gapminder |> 
+  select(country, continent, year) |> 
+  filter(country == "Denmark", year > 2000) |> 
+  head(6) |> 
+  knitr::kable(format = "html")
+```
+::::
+::::
+
+
+Algunos operadores lógicos son:
+
+
+::::: {.columns}
+
+:::: {.column width="50%"}
+- Si no se específica el operador, "&" es el default
+
+::::
+
+:::: {.column width="50%"}
+| Operator   | Meaning |
+|------------|---------|
+| a & b      |    y    |
+| a | b      |    o    |
+|  !a`       | negación|
+
+
+::::
+::::
+
+Las siguietes líneas de código hacen lo mismo:
+
+::::: {.columns}
+
+:::: {.column width="50%"}
+```{r}
+#| echo: false
+#| results: asis
+
+cat('<code>filter(.data = <span style="background-color: #FFDFD1; font-weight: bold;">gapminder</span>, 
+<span style="background-color: #FFD0CF; font-weight: bold;">country == "Denmark", year > 2000</span>)</code>')
+```
+::::
+
+:::: {.column width="50%"}
+```{r}
+#| echo: false
+#| results: asis
+
+cat('<code>filter(.data = <span style="background-color: #FFDFD1; font-weight: bold;">gapminder</span>, 
+<span style="background-color: #FFD0CF; font-weight: bold;">country == "Denmark" & year > 2000</span>)</code>')
+```
+::::
+::::
+
+
+::: {.callout-tip}
+## Ejercicio
+
+Utilicen `filter()`y los condicionales para mostrar:
+
+1. Los datos para Canadá antes de 1970
+2. Países donde la expectativa de vida in 2007 es menor a 50
+3. Países donde la expectativa de vida en 2007 es menor a 50  y no están en África
+
+:::
+
+
+#### Errores comunes
+
+::::: {.columns}
+
+:::: {.column width="50%"}
+
+- Incorrecto 
+
+```{r}
+#| echo: false
+#| results: asis
+cat('<code>filter(gapminder,<br> <span style="color: #3f56b0;">1960 < year < 1980</span> )</code>')
+```
+
+```{r}
+#| echo: false
+#| results: asis
+cat('<code>filter(gapminder,<br> <span style="color: #3f56b0;">country = "Canada", country = "Mexico", country = "United States" </span>)</code>')
+```
+
+::::
+
+
+:::: {.column width="50%"}
+
+- Correcto
+
+```{r}
+#| echo: false
+#| results: asis
+cat('<code>filter(gapminder,<br> <span style="color: #4db070;">year > 1960, year < 1980</span>)</code>')
+```
+
+
+```{r}
+#| echo: false
+#| results: asis
+cat('<code>filter(gapminder,<br> <span style="color: #4db070;">country %in% c("Canada", "Mexico", "United States") </span>)</code>')
+```
+::::
+::::
+
+### `mutate`
+
+::::: {.columns}
+
+:::: {.column width="50%"}
+```{r}
+#| echo: false
+#| results: asis
+
+cat('<code>mutate(.data = <span style="background-color: #FFDFD1; font-weight: bold;">gapminder</span>, 
+<span style="background-color: #FFD0CF; font-weight: bold;">gdp = gdpPercap * pop</span>)</code>')
+```
+::::
+
+:::: {.column width="50%"}
+```{r}
+#| echo: false
+gapminder |> 
+  mutate(gdp = gdpPercap * pop) |> 
+  mutate(`…` = "…") |> 
+  select(country, year, `…`, gdp) |> 
+  head(6) |> 
+  knitr::kable(format = "html")
+```
+::::
+::::
+
+
+
+::::: {.columns}
+
+:::: {.column width="50%"}
+```{r}
+#| echo: false
+#| results: asis
+
+cat('<code>mutate(.data = <span style="background-color: #FFDFD1; font-weight: bold;">gapminder</span>, 
+<span style="background-color: #FFD0CF; font-weight: bold;">gdp = gdpPercap * pop, pop_mil= round(pop / 1000000)</span>)</code>')
+```
+::::
+
+:::: {.column width="50%"}
+```{r}
+#| echo: false
+gapminder |> 
+  mutate(gdp = gdpPercap * pop,
+         pop_mil = round(pop / 1000000)) |> 
+  mutate(`…` = "…") |> 
+  select(country, year, `…`, gdp, pop_mil) |> 
+  head(6) |> 
+  knitr::kable(format = "html")
+```
+::::
+::::
