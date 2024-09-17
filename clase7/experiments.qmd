@@ -1,0 +1,221 @@
+---
+  format:
+   revealjs: 
+     theme: [default, style.scss]
+     slide-number: true
+     highlight-style: github
+     width: 1400
+     css:
+     - https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.2/font/bootstrap-icons.css
+---
+  
+##  {.center}
+
+<h1 class="text-indigo-pink">
+
+Analítica de Datos
+
+<h1>
+
+<h2>Experimentos</h2>
+
+::: {style="margin-top:50px"}
+### Carlos Cardona Andrade {.text-orange-gold}
+:::
+  
+# Tabla de contenido
+
+1.  [Muestreo](#muestreo)
+2.  [Fundamentos para Encuestas](#encuestas)
+3.  [Un poco de R](#r4ds)
+        
+        
+# Un poco sobre <br>[Muestreo]{.hl .hl-gold} {#muestreo .text-wash-black background="linear-gradient(45deg, #f37335, #fdc830)"}
+
+## Correlación no implica causalidad {.text-orange-gold}
+
+- Excepto cuando si la implica!
+
+- Incluso si no implica causalidad, la frase es inútil y termina la discusión
+
+## Probando {.text-orange-gold}
+
+```{r}
+#| eval: true
+#| echo: false
+#| fig-align: "center"
+#| out-width: "70%"
+library(knitr)
+knitr::include_graphics("images/slate-title.png")
+knitr::include_graphics("images/slate-quote.png")
+
+```
+
+## ¿Es útil la correlación? {.text-orange-gold}
+
+- ¡SI! La correlación es importante y se utiliza en la inferencia causal, solo que no de manera aislada
+
+- Una expresión más precisa sería: "La causalidad no puede inferirse solo a partir de la correlación", o más generalmente, "La causalidad no puede inferirse solo a partir de estadísticas muestrales"
+    - Un promedio, una diferencia de promedios
+    
+## Poblacipon y Muestras {.text-orange-gold}
+
+::: {.columns}
+::: {.column width="50%"}
+
+#### How do we figure out correlation?
+
+::: {.box-inv-3.medium}
+Math and statistics
+:::
+
+:::
+::: {.column width="50%"}
+
+#### How do we figure out causation?
+
+::: {.box-inv-3.medium}
+Philosophy. No math.
+:::
+
+:::
+:::
+
+## Modelo causal de Rubin {.text-orange-gold}
+
+A qué nos referimos cuando decimos esto **causó** aquello?
+
+- Cada individuo $i$ tiene dos resultados potenciales:
+
+  - Si el individuo es "tratado": $Y_{1i}$
+  - Si el individuo es "no tratado": $Y_{0i}$
+
+Sólo observamos $Y_{1i}$ o $Y_{0i}$. Nunca ambos!
+
+- El efecto del tratamiento para el individuo $i$ se define como:
+
+$$Y_{1i} - Y_{0i}$$
+
+
+## El problema fundamental de la inferencia causal {.text-orange-gold}
+
+Cada persona está en el grupo tratado ($D_i=1$) o en el grupo de control ($D_i=0$), pero no en ambos al mismo tiempo. Por lo tanto, para cada persona, solo podemos observar uno de sus posibles resultados. Lo que observamos ($Y_i$) es:
+
+$$Y_i = 
+\begin{cases} 
+Y_{1i} & \text{if } D_i = 1 \\
+Y_{0i} & \text{if } D_i = 0 
+\end{cases}$$
+
+
+## El problema fundamental de la inferencia causal {.text-orange-gold}
+
+- Los otros resultados (no observados) son los `contrafactuales`
+
+- Para los individuos en el grupo tratado, el contrafactual es: $(Y_{\color{red} 0 i}|D_i=1)$
+
+
+- Para los individuos en el grupo de control, el contrafactual es: $(Y_{\color{red} 1 i}|D_i=0)$
+
+### El problema fundamental:
+
+Nunca observaremos el efecto causal del tratamiento para el individuo i:
+
+$$$Y_{1i} − Y_{0i}$$
+
+
+## Cómo sabemos si X causa Y? {.text-orange-gold}
+
+::: {.box-inv-3.medium}
+**X** causa **Y** si…
+:::
+
+::: {.box-inv-3.medium}
+…intervenimos y cambiamos **X** sin cambiar nada más…
+:::
+
+::: {.box-inv-3.medium}
+…y **Y** cambia
+:::
+
+
+
+## La revolución causal {.text-orange-gold}
+
+```{r}
+#| eval: true
+#| echo: false
+#| fig-align: "center"
+#| out-width: "70%"
+library(ggdag)
+library(tidyverse)
+dag <- dagify(
+  Y ~ X + Z,
+  X ~ Z,
+  coords = list(x = c(X = 1, Y = 3, Z = 2),
+                y = c(X = 1, Y = 1, Z = 2))
+)
+
+plot(dag)
+```
+
+
+## La revolución causal {.text-orange-gold}
+
+```{r}
+#| eval: true
+#| echo: false
+#| fig-align: "center"
+#| out-width: "70%"
+library(ggdag)
+library(tidyverse)
+dag2 <- dagify(paro ~ colesterol,
+      colesterol ~ fumar + peso,
+       fumar ~ estilo_de_vida,
+       peso ~ estilo_de_vida)
+plot(dag2)
+```
+
+
+
+
+
+## Relaciones causales?
+
+- Encender fuegos artificiales causa ruido
+
+
+- El canto del gallo causa el amanecer
+
+- Obtener un MPA/MPP aumenta tus ingresos
+
+- Los resfriados desaparecen unos días después de tomar vitamina C
+
+
+
+
+## Probando
+
+```{r}
+#| eval: true
+#| echo: false
+#| fig-align: "center"
+#| out-width: "100%"
+library(knitr)
+knitr::include_graphics("images/nyt-dag1.png")
+```
+
+## {background-image="images/nyt-dag1.png"}
+
+
+## {background-image="images/nyt-dag2.png"}
+
+# [Fundamentos para<br>]{style="color:white"}[Encuestas]{.hl .hl-purple} {#encuestas background="linear-gradient(45deg, #4a00e0, #ff0099)"}
+  
+## Evaluando una encuesta {.text-indigo-pink}
+  
+
+  
+# [Un poco de<br>]{style="color:white"}[R]{.hl .hl-red} {#r4ds background="linear-gradient(45deg, #ed213a, #93291e)"}
+
+## De regreso a los datos de Spotify {.text-red-brown}
