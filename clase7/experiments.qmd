@@ -25,20 +25,53 @@ Analítica de Datos
   
 # Tabla de contenido
 
-1.  [Muestreo](#muestreo)
-2.  [Fundamentos para Encuestas](#encuestas)
-3.  [Un poco de R](#r4ds)
+1.  [Causalidad](#causa)
+2.  [Experimentos](#experimentos)
+3.  [Experimentos en Empresas](#business)
         
         
-# Un poco sobre <br>[Muestreo]{.hl .hl-gold} {#muestreo .text-wash-black background="linear-gradient(45deg, #f37335, #fdc830)"}
+# [Causalidad]{.hl .hl-gold} {#causa .text-wash-black background="linear-gradient(45deg, #f37335, #fdc830)"}
 
-## Correlación no implica causalidad {.text-orange-gold}
+
+## Causalidad {.text-orange-gold .center}
+
+
+¿La estrategia/opción/bono logrará un aumento en los beneficios de la empresa?
+
+
+## El problema de los grupos focales {.text-orange-gold .center}
+
+```{r}
+#| eval: true
+#| echo: false
+#| fig-align: "center"
+#| out-width: "70%"
+library(knitr)
+knitr::include_graphics("images/focus_group.png")
+
+```
+
+
+## Correlación y relaciones espúrias {.text-orange-gold .center}
+
+Una relación espuria es un vínculo aparente entre dos eventos que se demuestra inválido cuando se examina la relación con mayor detalle.
+
+```{r}
+#| eval: true
+#| echo: false
+#| fig-align: "center"
+#| out-width: "70%"
+library(knitr)
+knitr::include_graphics("images/icrecream.png")
+```
+
+## Correlación no implica causalidad {.text-orange-gold .center}
 
 - Excepto cuando si la implica!
 
 - Incluso si no implica causalidad, la frase es inútil y termina la discusión
 
-## Probando {.text-orange-gold}
+## 
 
 ```{r}
 #| eval: true
@@ -51,48 +84,106 @@ knitr::include_graphics("images/slate-quote.png")
 
 ```
 
-## ¿Es útil la correlación? {.text-orange-gold}
+## ¿Es útil la correlación? {.text-orange-gold .center}
 
 - ¡SI! La correlación es importante y se utiliza en la inferencia causal, solo que no de manera aislada
 
 - Una expresión más precisa sería: "La causalidad no puede inferirse solo a partir de la correlación", o más generalmente, "La causalidad no puede inferirse solo a partir de estadísticas muestrales"
     - Un promedio, una diferencia de promedios
     
-## Poblacipon y Muestras {.text-orange-gold}
+## Correlación vs Causalidad {.text-orange-gold .center}
 
-::: {.columns}
-::: {.column width="50%"}
 
-#### How do we figure out correlation?
 
-::: {.box-inv-3.medium}
-Math and statistics
+#### Cómo manejamos la correlación?
+
+- Matemáticas
+
+- Estadística
+
+
+
+
+#### Cómo manejamos la causalidad?
+
+- Filosofía
+
+::: {.fragment .strike}
+- Matemáticas
 :::
 
-:::
-::: {.column width="50%"}
 
-#### How do we figure out causation?
 
-::: {.box-inv-3.medium}
-Philosophy. No math.
+## Cómo sabemos si X causa Y? {.text-orange-gold .center style="text-align:center"}
+
+::: {.box-inv-3.medium .center}
+**X** causa **Y** si…
 :::
 
+::: {.box-inv-3.medium .center}
+…intervenimos y cambiamos **X** sin cambiar nada más…
 :::
+
+::: {.box-inv-3.medium .center}
+…y **Y** cambia
 :::
+
+
+
+## Relaciones causales? {.text-orange-gold .center}
+
+::: incremental
+
+- Encender fuegos artificiales causa ruido
+
+- El canto del gallo causa el amanecer
+
+- Obtener un MBA aumenta tus ingresos
+
+- Los resfriados desaparecen unos días después de tomar vitamina C
+
+:::
+
+
+## {.text-red-brown .center}
+
+
+::::: {.columns}
+:::: {.column width="45%"}
+### Causalidad= Correlación {.r-fit-text}
+### + orden temporal + relación no espuria {.r-fit-text}
+::::
+:::: {.column width="10%"}
+::::
+
+:::: {.column width="45%"}
+::: {.incremental}
+* ¿Cómo saber si estamos en lo correcto?
+* Se necesita un modelo filosófico
+:::
+::::
+:::::
+
+
+
+## Modelo causal de Rubin {.text-orange-gold}
+
+- Imaginemos un grupo de alumnos para los cuales tenemos una medida de rendimiento académico $Y_i$ para cada estudiante $i$.
+
+- Además, sabemos si el estudiante fue asignado a un grupo de estudio especial ($D_i=1$) o a un grupo de estudio normal ($D_i=0$)
 
 ## Modelo causal de Rubin {.text-orange-gold}
 
 A qué nos referimos cuando decimos esto **causó** aquello?
 
-- Cada individuo $i$ tiene dos resultados potenciales:
+- Cada estudiante $i$ tiene dos resultados potenciales:
 
-  - Si el individuo es "tratado": $Y_{1i}$
-  - Si el individuo es "no tratado": $Y_{0i}$
+  - Si el alumno es "tratado": $Y_{1i}$
+  - Si el alumno es "no tratado": $Y_{0i}$
 
 Sólo observamos $Y_{1i}$ o $Y_{0i}$. Nunca ambos!
 
-- El efecto del tratamiento para el individuo $i$ se define como:
+- El efecto del grupo especial/tratado para el alumno $i$ se define como:
 
 $$Y_{1i} - Y_{0i}$$
 
@@ -117,27 +208,85 @@ Y_{0i} & \text{if } D_i = 0
 
 - Para los individuos en el grupo de control, el contrafactual es: $(Y_{\color{red} 1 i}|D_i=0)$
 
-### El problema fundamental:
+### El problema fundamental: {.text-orange-gold}
 
-Nunca observaremos el efecto causal del tratamiento para el individuo i:
+Nunca observaremos el efecto causal del tratamiento para el alumno $i$:
 
-$$$Y_{1i} − Y_{0i}$$
+$$Y_{1i} − Y_{0i}$$
+
+## El verdadero efecto promedio {.text-orange-gold}
+
+```{r}
+#| eval: true
+#| echo: false
+#| fig-align: "center"
+#| out-width: "70%"
+
+library(knitr)
+library(tidyverse)
+
+data <- tibble(
+  Persona = c("Juan", "María", "Sara", "Carlos", "Pedro", "Media"),
+  Y_1 = c(130, 120, 100, 110, 115, 115),
+  Y_0 = c(115, 125, 125, 130, 120, 123),
+  Diferencia = c(15, -5, -25, -20, -5, -8)
+) 
+
+data |> 
+  knitr::kable(format = "html")
 
 
-## Cómo sabemos si X causa Y? {.text-orange-gold}
+```
 
-::: {.box-inv-3.medium}
-**X** causa **Y** si…
-:::
 
-::: {.box-inv-3.medium}
-…intervenimos y cambiamos **X** sin cambiar nada más…
-:::
+## Una asignación aleatoria {.text-orange-gold}
 
-::: {.box-inv-3.medium}
-…y **Y** cambia
-:::
+```{r}
+#| eval: true
+#| echo: false
+#| fig-align: "center"
+#| out-width: "70%"
 
+library(knitr)
+library(tidyverse)
+
+data <- tibble(
+  Persona = c("Juan", "María", "Sara", "Carlos", "Pedro", "Media"),
+  Y_1 = c(130, 120, "?", "?", 115, 121.66),
+  Y_0 = c("?", "?", 125, 130, "?", 127.5),
+  Diferencia = c("?", "?", "?", "?", "?", -5.83)
+) 
+
+data |> 
+  knitr::kable(format = "html")
+
+
+```
+
+
+## Otra asignación {.text-orange-gold}
+
+```{r}
+#| eval: true
+#| echo: false
+#| fig-align: "center"
+#| out-width: "70%"
+
+library(knitr)
+library(tidyverse)
+
+data <- tibble(
+  Persona = c("Juan", "María", "Sara", "Carlos", "Pedro", "Media"),
+  Y_1 = c(130, 120, 100, "?", "?", 116.67),
+  Y_0 = c("?", "?", "?", 130, 120, 125),
+  Diferencia = c("?", "?", "?", "?", "?", -8.33)
+) 
+
+data |> 
+  knitr::kable(format = "html")
+
+
+```
 
 
 ## La revolución causal {.text-orange-gold}
@@ -147,75 +296,637 @@ $$$Y_{1i} − Y_{0i}$$
 #| echo: false
 #| fig-align: "center"
 #| out-width: "70%"
+library(knitr)
+knitr::include_graphics("images/book-of-why.jpg")
+```
+
+
+## Diagramas Causales (DAGS) {.text-orange-gold}
+
+::: {.columns}
+::: {.column width="50%"}
+
+- Modelo gráfico del proceso que genera los datos    
+
+- Crea un mapa de su modelo filosófico
+
+- Nos ayuda a pensar qué controlar para aislar e identificar la causalidad
+:::
+
+
+::: {.column width="50%"}
+```{r}
+#| echo: false
+#| fig-width: 4.5
+#| fig-height: 3
+#| out-width: 100%
+#install.packages('ggdag', repos = c('https://r-causal.r-universe.dev', 'https://cloud.r-project.org'))
+
 library(ggdag)
 library(tidyverse)
-dag <- dagify(
+library(dagitty)
+
+dagify(
   Y ~ X + Z,
   X ~ Z,
   coords = list(x = c(X = 1, Y = 3, Z = 2),
                 y = c(X = 1, Y = 1, Z = 2))
-)
-
-plot(dag)
+) |> 
+  ggplot(aes(x = x, y = y, xend = xend, yend = yend)) +
+  geom_dag_edges() +
+  geom_dag_point(color = "grey80", size = 14) +
+  geom_dag_text(color = "black", size = 5) +
+  theme_dag()
 ```
 
+:::
+:::
 
-## La revolución causal {.text-orange-gold}
+
+## Directed Acyclic Graphs (DAGs) {.text-orange-gold}
 
 ```{r}
-#| eval: true
 #| echo: false
+#| fig-width: 9
+#| fig-height: 4.5
+#| out-width: 100%
 #| fig-align: "center"
-#| out-width: "70%"
-library(ggdag)
-library(tidyverse)
-dag2 <- dagify(paro ~ colesterol,
-      colesterol ~ fumar + peso,
-       fumar ~ estilo_de_vida,
-       peso ~ estilo_de_vida)
-plot(dag2)
+
+edu_earn_coords <- list(x = c(Edu = 2, Ingr = 4, Periodo = 2, Cont = 4, 
+                              Ubi = 3, Conx = 3, Req = 1, NObs1 = 3),
+                        y = c(Edu = 2, Ingr = 2, Periodo = 3, Cont = 3, 
+                              Ubi = 3, Conx = 1, Req = 2, NObs1 = 4))
+
+dagify(
+  Ingr ~ Edu,
+  exposure = "Edu",
+  outcome = "Ingr",
+  coords = edu_earn_coords) |> 
+  tidy_dagitty() |> 
+  node_status() |> 
+  ggplot(aes(x = x, y = y, xend = xend, yend = yend)) +
+  geom_dag_edges(start_cap = ggraph::circle(3, "lines"),
+                 end_cap = ggraph::circle(3, "lines"),
+                 edge_width = 1.5, 
+                 arrow_directed = grid::arrow(length = grid::unit(0.75, "lines"), type = "closed")) +
+  geom_dag_point(aes(color = status), size = 30) +
+  geom_dag_text(color = "black", size = 7) +
+  scale_color_manual(values = c("#FF4136", "#0074D9"),
+                     na.value = "#7FDBFF") +
+  guides(color = "none") +
+  theme_dag()
 ```
 
 
 
-
-
-## Relaciones causales?
-
-- Encender fuegos artificiales causa ruido
-
-
-- El canto del gallo causa el amanecer
-
-- Obtener un MPA/MPP aumenta tus ingresos
-
-- Los resfriados desaparecen unos días después de tomar vitamina C
-
-
-
-
-## Probando
+## Directed Acyclic Graphs (DAGs) {.text-orange-gold}
 
 ```{r}
-#| eval: true
 #| echo: false
+#| fig-width: 9
+#| fig-height: 4.5
+#| out-width: 100%
 #| fig-align: "center"
-#| out-width: "100%"
-library(knitr)
-knitr::include_graphics("images/nyt-dag1.png")
+
+dagify(
+  Ingr ~ Edu + Periodo + Cont + Ubi + Conx,
+  Edu ~ Req + Ubi + Cont + Periodo,
+  Conx ~ Edu,
+  Cont ~ NObs1,
+  Ubi ~ NObs1,
+  exposure = "Edu",
+  outcome = "Ingr",
+  latent = "NObs1",
+  labels = c("Ingr" = "Earnings", "Edu" = "Education",
+             "Periodo" = "Year", "Cont" = "Background",
+             "Ubi" = "Location", "Conx" = "Job connections",
+             "NObs1" = "Unobserved stuff"),
+  coords = edu_earn_coords) |> 
+  tidy_dagitty() |> 
+  node_status() |> 
+  ggplot(aes(x = x, y = y, xend = xend, yend = yend)) +
+  geom_dag_edges() +
+  geom_dag_point(aes(color = status), size = 14) +
+  geom_dag_text(color = "black", size = 5) +
+  scale_color_manual(values = c("#FF4136", "grey60", "#0074D9"),
+                     na.value = "#7FDBFF") +
+  guides(color = "none") +
+  theme_dag()
 ```
+
+
+
+## Directed Acyclic Graphs (DAGs) {.text-orange-gold}
+
+```{r}
+#| echo: false
+#| fig-width: 9
+#| fig-height: 4.5
+#| out-width: 100%
+#| fig-align: "center"
+
+set.seed(123)
+dagify(cardiacarrest ~ cholesterol,
+       cholesterol ~ smoking + weight,
+       smoking ~ unhealthy,
+       weight ~ unhealthy,
+       labels = c("cardiacarrest" = "Paro\n Cardíaco", 
+                  "smoking" = "Fumar",
+                  "cholesterol" = "Colesterol",
+                  "unhealthy" = "Estilo de vida\n poco saludable",
+                  "weight" = "Peso"),
+       latent = "unhealthy",
+       exposure = "smoking",
+       outcome = "cardiacarrest") |> 
+  ggdag(text = FALSE, use_labels = "label") +
+  theme_dag()
+```
+
+`
 
 ## {background-image="images/nyt-dag1.png"}
 
 
 ## {background-image="images/nyt-dag2.png"}
 
-# [Fundamentos para<br>]{style="color:white"}[Encuestas]{.hl .hl-purple} {#encuestas background="linear-gradient(45deg, #4a00e0, #ff0099)"}
+# [Experimentos]{.hl .hl-purple} {#experimentos background="linear-gradient(45deg, #4a00e0, #ff0099)"}
   
-## Evaluando una encuesta {.text-indigo-pink}
+## Experimentos como herramienta {.text-indigo-pink .center}
+
+- Los experimentos son una buena alternativa para crear `contrafactuales` ($(Y_{\color{red} 0 i}|D_i=1)$ y $(Y_{\color{red} 1 i}|D_i=0)$)  adecuados.
+
+- También nos permiten buscar datos que no están disponibles sobre el terreno.
+
+- Los experimentos (bien diseñados) proporcionan efectos causales 
   
+  
+## ¿Qué es un experimento? {.text-indigo-pink}
+
+
+- Un proceso mediante el cual se testea una **hipótesis**.
+- Ejemplos de hipótesis que se pueden testear con experimentos:
+    - La hidroxicloroquina es un medicamento efectivo contra el coronavirus.
+    - Organizar reuniones de brainstorming para innovar en procesos de la empresa, hace sus procesos más eficientes.
+    - Pagar por anunciar algún producto en YouTube es beneficioso para las ventas.
+    - Un nuevo elemento en la página web hace que las personas sean más propensas a comprar un producto.
+
+
+
+## Plantear la hipótesis {.text-indigo-pink .center}
+
+- El primero paso es `plantear la hipótesis` que queremos testear.
+
+- Debemos `especificar/definir` la variable que analizaremos para saber si la hipótesis se cumple o no, y que dicha variable es la adecuada.
+
+- En ese sentido, los ejemplos anteriores necesitan todavía un poco de trabajo…
+
+
+
+## Determinar variable(s) a medir {.text-indigo-pink}
+
+“La hidroxicloroquina es un medicamento efectivo contra el nuevo coronavirus”
+
+- Algunas alternativas:
+    - Duración de la enfermedad desde que se presentaron síntomas hasta que desaparecen.
+    - % que progresa a estado grave (hospital).
+    - % que necesita oxígeno.
+
+
+## Determinar variable(s) a medir {.text-indigo-pink}
+
+“Organizar reuniones semanales de 1 hora de brainstorming para innovar en procesos de la empresa, hace sus procesos más eficientes.
+
+  - Algunas alternativas:
+    - Duración de ciertos/todos los procesos.
+    - Pasos en el proceso.
+    - Procesos que utilizan tecnologías de la información.
+
+
+
+
+## Thomke, S. H. (2020). *Experimentation works: The surprising power of business experiments*. Harvard Business Press {.text-indigo-pink}
+
+```{r}
+#| eval: true
+#| echo: false
+#| fig-align: "center"
+#| out-width: "70%"
+library(knitr)
+knitr::include_graphics("images/book-experiments.png")
+
+```
+
+## Control y Tratamiento {.text-indigo-pink}
+
+- Todo experimento debe tener un **control** y al menos, un **tratamiento**.
+
+- Grupo control es aquel que no se interviene o "no tratado" ($D_i=0$!)
+
+- Grupo(s) tratamiento son los que se intervienen/se les hace algún cambio.
+ ($D_i=1$!)
+
+
+## {.text-indigo-pink .center}
+
+```{r}
+#| eval: true
+#| echo: false
+#| fig-align: "center"
+#| out-width: "70%"
+library(knitr)
+knitr::include_graphics("images/gardening.png")
+
+```
+
+## Determinar variable(s) a medir {.text-indigo-pink}
+
+- Al momento de comparar control y tratamiento, eliminamos (“controlamos”) cualquier otro factor que pudiese haber influído en nuestra variable de interés y que no se deba a la intervención / cambio. 
+
+- Estos otros factores deberían influenciar a grupos control y tratamiento por igual.
+
+- Es decir, el control nos permite determinar si la intervención verdaderamente `CAUSÓ` un cambio/efecto en la variable de interés.
+
+
+
+
+## Asignación a un experimento {.text-indigo-pink}
+
+- Supongamos que tenemos 1 control y n tratamientos (donde n puede ser 1,2,…)
+
+- Control y tratamientos serían (normalmente) de tamaño 1/(n+1) por las personas a estudiar.
+
+Ejemplo:
+
+- 1000 personas en mi organización que participan en el experimento (ya sea como control, tratamiento 1 o tratamiento 2).
+
+- Entonces 1/3 de las 1000 personas (333) entrarían al control, 1/3 (333) al tratamiento 1 y 1/3 (334) al tratamiento 2.
+
+
+## Asignación a un experimento {.text-indigo-pink}
+```{r}
+#| eval: true
+#| echo: true
+#| fig-align: "center"
+#| out-width: "70%"
+# Establecer la semilla para poder replicar
+set.seed(123)
+
+# Número de personas
+n <- 1000
+
+# Creemos unos datos con 1000 personas
+data <- data.frame(
+  id = 1:n,
+  tipo = sample(c("Profesores", "Estudiantes"), size = n, replace = TRUE, prob = c(0.2, 0.8))
+)
+
+# Veamos cómo quedan distribuidos nuestros datos
+aggregate(id ~ tipo, data = data, FUN = length)
+```
+
+
+## La Aleatoriedad {.text-indigo-pink}
+```{r}
+#| eval: true
+#| echo: true
+#| fig-align: "center"
+#| out-width: "70%"
+
+# Asignemos aleatoriamente a la gente a un grupo (control, tratamiento 1, tratamiento 2) 
+data <- data %>%
+  mutate(
+    grupo = sample(c("Control", "Tratamiento 1", "Tratamiento 2"), size = n, replace = TRUE)
+  )
+
+# Veamos cómo quedan distribuidos nuestros datos
+aggregate(id ~ grupo, data = data, FUN = length)
+
+
+# Y al interior de cada grupo?
+aggregate(id ~ grupo+tipo, data = data, FUN = length)
+```
+
+
+## La Aleatoriedad {.text-indigo-pink}
+```{r}
+#| eval: true
+#| echo: false
+#| fig-align: "center"
+#| out-width: "100%"
+
+# Calculate the proportion of women in each group
+proportion_data <- data %>%
+  group_by(grupo) %>%
+  summarise(
+    prof_proportion = mean(tipo == "Profesores"),
+    n = n()
+  )
+
+# Function to calculate confidence interval
+ci_prop <- function(p, n, conf.level = 0.95) {
+  if (n <= 0) return(list(lower = NA, upper = NA))  # Handle cases where n <= 0
+  if (p < 0 | p > 1) return(list(lower = NA, upper = NA))  # Handle invalid proportion values
+  
+  se <- sqrt(p * (1 - p) / n)
+  z <- qnorm((1 + conf.level) / 2)
+  lower <- p - z * se
+  upper <- p + z * se
+  
+  # Ensure lower and upper are within [0, 1]
+  lower <- max(lower, 0)
+  upper <- min(upper, 1)
+  
+  return(list(lower = lower, upper = upper))
+}
+
+
+proportion_data <- proportion_data %>%
+  rowwise() %>%
+  mutate(
+    ci = list(ci_prop(prof_proportion, n)),
+    ci_lower = ci$lower,
+    ci_upper = ci$upper
+  ) %>%
+  ungroup()
+  
+# Plot the data with specified y-axis breaks and adjusted limits
+ggplot(proportion_data, aes(x = grupo, y = prof_proportion)) +
+  geom_point(size = 4, color = "#0074D9") +
+  geom_errorbar(aes(ymin = ci_lower, ymax = ci_upper), width = 0.2, color = "#FF4136") +
+  labs(
+    x = "Grupo",
+    y = "Proporción de Profesores",
+    title = "Proporción de Profesores con IC por grupo"
+  ) +
+  scale_y_continuous(
+    breaks = c(0, 0.10, 0.20, 0.30),
+    limits = c(0, 0.3)  # Extend limits to ensure all breaks are visible
+  ) +
+  theme_minimal()
+```
+
+## La Aleatoriedad {.center .text-indigo-pink}
+
+- Es fundamental, para asegurarnos que cualquier diferencia entre control y tratamiento (en la variable de interés) se deba a nuestra intervención que la asignación sea aleatoria.
+
+- La asignación *aleateoria* balancea las características entre control y tratamiento
+
+- De lo contrario, si observo una diferencia entre ambos grupos, esto se podría deber a…
+
+
+## ¿Cómo determino que el control es distinto al (a los) tratamiento(s)? {.text-indigo-pink}
+
+- En otras palabras, ¿cómo determinamos que hay un efecto de mi intervención en la variable de interés?
+
+- Cuando queremos saber si dos grupos son distintos en cuanto a alguna variable, hacemos…
+
+    [PRUEBA DE HIPOTESIS DE MEDIAS POBLACIONALES]{.hl .hl-red}
+
+- Si p-value es menor al límite de riesgo (1%, 5% o 10%), entonces puedo decir que ambos grupos son distintos en cuanto a esa variable.
+
+- Puedo hacer varias comparaciones, si hay mas de 1 tratamiento, pero siempre entre 2 grupos: control vs tratamiento 1, control vs tratamiento 2, tratamiento 1 vs tratamiento 2, etc…
+
+## Algunos puntos importantes {.text-indigo-pink}
+
+
+Los experimentos nos permiten establecer **causalidad**.
+   
+   
+- Implemento acción, estrategia, intervención y observo que las personas/divisiones/municipios… se comportan de manera distinta a las del control cuando se les aplica la intervención (importancia del control para establecer causalidad).
+
+- Entonces la intervención está causando el cambio en comportamiento. No es una simple correlación.
+
+
 
   
-# [Un poco de<br>]{style="color:white"}[R]{.hl .hl-red} {#r4ds background="linear-gradient(45deg, #ed213a, #93291e)"}
+# [Experimentos en<br>]{style="color:white"}[Empresas]{.hl .hl-red} {#business background="linear-gradient(45deg, #ed213a, #93291e)"}
 
-## De regreso a los datos de Spotify {.text-red-brown}
+## ¿Por qué usar experimentos en una empresa? {.text-red-brown}
+
+- La incertidumbre es parte inherente del proceso emprendedor.
+
+- Los emprendedores deben tomar muchas decisiones, a menudo con resultados arriesgados o desconocidos.
+
+- Tienen que elegir a qué clientes servir, qué características incluir en el producto y a través de qué canales vender.
+
+- ¿Cuál marco estratégico es el adecuado?
+
+
+## Intuición vs Experimentos {.text-red-brown}
+
+```{r}
+#| eval: true
+#| echo: false
+#| fig-align: "center"
+#| out-width: "70%"
+knitr::include_graphics("images/hippos.png")
+
+```
+
+## Intuición vs Experimentos {.text-red-brown}
+
+
+> "[El iPhone es] el teléfono más caro del mundo, y no atrae a los clientes empresariales porque no tiene teclado, lo que hace que no sea una buena máquina de correo electrónico."
+
+Steve Ballmer, consejero delegado de Microsoft (2007)
+
+> "La gente nos ha dicho una y otra vez que no quiere alquilar su música... no quiere suscripciones."
+
+Steve Jobs, consejero delegado de Apple (2003)
+
+
+
+## El reto de la innovación {.text-red-brown}
+
+- La idea es que, al igual que en una fábrica, la variabilidad y la incertidumbre son indeseables y deben eliminarse. 
+
+- Aquí radica el **dilema**: por definición, la novedad crea incertidumbre porque no sabemos qué funcionará y qué no. Dicho de otro modo la incertidumbre es necesaria porque crea oportunidades. 
+
+
+
+
+## Los experimentos como herramienta para la innovación {.text-red-brown}
+
+::: {.columns}
+::: {.column width="50%"}
+
+La experimentación se presenta como un proceso de tres partes:
+
+
+1. Los emprendedores `generan` ideas para introducir variación en el número y la naturaleza de las opciones estratégicas.
+
+2. `Evalúan` la viabilidad de las opciones seleccionadas 
+
+3. Deben `tomar decisiones` basadas en los resultados de las pruebas.
+:::
+
+
+::: {.column width="50%"}
+```{r}
+#| eval: true
+#| echo: false
+#| fig-align: "center"
+#| out-width: "70%"
+knitr::include_graphics("images/book-experiments.png")
+
+```
+
+:::
+:::
+
+
+
+
+
+##  {.text-red-brown}
+
+```{r}
+#| eval: true
+#| echo: false
+#| fig-align: "center"
+#| out-width: "70%"
+knitr::include_graphics("images/stock.png")
+
+```
+
+
+## {.text-red-brown}
+
+
+::: {.columns}
+::: {.column width="50%"}
+
+```{r}
+#| eval: true
+#| echo: false
+#| fig-align: "center"
+#| out-width: "90%"
+knitr::include_graphics("images/bing.png")
+
+```
+:::
+
+
+::: {.column width="50%"}
+```{r}
+#| eval: true
+#| echo: false
+#| fig-align: "center"
+#| out-width: "40%"
+library(knitr)
+knitr::include_graphics("images/bing_exp.png")
+
+```
+
+:::
+:::
+
+
+## ¿Cómo llevar a cabo un experimento? {.text-red-brown}
+
+1. Desarrollar una hipótesis
+
+2. Diseñar el experimento (A/B por ejemplo)
+
+3. Ejecutar el experimento
+
+4. Analizar los resultados
+
+Un marco de experimentación inclina a los emprendedores hacia el aprendizaje y la adaptación, evitando compromisos prematuros o costosos.
+
+
+## A/B Testing {.text-red-brown}
+
+
+::: {.columns}
+::: {.column width="50%"}
+
+```{r}
+#| eval: true
+#| echo: false
+#| fig-align: "center"
+#| out-width: "70%"
+knitr::include_graphics("images/ABtesting.png")
+
+```
+:::
+
+
+::: {.column width="50%"}
+```{r}
+#| eval: true
+#| echo: false
+#| fig-align: "center"
+#| out-width: "90%"
+knitr::include_graphics("images/netflix.png")
+
+```
+
+:::
+:::
+
+
+## A/B Testing {.text-red-brown}
+
+```{r}
+#| eval: true
+#| echo: false
+#| fig-align: "center"
+#| out-width: "70%"
+library(knitr)
+knitr::include_graphics("images/headline.png")
+
+```
+
+## A/B Testing {.text-red-brown}
+
+```{r}
+#| eval: true
+#| echo: false
+#| fig-align: "center"
+#| out-width: "70%"
+library(knitr)
+knitr::include_graphics("images/walkability.png")
+
+```
+
+## Preguntas para realizar buenos experimentos empresariales {.text-red-brown}
+
+
+### Hipótesis 
+¿La hipótesis se basa en observaciones, ideas o datos?
+
+¿Se centra el experimento en una medida de gestión comprobable?
+
+
+¿Tiene variables medibles y puede demostrarse su falsedad?
+
+
+¿Qué se espera aprender del experimento?
+
+
+
+## Preguntas para realizar buenos experimentos empresariales {.text-red-brown}
+
+
+### Adhesión
+
+¿Qué cambios concretos se introducirían en función de los resultados?
+
+¿Cómo garantizará la organización que no se ignoren los resultados?
+
+¿Cómo encaja el experimento en el programa general de aprendizaje y las prioridades estratégicas de la organización?
+
+
+## Preguntas para realizar buenos experimentos empresariales {.text-red-brown}
+
+
+### Viabilidad
+
+¿Tiene el experimento una predicción comprobable?
+
+¿Cuál es el tamaño de muestra necesario? Nota: El tamaño de la muestra dependerá del efecto esperado (por ejemplo, un aumento del 5% en las ventas).
+
+¿Puede la organización llevar a cabo el experimento en los lugares de prueba durante el tiempo necesario?
+
+

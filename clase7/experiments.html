@@ -28,6 +28,71 @@
       margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
       vertical-align: middle;
     }
+    /* CSS for syntax highlighting */
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+      }
+    pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+    div.sourceCode
+      { color: #24292e;  }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span { color: #24292e; } /* Normal */
+    code span.al { color: #ff5555; font-weight: bold; } /* Alert */
+    code span.an { color: #6a737d; } /* Annotation */
+    code span.at { color: #d73a49; } /* Attribute */
+    code span.bn { color: #005cc5; } /* BaseN */
+    code span.bu { color: #d73a49; } /* BuiltIn */
+    code span.cf { color: #d73a49; } /* ControlFlow */
+    code span.ch { color: #032f62; } /* Char */
+    code span.cn { color: #005cc5; } /* Constant */
+    code span.co { color: #6a737d; } /* Comment */
+    code span.cv { color: #6a737d; } /* CommentVar */
+    code span.do { color: #6a737d; } /* Documentation */
+    code span.dt { color: #d73a49; } /* DataType */
+    code span.dv { color: #005cc5; } /* DecVal */
+    code span.er { color: #ff5555; text-decoration: underline; } /* Error */
+    code span.ex { color: #d73a49; font-weight: bold; } /* Extension */
+    code span.fl { color: #005cc5; } /* Float */
+    code span.fu { color: #6f42c1; } /* Function */
+    code span.im { color: #032f62; } /* Import */
+    code span.in { color: #6a737d; } /* Information */
+    code span.kw { color: #d73a49; } /* Keyword */
+    code span.op { color: #24292e; } /* Operator */
+    code span.ot { color: #6f42c1; } /* Other */
+    code span.pp { color: #d73a49; } /* Preprocessor */
+    code span.re { color: #6a737d; } /* RegionMarker */
+    code span.sc { color: #005cc5; } /* SpecialChar */
+    code span.ss { color: #032f62; } /* SpecialString */
+    code span.st { color: #032f62; } /* String */
+    code span.va { color: #e36209; } /* Variable */
+    code span.vs { color: #032f62; } /* VerbatimString */
+    code span.wa { color: #ff5555; } /* Warning */
   </style>
   <link rel="stylesheet" href="experiments_files/libs/revealjs/dist/theme/quarto.css" id="theme">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.2/font/bootstrap-icons.css">
@@ -340,31 +405,44 @@ Experimentos
 <section id="tabla-de-contenido" class="title-slide slide level1 center">
 <h1>Tabla de contenido</h1>
 <ol type="1">
-<li><a href="#/muestreo">Muestreo</a></li>
-<li><a href="#/encuestas">Fundamentos para Encuestas</a></li>
-<li><a href="#/r4ds">Un poco de R</a></li>
+<li><a href="#/causa">Causalidad</a></li>
+<li><a href="#/experimentos">Experimentos</a></li>
+<li><a href="#/business">Experimentos en Empresas</a></li>
 </ol>
 </section>
 
 <section>
-<section id="muestreo" class="title-slide slide level1 text-wash-black center" data-background="linear-gradient(45deg, #f37335, #fdc830)">
-<h1>Un poco sobre <br><span class="hl hl-gold">Muestreo</span></h1>
+<section id="causa" class="title-slide slide level1 text-wash-black center" data-background="linear-gradient(45deg, #f37335, #fdc830)">
+<h1><span class="hl hl-gold">Causalidad</span></h1>
 
 </section>
-<section id="correlación-no-implica-causalidad" class="slide level2 text-orange-gold">
+<section id="causalidad" class="slide level2 text-orange-gold center">
+<h2>Causalidad</h2>
+<p>¿La estrategia/opción/bono logrará un aumento en los beneficios de la empresa?</p>
+</section>
+<section id="el-problema-de-los-grupos-focales" class="slide level2 text-orange-gold center">
+<h2>El problema de los grupos focales</h2>
+
+<img data-src="images/focus_group.png" class="quarto-discovered-preview-image r-stretch quarto-figure-center" style="width:70.0%"></section>
+<section id="correlación-y-relaciones-espúrias" class="slide level2 text-orange-gold center">
+<h2>Correlación y relaciones espúrias</h2>
+<p>Una relación espuria es un vínculo aparente entre dos eventos que se demuestra inválido cuando se examina la relación con mayor detalle.</p>
+
+<img data-src="images/icrecream.png" style="width:70.0%" class="r-stretch quarto-figure-center"></section>
+<section id="correlación-no-implica-causalidad" class="slide level2 text-orange-gold center">
 <h2>Correlación no implica causalidad</h2>
 <ul>
 <li><p>Excepto cuando si la implica!</p></li>
 <li><p>Incluso si no implica causalidad, la frase es inútil y termina la discusión</p></li>
 </ul>
 </section>
-<section id="probando" class="slide level2 text-orange-gold">
-<h2>Probando</h2>
+<section id="section-1" class="slide level2">
+<h2></h2>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure>
-<p><img data-src="images/slate-title.png" class="quarto-discovered-preview-image" style="width:70.0%"></p>
+<p><img data-src="images/slate-title.png" style="width:70.0%"></p>
 </figure>
 </div>
 </div>
@@ -377,7 +455,7 @@ Experimentos
 </div>
 </div>
 </section>
-<section id="es-útil-la-correlación" class="slide level2 text-orange-gold">
+<section id="es-útil-la-correlación" class="slide level2 text-orange-gold center">
 <h2>¿Es útil la correlación?</h2>
 <ul>
 <li><p>¡SI! La correlación es importante y se utiliza en la inferencia causal, solo que no de manera aislada</p></li>
@@ -387,35 +465,84 @@ Experimentos
 </ul></li>
 </ul>
 </section>
-<section id="poblacipon-y-muestras" class="slide level2 text-orange-gold">
-<h2>Poblacipon y Muestras</h2>
-<div class="columns">
-<div class="column" style="width:50%;">
-<h4 id="how-do-we-figure-out-correlation">How do we figure out correlation?</h4>
-<div class="box-inv-3.medium">
-<p>Math and statistics</p>
+<section id="correlación-vs-causalidad" class="slide level2 text-orange-gold center">
+<h2>Correlación vs Causalidad</h2>
+<h4 id="cómo-manejamos-la-correlación">Cómo manejamos la correlación?</h4>
+<ul>
+<li><p>Matemáticas</p></li>
+<li><p>Estadística</p></li>
+</ul>
+<h4 id="cómo-manejamos-la-causalidad">Cómo manejamos la causalidad?</h4>
+<ul>
+<li>Filosofía</li>
+</ul>
+<div class="fragment strike">
+<ul>
+<li>Matemáticas</li>
+</ul>
 </div>
-</div><div class="column" style="width:50%;">
-<h4 id="how-do-we-figure-out-causation">How do we figure out causation?</h4>
-<div class="box-inv-3.medium">
-<p>Philosophy. No math.</p>
+</section>
+<section id="cómo-sabemos-si-x-causa-y" class="slide level2 text-orange-gold center" style="text-align:center">
+<h2>Cómo sabemos si X causa Y?</h2>
+<div class="box-inv-3.medium center">
+<p><strong>X</strong> causa <strong>Y</strong> si…</p>
+</div>
+<div class="box-inv-3.medium center">
+<p>…intervenimos y cambiamos <strong>X</strong> sin cambiar nada más…</p>
+</div>
+<div class="box-inv-3.medium center">
+<p>…y <strong>Y</strong> cambia</p>
+</div>
+</section>
+<section id="relaciones-causales" class="slide level2 text-orange-gold center">
+<h2>Relaciones causales?</h2>
+<div>
+<ul>
+<li class="fragment"><p>Encender fuegos artificiales causa ruido</p></li>
+<li class="fragment"><p>El canto del gallo causa el amanecer</p></li>
+<li class="fragment"><p>Obtener un MBA aumenta tus ingresos</p></li>
+<li class="fragment"><p>Los resfriados desaparecen unos días después de tomar vitamina C</p></li>
+</ul>
+</div>
+</section>
+<section id="section-2" class="slide level2 text-red-brown center">
+<h2></h2>
+<div class="columns">
+<div class="column" style="width:45%;">
+<h3 class="r-fit-text" id="causalidad-correlación">Causalidad= Correlación</h3>
+<h3 class="r-fit-text" id="orden-temporal-relación-no-espuria">+ orden temporal + relación no espuria</h3>
+</div><div class="column" style="width:10%;">
+
+</div><div class="column" style="width:45%;">
+<div>
+<ul>
+<li class="fragment">¿Cómo saber si estamos en lo correcto?</li>
+<li class="fragment">Se necesita un modelo filosófico</li>
+</ul>
 </div>
 </div>
 </div>
 </section>
 <section id="modelo-causal-de-rubin" class="slide level2 text-orange-gold">
 <h2>Modelo causal de Rubin</h2>
+<ul>
+<li><p>Imaginemos un grupo de alumnos para los cuales tenemos una medida de rendimiento académico <span class="math inline">\(Y_i\)</span> para cada estudiante <span class="math inline">\(i\)</span>.</p></li>
+<li><p>Además, sabemos si el estudiante fue asignado a un grupo de estudio especial (<span class="math inline">\(D_i=1\)</span>) o a un grupo de estudio normal (<span class="math inline">\(D_i=0\)</span>)</p></li>
+</ul>
+</section>
+<section id="modelo-causal-de-rubin-1" class="slide level2 text-orange-gold">
+<h2>Modelo causal de Rubin</h2>
 <p>A qué nos referimos cuando decimos esto <strong>causó</strong> aquello?</p>
 <ul>
-<li><p>Cada individuo <span class="math inline">\(i\)</span> tiene dos resultados potenciales:</p>
+<li><p>Cada estudiante <span class="math inline">\(i\)</span> tiene dos resultados potenciales:</p>
 <ul>
-<li>Si el individuo es “tratado”: <span class="math inline">\(Y_{1i}\)</span></li>
-<li>Si el individuo es “no tratado”: <span class="math inline">\(Y_{0i}\)</span></li>
+<li>Si el alumno es “tratado”: <span class="math inline">\(Y_{1i}\)</span></li>
+<li>Si el alumno es “no tratado”: <span class="math inline">\(Y_{0i}\)</span></li>
 </ul></li>
 </ul>
 <p>Sólo observamos <span class="math inline">\(Y_{1i}\)</span> o <span class="math inline">\(Y_{0i}\)</span>. Nunca ambos!</p>
 <ul>
-<li>El efecto del tratamiento para el individuo <span class="math inline">\(i\)</span> se define como:</li>
+<li>El efecto del grupo especial/tratado para el alumno <span class="math inline">\(i\)</span> se define como:</li>
 </ul>
 <p><span class="math display">\[Y_{1i} - Y_{0i}\]</span></p>
 </section>
@@ -435,64 +562,554 @@ Y_{0i} &amp; \text{if } D_i = 0
 <li><p>Para los individuos en el grupo tratado, el contrafactual es: <span class="math inline">\((Y_{\color{red} 0 i}|D_i=1)\)</span></p></li>
 <li><p>Para los individuos en el grupo de control, el contrafactual es: <span class="math inline">\((Y_{\color{red} 1 i}|D_i=0)\)</span></p></li>
 </ul>
-<h3 id="el-problema-fundamental">El problema fundamental:</h3>
-<p>Nunca observaremos el efecto causal del tratamiento para el individuo i:</p>
-<p><span class="math display">\[$Y_{1i} − Y_{0i}\]</span></p>
+<h3 class="text-orange-gold" id="el-problema-fundamental">El problema fundamental:</h3>
+<p>Nunca observaremos el efecto causal del tratamiento para el alumno <span class="math inline">\(i\)</span>:</p>
+<p><span class="math display">\[Y_{1i} − Y_{0i}\]</span></p>
 </section>
-<section id="cómo-sabemos-si-x-causa-y" class="slide level2 text-orange-gold">
-<h2>Cómo sabemos si X causa Y?</h2>
-<div class="box-inv-3.medium">
-<p><strong>X</strong> causa <strong>Y</strong> si…</p>
+<section id="el-verdadero-efecto-promedio" class="slide level2 text-orange-gold">
+<h2>El verdadero efecto promedio</h2>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<table data-quarto-postprocess="true">
+<thead>
+<tr class="header">
+<th style="text-align: left;" data-quarto-table-cell-role="th">Persona</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">Y_1</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">Y_0</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">Diferencia</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Juan</td>
+<td style="text-align: right;">130</td>
+<td style="text-align: right;">115</td>
+<td style="text-align: right;">15</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">María</td>
+<td style="text-align: right;">120</td>
+<td style="text-align: right;">125</td>
+<td style="text-align: right;">-5</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Sara</td>
+<td style="text-align: right;">100</td>
+<td style="text-align: right;">125</td>
+<td style="text-align: right;">-25</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Carlos</td>
+<td style="text-align: right;">110</td>
+<td style="text-align: right;">130</td>
+<td style="text-align: right;">-20</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Pedro</td>
+<td style="text-align: right;">115</td>
+<td style="text-align: right;">120</td>
+<td style="text-align: right;">-5</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Media</td>
+<td style="text-align: right;">115</td>
+<td style="text-align: right;">123</td>
+<td style="text-align: right;">-8</td>
+</tr>
+</tbody>
+</table>
+
+
 </div>
-<div class="box-inv-3.medium">
-<p>…intervenimos y cambiamos <strong>X</strong> sin cambiar nada más…</p>
 </div>
-<div class="box-inv-3.medium">
-<p>…y <strong>Y</strong> cambia</p>
+</section>
+<section id="una-asignación-aleatoria" class="slide level2 text-orange-gold">
+<h2>Una asignación aleatoria</h2>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<table data-quarto-postprocess="true">
+<thead>
+<tr class="header">
+<th style="text-align: left;" data-quarto-table-cell-role="th">Persona</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">Y_1</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">Y_0</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">Diferencia</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Juan</td>
+<td style="text-align: left;">130</td>
+<td style="text-align: left;">?</td>
+<td style="text-align: left;">?</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">María</td>
+<td style="text-align: left;">120</td>
+<td style="text-align: left;">?</td>
+<td style="text-align: left;">?</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Sara</td>
+<td style="text-align: left;">?</td>
+<td style="text-align: left;">125</td>
+<td style="text-align: left;">?</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Carlos</td>
+<td style="text-align: left;">?</td>
+<td style="text-align: left;">130</td>
+<td style="text-align: left;">?</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Pedro</td>
+<td style="text-align: left;">115</td>
+<td style="text-align: left;">?</td>
+<td style="text-align: left;">?</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Media</td>
+<td style="text-align: left;">121.66</td>
+<td style="text-align: left;">127.5</td>
+<td style="text-align: left;">-5.83</td>
+</tr>
+</tbody>
+</table>
+
+
+</div>
+</div>
+</section>
+<section id="otra-asignación" class="slide level2 text-orange-gold">
+<h2>Otra asignación</h2>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<table data-quarto-postprocess="true">
+<thead>
+<tr class="header">
+<th style="text-align: left;" data-quarto-table-cell-role="th">Persona</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">Y_1</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">Y_0</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">Diferencia</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Juan</td>
+<td style="text-align: left;">130</td>
+<td style="text-align: left;">?</td>
+<td style="text-align: left;">?</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">María</td>
+<td style="text-align: left;">120</td>
+<td style="text-align: left;">?</td>
+<td style="text-align: left;">?</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Sara</td>
+<td style="text-align: left;">100</td>
+<td style="text-align: left;">?</td>
+<td style="text-align: left;">?</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Carlos</td>
+<td style="text-align: left;">?</td>
+<td style="text-align: left;">130</td>
+<td style="text-align: left;">?</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Pedro</td>
+<td style="text-align: left;">?</td>
+<td style="text-align: left;">120</td>
+<td style="text-align: left;">?</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Media</td>
+<td style="text-align: left;">116.67</td>
+<td style="text-align: left;">125</td>
+<td style="text-align: left;">-8.33</td>
+</tr>
+</tbody>
+</table>
+
+
+</div>
 </div>
 </section>
 <section id="la-revolución-causal" class="slide level2 text-orange-gold">
 <h2>La revolución causal</h2>
 
-<img data-src="experiments_files/figure-revealjs/unnamed-chunk-2-1.png" style="width:70.0%" class="r-stretch quarto-figure-center"></section>
-<section id="la-revolución-causal-1" class="slide level2 text-orange-gold">
-<h2>La revolución causal</h2>
-
-<img data-src="experiments_files/figure-revealjs/unnamed-chunk-3-1.png" style="width:70.0%" class="r-stretch quarto-figure-center"></section>
-<section id="relaciones-causales" class="slide level2">
-<h2>Relaciones causales?</h2>
+<img data-src="images/book-of-why.jpg" style="width:70.0%" class="r-stretch quarto-figure-center"></section>
+<section id="diagramas-causales-dags" class="slide level2 text-orange-gold">
+<h2>Diagramas Causales (DAGS)</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
 <ul>
-<li><p>Encender fuegos artificiales causa ruido</p></li>
-<li><p>El canto del gallo causa el amanecer</p></li>
-<li><p>Obtener un MPA/MPP aumenta tus ingresos</p></li>
-<li><p>Los resfriados desaparecen unos días después de tomar vitamina C</p></li>
+<li><p>Modelo gráfico del proceso que genera los datos</p></li>
+<li><p>Crea un mapa de su modelo filosófico</p></li>
+<li><p>Nos ayuda a pensar qué controlar para aislar e identificar la causalidad</p></li>
+</ul>
+</div><div class="column" style="width:50%;">
+<div class="cell">
+<div class="cell-output-display">
+<p><img data-src="experiments_files/figure-revealjs/unnamed-chunk-8-1.png" style="width:100.0%"></p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="directed-acyclic-graphs-dags" class="slide level2 text-orange-gold">
+<h2>Directed Acyclic Graphs (DAGs)</h2>
+
+<img data-src="experiments_files/figure-revealjs/unnamed-chunk-9-1.png" style="width:100.0%" class="r-stretch quarto-figure-center"></section>
+<section id="directed-acyclic-graphs-dags-1" class="slide level2 text-orange-gold">
+<h2>Directed Acyclic Graphs (DAGs)</h2>
+
+<img data-src="experiments_files/figure-revealjs/unnamed-chunk-10-1.png" style="width:100.0%" class="r-stretch quarto-figure-center"></section>
+<section id="directed-acyclic-graphs-dags-2" class="slide level2 text-orange-gold">
+<h2>Directed Acyclic Graphs (DAGs)</h2>
+
+<img data-src="experiments_files/figure-revealjs/unnamed-chunk-11-1.png" style="width:100.0%" class="r-stretch quarto-figure-center"><p>`</p>
+</section>
+<section id="section-3" class="slide level2" data-background-image="images/nyt-dag1.png">
+<h2></h2>
+</section>
+<section id="section-4" class="slide level2" data-background-image="images/nyt-dag2.png">
+<h2></h2>
+</section></section>
+<section>
+<section id="experimentos" class="title-slide slide level1 center" data-background="linear-gradient(45deg, #4a00e0, #ff0099)">
+<h1><span class="hl hl-purple">Experimentos</span></h1>
+
+</section>
+<section id="experimentos-como-herramienta" class="slide level2 text-indigo-pink center">
+<h2>Experimentos como herramienta</h2>
+<ul>
+<li><p>Los experimentos son una buena alternativa para crear <code>contrafactuales</code> (<span class="math inline">\((Y_{\color{red} 0 i}|D_i=1)\)</span> y <span class="math inline">\((Y_{\color{red} 1 i}|D_i=0)\)</span>) adecuados.</p></li>
+<li><p>También nos permiten buscar datos que no están disponibles sobre el terreno.</p></li>
+<li><p>Los experimentos (bien diseñados) proporcionan efectos causales</p></li>
 </ul>
 </section>
-<section id="probando-1" class="slide level2">
-<h2>Probando</h2>
-
-<img data-src="images/nyt-dag1.png" style="width:100.0%" class="r-stretch quarto-figure-center"></section>
-<section id="section-1" class="slide level2" data-background-image="images/nyt-dag1.png">
-<h2></h2>
+<section id="qué-es-un-experimento" class="slide level2 text-indigo-pink">
+<h2>¿Qué es un experimento?</h2>
+<ul>
+<li>Un proceso mediante el cual se testea una <strong>hipótesis</strong>.</li>
+<li>Ejemplos de hipótesis que se pueden testear con experimentos:
+<ul>
+<li>La hidroxicloroquina es un medicamento efectivo contra el coronavirus.</li>
+<li>Organizar reuniones de brainstorming para innovar en procesos de la empresa, hace sus procesos más eficientes.</li>
+<li>Pagar por anunciar algún producto en YouTube es beneficioso para las ventas.</li>
+<li>Un nuevo elemento en la página web hace que las personas sean más propensas a comprar un producto.</li>
+</ul></li>
+</ul>
 </section>
-<section id="section-2" class="slide level2" data-background-image="images/nyt-dag2.png">
+<section id="plantear-la-hipótesis" class="slide level2 text-indigo-pink center">
+<h2>Plantear la hipótesis</h2>
+<ul>
+<li><p>El primero paso es <code>plantear la hipótesis</code> que queremos testear.</p></li>
+<li><p>Debemos <code>especificar/definir</code> la variable que analizaremos para saber si la hipótesis se cumple o no, y que dicha variable es la adecuada.</p></li>
+<li><p>En ese sentido, los ejemplos anteriores necesitan todavía un poco de trabajo…</p></li>
+</ul>
+</section>
+<section id="determinar-variables-a-medir" class="slide level2 text-indigo-pink">
+<h2>Determinar variable(s) a medir</h2>
+<p>“La hidroxicloroquina es un medicamento efectivo contra el nuevo coronavirus”</p>
+<ul>
+<li>Algunas alternativas:
+<ul>
+<li>Duración de la enfermedad desde que se presentaron síntomas hasta que desaparecen.</li>
+<li>% que progresa a estado grave (hospital).</li>
+<li>% que necesita oxígeno.</li>
+</ul></li>
+</ul>
+</section>
+<section id="determinar-variables-a-medir-1" class="slide level2 text-indigo-pink">
+<h2>Determinar variable(s) a medir</h2>
+<p>“Organizar reuniones semanales de 1 hora de brainstorming para innovar en procesos de la empresa, hace sus procesos más eficientes.</p>
+<ul>
+<li>Algunas alternativas:
+<ul>
+<li>Duración de ciertos/todos los procesos.</li>
+<li>Pasos en el proceso.</li>
+<li>Procesos que utilizan tecnologías de la información.</li>
+</ul></li>
+</ul>
+</section>
+<section id="thomke-s.-h.-2020.-experimentation-works-the-surprising-power-of-business-experiments.-harvard-business-press" class="slide level2 text-indigo-pink">
+<h2>Thomke, S. H. (2020). <em>Experimentation works: The surprising power of business experiments</em>. Harvard Business Press</h2>
+
+<img data-src="images/book-experiments.png" style="width:70.0%" class="r-stretch quarto-figure-center"></section>
+<section id="control-y-tratamiento" class="slide level2 text-indigo-pink">
+<h2>Control y Tratamiento</h2>
+<ul>
+<li><p>Todo experimento debe tener un <strong>control</strong> y al menos, un <strong>tratamiento</strong>.</p></li>
+<li><p>Grupo control es aquel que no se interviene o “no tratado” (<span class="math inline">\(D_i=0\)</span>!)</p></li>
+<li><p>Grupo(s) tratamiento son los que se intervienen/se les hace algún cambio. (<span class="math inline">\(D_i=1\)</span>!)</p></li>
+</ul>
+</section>
+<section id="section-5" class="slide level2 text-indigo-pink center">
 <h2></h2>
+
+<img data-src="images/gardening.png" style="width:70.0%" class="r-stretch quarto-figure-center"></section>
+<section id="determinar-variables-a-medir-2" class="slide level2 text-indigo-pink">
+<h2>Determinar variable(s) a medir</h2>
+<ul>
+<li><p>Al momento de comparar control y tratamiento, eliminamos (“controlamos”) cualquier otro factor que pudiese haber influído en nuestra variable de interés y que no se deba a la intervención / cambio.</p></li>
+<li><p>Estos otros factores deberían influenciar a grupos control y tratamiento por igual.</p></li>
+<li><p>Es decir, el control nos permite determinar si la intervención verdaderamente <code>CAUSÓ</code> un cambio/efecto en la variable de interés.</p></li>
+</ul>
+</section>
+<section id="asignación-a-un-experimento" class="slide level2 text-indigo-pink">
+<h2>Asignación a un experimento</h2>
+<ul>
+<li><p>Supongamos que tenemos 1 control y n tratamientos (donde n puede ser 1,2,…)</p></li>
+<li><p>Control y tratamientos serían (normalmente) de tamaño 1/(n+1) por las personas a estudiar.</p></li>
+</ul>
+<p>Ejemplo:</p>
+<ul>
+<li><p>1000 personas en mi organización que participan en el experimento (ya sea como control, tratamiento 1 o tratamiento 2).</p></li>
+<li><p>Entonces 1/3 de las 1000 personas (333) entrarían al control, 1/3 (333) al tratamiento 1 y 1/3 (334) al tratamiento 2.</p></li>
+</ul>
+</section>
+<section id="asignación-a-un-experimento-1" class="slide level2 text-indigo-pink">
+<h2>Asignación a un experimento</h2>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="co"># Establecer la semilla para poder replicar</span></span>
+<span id="cb1-2"><a href="#cb1-2"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
+<span id="cb1-3"><a href="#cb1-3"></a></span>
+<span id="cb1-4"><a href="#cb1-4"></a><span class="co"># Número de personas</span></span>
+<span id="cb1-5"><a href="#cb1-5"></a>n <span class="ot">&lt;-</span> <span class="dv">1000</span></span>
+<span id="cb1-6"><a href="#cb1-6"></a></span>
+<span id="cb1-7"><a href="#cb1-7"></a><span class="co"># Creemos unos datos con 1000 personas</span></span>
+<span id="cb1-8"><a href="#cb1-8"></a>data <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb1-9"><a href="#cb1-9"></a>  <span class="at">id =</span> <span class="dv">1</span><span class="sc">:</span>n,</span>
+<span id="cb1-10"><a href="#cb1-10"></a>  <span class="at">tipo =</span> <span class="fu">sample</span>(<span class="fu">c</span>(<span class="st">"Profesores"</span>, <span class="st">"Estudiantes"</span>), <span class="at">size =</span> n, <span class="at">replace =</span> <span class="cn">TRUE</span>, <span class="at">prob =</span> <span class="fu">c</span>(<span class="fl">0.2</span>, <span class="fl">0.8</span>))</span>
+<span id="cb1-11"><a href="#cb1-11"></a>)</span>
+<span id="cb1-12"><a href="#cb1-12"></a></span>
+<span id="cb1-13"><a href="#cb1-13"></a><span class="co"># Veamos cómo quedan distribuidos nuestros datos</span></span>
+<span id="cb1-14"><a href="#cb1-14"></a><span class="fu">aggregate</span>(id <span class="sc">~</span> tipo, <span class="at">data =</span> data, <span class="at">FUN =</span> length)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>         tipo  id
+1 Estudiantes 802
+2  Profesores 198</code></pre>
+</div>
+</div>
+</section>
+<section id="la-aleatoriedad" class="slide level2 text-indigo-pink">
+<h2>La Aleatoriedad</h2>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a><span class="co"># Asignemos aleatoriamente a la gente a un grupo (control, tratamiento 1, tratamiento 2) </span></span>
+<span id="cb3-2"><a href="#cb3-2"></a>data <span class="ot">&lt;-</span> data <span class="sc">%&gt;%</span></span>
+<span id="cb3-3"><a href="#cb3-3"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb3-4"><a href="#cb3-4"></a>    <span class="at">grupo =</span> <span class="fu">sample</span>(<span class="fu">c</span>(<span class="st">"Control"</span>, <span class="st">"Tratamiento 1"</span>, <span class="st">"Tratamiento 2"</span>), <span class="at">size =</span> n, <span class="at">replace =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb3-5"><a href="#cb3-5"></a>  )</span>
+<span id="cb3-6"><a href="#cb3-6"></a></span>
+<span id="cb3-7"><a href="#cb3-7"></a><span class="co"># Veamos cómo quedan distribuidos nuestros datos</span></span>
+<span id="cb3-8"><a href="#cb3-8"></a><span class="fu">aggregate</span>(id <span class="sc">~</span> grupo, <span class="at">data =</span> data, <span class="at">FUN =</span> length)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>          grupo  id
+1       Control 325
+2 Tratamiento 1 331
+3 Tratamiento 2 344</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a><span class="co"># Y al interior de cada grupo?</span></span>
+<span id="cb5-2"><a href="#cb5-2"></a><span class="fu">aggregate</span>(id <span class="sc">~</span> grupo<span class="sc">+</span>tipo, <span class="at">data =</span> data, <span class="at">FUN =</span> length)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>          grupo        tipo  id
+1       Control Estudiantes 267
+2 Tratamiento 1 Estudiantes 265
+3 Tratamiento 2 Estudiantes 270
+4       Control  Profesores  58
+5 Tratamiento 1  Profesores  66
+6 Tratamiento 2  Profesores  74</code></pre>
+</div>
+</div>
+</section>
+<section id="la-aleatoriedad-1" class="slide level2 text-indigo-pink">
+<h2>La Aleatoriedad</h2>
+
+<img data-src="experiments_files/figure-revealjs/unnamed-chunk-16-1.png" style="width:100.0%" class="r-stretch quarto-figure-center"></section>
+<section id="la-aleatoriedad-2" class="slide level2 center text-indigo-pink">
+<h2>La Aleatoriedad</h2>
+<ul>
+<li><p>Es fundamental, para asegurarnos que cualquier diferencia entre control y tratamiento (en la variable de interés) se deba a nuestra intervención que la asignación sea aleatoria.</p></li>
+<li><p>La asignación <em>aleateoria</em> balancea las características entre control y tratamiento</p></li>
+<li><p>De lo contrario, si observo una diferencia entre ambos grupos, esto se podría deber a…</p></li>
+</ul>
+</section>
+<section id="cómo-determino-que-el-control-es-distinto-al-a-los-tratamientos" class="slide level2 text-indigo-pink">
+<h2>¿Cómo determino que el control es distinto al (a los) tratamiento(s)?</h2>
+<ul>
+<li><p>En otras palabras, ¿cómo determinamos que hay un efecto de mi intervención en la variable de interés?</p></li>
+<li><p>Cuando queremos saber si dos grupos son distintos en cuanto a alguna variable, hacemos…</p>
+<p><span class="hl hl-red">PRUEBA DE HIPOTESIS DE MEDIAS POBLACIONALES</span></p></li>
+<li><p>Si p-value es menor al límite de riesgo (1%, 5% o 10%), entonces puedo decir que ambos grupos son distintos en cuanto a esa variable.</p></li>
+<li><p>Puedo hacer varias comparaciones, si hay mas de 1 tratamiento, pero siempre entre 2 grupos: control vs tratamiento 1, control vs tratamiento 2, tratamiento 1 vs tratamiento 2, etc…</p></li>
+</ul>
+</section>
+<section id="algunos-puntos-importantes" class="slide level2 text-indigo-pink">
+<h2>Algunos puntos importantes</h2>
+<p>Los experimentos nos permiten establecer <strong>causalidad</strong>.</p>
+<ul>
+<li><p>Implemento acción, estrategia, intervención y observo que las personas/divisiones/municipios… se comportan de manera distinta a las del control cuando se les aplica la intervención (importancia del control para establecer causalidad).</p></li>
+<li><p>Entonces la intervención está causando el cambio en comportamiento. No es una simple correlación.</p></li>
+</ul>
 </section></section>
 <section>
-<section id="encuestas" class="title-slide slide level1 center" data-background="linear-gradient(45deg, #4a00e0, #ff0099)">
-<h1><span style="color:white">Fundamentos para<br></span><span class="hl hl-purple">Encuestas</span></h1>
+<section id="business" class="title-slide slide level1 center" data-background="linear-gradient(45deg, #ed213a, #93291e)">
+<h1><span style="color:white">Experimentos en<br></span><span class="hl hl-red">Empresas</span></h1>
 
 </section>
-<section id="evaluando-una-encuesta" class="slide level2 text-indigo-pink">
-<h2>Evaluando una encuesta</h2>
-</section></section>
-<section>
-<section id="r4ds" class="title-slide slide level1 center" data-background="linear-gradient(45deg, #ed213a, #93291e)">
-<h1><span style="color:white">Un poco de<br></span><span class="hl hl-red">R</span></h1>
-
+<section id="por-qué-usar-experimentos-en-una-empresa" class="slide level2 text-red-brown">
+<h2>¿Por qué usar experimentos en una empresa?</h2>
+<ul>
+<li><p>La incertidumbre es parte inherente del proceso emprendedor.</p></li>
+<li><p>Los emprendedores deben tomar muchas decisiones, a menudo con resultados arriesgados o desconocidos.</p></li>
+<li><p>Tienen que elegir a qué clientes servir, qué características incluir en el producto y a través de qué canales vender.</p></li>
+<li><p>¿Cuál marco estratégico es el adecuado?</p></li>
+</ul>
 </section>
-<section id="de-regreso-a-los-datos-de-spotify" class="slide level2 text-red-brown">
-<h2>De regreso a los datos de Spotify</h2>
+<section id="intuición-vs-experimentos" class="slide level2 text-red-brown">
+<h2>Intuición vs Experimentos</h2>
+
+<img data-src="images/hippos.png" style="width:70.0%" class="r-stretch quarto-figure-center"></section>
+<section id="intuición-vs-experimentos-1" class="slide level2 text-red-brown">
+<h2>Intuición vs Experimentos</h2>
+<blockquote>
+<p>“[El iPhone es] el teléfono más caro del mundo, y no atrae a los clientes empresariales porque no tiene teclado, lo que hace que no sea una buena máquina de correo electrónico.”</p>
+</blockquote>
+<p>Steve Ballmer, consejero delegado de Microsoft (2007)</p>
+<blockquote>
+<p>“La gente nos ha dicho una y otra vez que no quiere alquilar su música… no quiere suscripciones.”</p>
+</blockquote>
+<p>Steve Jobs, consejero delegado de Apple (2003)</p>
+</section>
+<section id="el-reto-de-la-innovación" class="slide level2 text-red-brown">
+<h2>El reto de la innovación</h2>
+<ul>
+<li><p>La idea es que, al igual que en una fábrica, la variabilidad y la incertidumbre son indeseables y deben eliminarse.</p></li>
+<li><p>Aquí radica el <strong>dilema</strong>: por definición, la novedad crea incertidumbre porque no sabemos qué funcionará y qué no. Dicho de otro modo la incertidumbre es necesaria porque crea oportunidades.</p></li>
+</ul>
+</section>
+<section id="los-experimentos-como-herramienta-para-la-innovación" class="slide level2 text-red-brown">
+<h2>Los experimentos como herramienta para la innovación</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p>La experimentación se presenta como un proceso de tres partes:</p>
+<ol type="1">
+<li><p>Los emprendedores <code>generan</code> ideas para introducir variación en el número y la naturaleza de las opciones estratégicas.</p></li>
+<li><p><code>Evalúan</code> la viabilidad de las opciones seleccionadas</p></li>
+<li><p>Deben <code>tomar decisiones</code> basadas en los resultados de las pruebas.</p></li>
+</ol>
+</div><div class="column" style="width:50%;">
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="images/book-experiments.png" style="width:70.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="section-6" class="slide level2 text-red-brown">
+<h2></h2>
+
+<img data-src="images/stock.png" style="width:70.0%" class="r-stretch quarto-figure-center"></section>
+<section id="section-7" class="slide level2 text-red-brown">
+<h2></h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="images/bing.png" style="width:90.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+</div><div class="column" style="width:50%;">
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="images/bing_exp.png" style="width:40.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="cómo-llevar-a-cabo-un-experimento" class="slide level2 text-red-brown">
+<h2>¿Cómo llevar a cabo un experimento?</h2>
+<ol type="1">
+<li><p>Desarrollar una hipótesis</p></li>
+<li><p>Diseñar el experimento (A/B por ejemplo)</p></li>
+<li><p>Ejecutar el experimento</p></li>
+<li><p>Analizar los resultados</p></li>
+</ol>
+<p>Un marco de experimentación inclina a los emprendedores hacia el aprendizaje y la adaptación, evitando compromisos prematuros o costosos.</p>
+</section>
+<section id="ab-testing" class="slide level2 text-red-brown">
+<h2>A/B Testing</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="images/ABtesting.png" style="width:70.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+</div><div class="column" style="width:50%;">
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="images/netflix.png" style="width:90.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="ab-testing-1" class="slide level2 text-red-brown">
+<h2>A/B Testing</h2>
+
+<img data-src="images/headline.png" style="width:70.0%" class="r-stretch quarto-figure-center"></section>
+<section id="ab-testing-2" class="slide level2 text-red-brown">
+<h2>A/B Testing</h2>
+
+<img data-src="images/walkability.png" style="width:70.0%" class="r-stretch quarto-figure-center"></section>
+<section id="preguntas-para-realizar-buenos-experimentos-empresariales" class="slide level2 text-red-brown">
+<h2>Preguntas para realizar buenos experimentos empresariales</h2>
+<h3 id="hipótesis">Hipótesis</h3>
+<p>¿La hipótesis se basa en observaciones, ideas o datos?</p>
+<p>¿Se centra el experimento en una medida de gestión comprobable?</p>
+<p>¿Tiene variables medibles y puede demostrarse su falsedad?</p>
+<p>¿Qué se espera aprender del experimento?</p>
+</section>
+<section id="preguntas-para-realizar-buenos-experimentos-empresariales-1" class="slide level2 text-red-brown">
+<h2>Preguntas para realizar buenos experimentos empresariales</h2>
+<h3 id="adhesión">Adhesión</h3>
+<p>¿Qué cambios concretos se introducirían en función de los resultados?</p>
+<p>¿Cómo garantizará la organización que no se ignoren los resultados?</p>
+<p>¿Cómo encaja el experimento en el programa general de aprendizaje y las prioridades estratégicas de la organización?</p>
+</section>
+<section id="preguntas-para-realizar-buenos-experimentos-empresariales-2" class="slide level2 text-red-brown">
+<h2>Preguntas para realizar buenos experimentos empresariales</h2>
+<h3 id="viabilidad">Viabilidad</h3>
+<p>¿Tiene el experimento una predicción comprobable?</p>
+<p>¿Cuál es el tamaño de muestra necesario? Nota: El tamaño de la muestra dependerá del efecto esperado (por ejemplo, un aumento del 5% en las ventas).</p>
+<p>¿Puede la organización llevar a cabo el experimento en los lugares de prueba durante el tiempo necesario?</p>
 <div class="footer footer-default">
 
 </div>
