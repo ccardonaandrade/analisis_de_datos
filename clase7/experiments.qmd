@@ -442,7 +442,6 @@ dagify(cardiacarrest ~ cholesterol,
   theme_dag()
 ```
 
-`
 
 ## {background-image="images/nyt-dag1.png"}
 

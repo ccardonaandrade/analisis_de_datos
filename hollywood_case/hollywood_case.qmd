@@ -1,0 +1,399 @@
+---
+  format:
+   revealjs: 
+    theme: [default, style.scss]
+    slide-number: true
+    highlight-style: github
+    width: 1400
+    css:
+    - https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.2/font/bootstrap-icons.css
+---
+  
+##  {.center}
+
+<h1 class="text-indigo-pink">
+
+Analítica de Datos
+
+<h1>
+
+<h2>Caso Hollywood</h2>
+
+::: {style="margin-top:50px"}
+### Carlos Cardona Andrade {.text-orange-gold}
+:::
+      
+## Hollywood Rules {.text-indigo-pink .center}
+
+1. Todo lo que hagamos hoy, escríbanlo en un script con anotaciones.
+
+2. Guarden el script.
+
+3. Enviénmelo al correo con el nombre: nombre_apellido.R
+
+
+## Tengan un estilo para su script {.text-indigo-pink .center}
+
+
+```{r}
+#| echo: true
+#| eval: false
+
+## ---------------------------
+##
+## Script name: 
+##
+## Purpose of script:
+##
+## Author: Carlos Cardona
+##
+## Date Created: `r paste(Sys.Date())`
+##
+## Email: ccardonaa@gmail.com
+##
+## ---------------------------
+##
+## Notes:
+##   
+##
+## ---------------------------
+
+## set working directory for Mac and PC
+
+setwd("~/Google Drive/")  		# Tim's working directory (mac)
+setwd("C:/Users/tim/Google Drive/")  	# Tim's working directory (PC)
+
+## ---------------------------
+
+## load up the packages we will need:  (uncomment as required)
+
+library(tidyverse)
+library(data.table)
+```
+
+
+
+## Importemos los datos {.text-indigo-pink .center}
+
+
+```{r}
+#| echo: true
+#| eval: true
+
+
+# Recuerden instalar los paquetes primero!!
+# Este lo hemos usado siempre así que no hay lío
+library(tidyverse)
+
+# Estos dos son nuevos:
+# install.packages("readxl")
+# install.paclages("janitor")
+# install.paclages("Hmisc")
+
+library(readxl)
+library(janitor)
+library(Hmisc)
+
+
+# Establecemos el directorio de trabajo
+
+setwd("C:/Users/ccard/Downloads")
+
+
+# Importamos los datos a R
+# Por qué no funciona?
+
+data <- read_excel("KEL702-XLS-ENG.xls")
+
+# Ahora sí debería funcionar!
+data <- read_excel("KEL702-XLS-ENG.xls", sheet = "Exhibit 1")
+```
+
+## ¿Qué hay en nuestros datos? {.text-indigo-pink .center}
+
+
+```{r}
+#| echo: true
+#| eval: true
+
+glimpse(data)
+    
+```
+
+
+## Limpiemos los nombres usando `janitor` {.text-indigo-pink .center}
+
+
+```{r}
+#| echo: true
+#| eval: true
+
+data <- data %>%
+  clean_names()
+glimpse(data)
+    
+```
+
+
+## Estadísticas Descriptivas {.text-indigo-pink .center}
+
+
+```{r}
+#| echo: true
+#| eval: true
+
+# Cambiemos los nombres de estas variables!
+data <- data %>% rename(us_gross = total_u_s_gross)
+data <- data %>% rename(non_us_gross = total_non_u_s_gross)
+
+# Usamos summary para ver la distribución de las variables de interés
+summary(data$opening_gross)
+summary(data$us_gross)
+summary(data$non_us_gross)
+summary(data$opening_theatres)
+    
+```
+
+
+## Exploremos el recaudo en US {.text-indigo-pink .center}
+
+
+```{r}
+#| echo: true
+#| eval: true
+#| fig-align: "center"
+
+# Qué tal es la distribución?
+
+ggplot(data, aes(x=us_gross)) + geom_density()
+
+    
+```
+
+
+## Exploremos el recaudo en US (en millones) {.text-indigo-pink .center}
+
+
+```{r}
+#| echo: true
+#| eval: true
+#| fig-align: "center"
+
+# Cambiemos los valores de los ejes
+
+ggplot(data, aes(x=(us_gross/1000000))) + geom_density()
+
+    
+```
+
+## Exploremos el recaudo en US (en logs) {.text-indigo-pink .center}
+
+
+```{r}
+#| echo: true
+#| eval: true
+#| fig-align: "center"
+
+# Qué tal es la distribución?
+
+ggplot(data, aes(x=log(us_gross))) + geom_density()
+
+    
+```
+
+
+## Exploremos el recaudo en US {.text-indigo-pink .center}
+
+
+```{r}
+#| echo: true
+#| eval: true
+#| fig-align: "center"
+
+# Qué tal es el diagrama de caja?
+
+ggplot(data, aes(x=(us_gross/1000000))) + geom_boxplot()
+
+    
+```
+
+## Exploremos el recaudo en US {.text-indigo-pink .center}
+
+
+```{r}
+#| echo: true
+#| eval: true
+#| fig-align: "center"
+
+# Qué tal es el histograma?
+
+ggplot(data, aes(x=(us_gross/1000000))) + geom_histogram()
+
+    
+```
+
+
+
+## Comedias y R-Rated {.text-indigo-pink .center}
+
+
+```{r}
+#| echo: true
+#| eval: true
+#| fig-align: "center"
+
+
+# Usamos la función xtabs
+# ¿Cuántas comedias?
+xtabs(~genre, data=data)
+
+
+# Y cuántas R-rated?
+xtabs(~mpaa, data=data)
+    
+```
+
+
+## Calculemos el ROI {.text-indigo-pink .center}
+
+
+```{r}
+#| echo: true
+#| eval: true
+#| fig-align: "center"
+
+# Calculamos ROI usando "mutate"
+data <- data %>% 
+  mutate(roi=(us_gross-budget)/budget)
+
+# Es 12%?
+mean(data$roi)
+
+# Veamos su distribución
+ggplot(data, aes(x=roi)) + geom_boxplot()
+
+```
+
+
+## Calculemos un IC para ROI al 95% {.text-indigo-pink .center}
+
+
+```{r}
+#| echo: true
+#| eval: true
+#| fig-align: "center"
+
+# Usamos el comando "t.test"
+result <- t.test(data$roi, conf.level = 0.95)
+result
+
+# En IC guardamos el intervalo
+ic<- result$conf.int
+ic
+
+```
+
+
+
+## Comedy vs No Comedy {.text-indigo-pink .center}
+
+
+```{r}
+#| echo: true
+#| eval: true
+#| fig-align: "center"
+
+
+# Construimos una variable indicando si es comedia o no
+data <- data %>%
+  mutate(comedy = ifelse(genre == "Comedy", TRUE, FALSE))
+
+# Hacemos un test comparando 'us_gross' para comedias vs no comedias
+t_test_result <- t.test(us_gross ~ comedy, data = data)
+
+# ¿Cuál es el resultado?
+t_test_result
+
+```
+
+
+
+## Comedy vs No Comedy {.text-indigo-pink .center}
+
+
+```{r}
+#| echo: true
+#| eval: true
+#| fig-align: "center"
+
+
+
+ggplot(data, aes(x = factor(comedy, labels = c("Non-Comedy", "Comedy")), 
+                 y = (us_gross/1000000))) +
+  stat_summary(fun = mean, geom = "point", size = 4) +  # Graficamos la media como puntos
+  stat_summary(fun.data = mean_cl_normal, geom = "errorbar", width = 0.2) +  # Añadimos la barra de error para los ICs
+  labs(x = "Movie Type", y = "Mean US Gross", title = "Mean US Gross for Comedy vs Non-Comedy Movies") +
+  theme_minimal() # Esto es para que el fondo sea blanco y no gris
+
+```
+
+
+## Comedy vs No Comedy (ROI) {.text-indigo-pink .center}
+
+
+```{r}
+#| echo: true
+#| eval: true
+#| fig-align: "center"
+
+
+# Hacemos un test comparando 'roi' para comedias vs no comedias
+t_test_roi <- t.test(roi ~ comedy, data = data)
+
+# ¿Cuál es el resultado?
+t_test_roi
+```
+
+
+
+
+
+
+## R-Rated vs NonR-Rated {.text-indigo-pink .center}
+
+
+```{r}
+#| echo: true
+#| eval: true
+#| fig-align: "center"
+
+# Creamos el indicador para R-rated movies
+data <- data %>%
+  mutate(r_rated = ifelse(mpaa == "R", TRUE, FALSE))
+
+# Hacemos el test
+t_test_rated <- t.test(us_gross ~ r_rated, data = data)
+
+# Qué nos dice?
+t_test_rated
+```
+
+
+## R-Rated vs NonR-Rated {.text-indigo-pink .center}
+
+
+```{r}
+#| echo: true
+#| eval: true
+#| fig-align: "center"
+
+
+
+ggplot(data, aes(x = factor(r_rated, labels = c("NonR-Rated", "R-Rated")), 
+                 y = (us_gross/1000000))) +
+  stat_summary(fun = mean, geom = "point", size = 4) +  # Graficamos la media como puntos
+  stat_summary(fun.data = mean_cl_normal, geom = "errorbar", width = 0.2) +  # Añadimos la barra de error para los ICs
+  labs(x = "Movie Type", y = "Mean US Gross", title = "Mean US Gross for R-Rated vs NonR-Rated Movies") +
+  theme_minimal() # Esto es para que el fondo sea blanco y no gris
+
+```

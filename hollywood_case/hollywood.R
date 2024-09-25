@@ -82,11 +82,13 @@ ggplot(summary_data, aes(x = factor(comedy, labels = c("Non-Comedy", "Comedy")),
 
 
 ggplot(data, aes(x = factor(comedy, labels = c("Non-Comedy", "Comedy")), 
-                 y = us_gross)) +
+                 y = (us_gross/1000000))) +
   stat_summary(fun = mean, geom = "point", size = 4) +  # Plot the mean as points
   stat_summary(fun.data = mean_cl_normal, geom = "errorbar", width = 0.2) +  # Add error bars for CIs
   labs(x = "Movie Type", y = "Mean US Gross", title = "Mean US Gross for Comedy vs Non-Comedy Movies") +
   theme_minimal()
+
+
 
 
 # Perform a t-test comparing 'us_gross' for comedy and non-comedy movies
