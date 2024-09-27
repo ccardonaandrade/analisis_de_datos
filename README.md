@@ -18,4 +18,4 @@
    - Hollywood Rules \[[**.html**](https://rawcdn.githack.com/ccardonaandrade/analisis_de_datos/50fefd0d6b88ff28c47662b80e7aa2a66c876d3b/hollywood_case/hollywood_case.html)\]
 
 ## Detalles
-Este es un curso dictado por Carlos Cardona Andrade. Todo comentario para mejorar el material es bienvenido.
+Este es un curso dictado por Carlos Cardona Andrade. Gran parte del material basado en los cursos de [Andrew Heiss](https://evalsp24.classes.andrewheiss.com/), [Grant McDermott](https://github.com/uo-ec607/lectures) y [Daniel Parra](https://danielfparra.github.io/). Todo comentario para mejorar el contenido de las diapositivas es bienvenido.
