@@ -238,4 +238,418 @@ cookies_residual_only
 ```
 
 
-  
+## Pendiente de una recta {.text-orange-gold}
+
+$$
+y = mx + b
+$$
+
+|       |                                         |
+|:-----:|:---------------------------------------:|
+| $y$   | Un número                               |
+| $x$   | Un número                               |
+| $m$   | La pendiente $\frac{\Delta y}{\Delta x}$ |
+| $b$   | El intercepto con $y$                   |
+
+
+## Pendiente de una recta {.text-orange-gold}
+
+
+
+::: columns
+::: {.column width="50%"}
+
+$$
+y = 2x - 1
+$$
+
+
+```{r}
+#| echo: false
+#| eval: true
+#| fig-align: "center"
+#| fig-width: 4.8
+#| fig-height: 3.5
+
+ggplot(data = tibble(x = 0:5), aes(x = x)) +
+  stat_function(fun = function(x) 2 * x - 1, 
+                color = "#BF3984", size = 1.5) +
+  geom_vline(xintercept = 0) +
+  geom_hline(yintercept = 0) +
+  scale_x_continuous(breaks = 0:5) +
+  scale_y_continuous(breaks = -1:9) +
+  theme(panel.grid.minor = element_blank())
+```
+
+
+:::
+
+::: {.column .fragment  width="50%"}
+
+$$
+y = -0.5x + 6
+$$
+
+```{r}
+#| echo: false
+#| eval: true
+#| fig-align: "center"
+#| fig-width: 4.8
+#| fig-height: 3.5
+
+ggplot(data = tibble(x = 0:5), aes(x = x)) +
+  stat_function(fun = function(x) 2 * x - 1, 
+                color = "#BF3984", size = 1.5) +
+  geom_vline(xintercept = 0) +
+  geom_hline(yintercept = 0) +
+  scale_x_continuous(breaks = 0:5) +
+  scale_y_continuous(breaks = -1:9) +
+  theme(panel.grid.minor = element_blank())
+```
+
+:::
+:::
+
+
+
+## Regresión lineal simple {.text-orange-gold}
+
+$$
+Y = \beta_0 + \beta_1 X + \varepsilon
+$$
+
+
+- $\beta_1$: la pendiente verdadera de la relación entre $X$ y $Y$
+
+- $\beta_0$: el intercepto verdadero de la relación entre $X$ y $Y$
+
+- $\varepsilon$: el error 
+
+
+## Regresión lineal simple {.text-orange-gold}
+
+$$
+\hat{y} = \hat{\beta_0} + \hat{\beta_1} x_1 
+$$
+
+- $\hat{\beta_1}$: la pendiente estimado de la relación entre $X$ y $Y$
+
+- $\hat{\beta_0}$: el intercepto estimado de la relación entre $X$ y $Y$
+
+- No hay error!!! 
+
+
+## Modelo de Regresión {.text-orange-gold}
+
+::: columns
+::: {.column width="40%"}
+
+
+
+$$  
+  \begin{aligned}
+Y &= \color{#0074D9}{\text{Modelo}} + \color{#FF851B}{\text{Error}} \\
+  &= \color{#0074D9}{f(X)} + \color{#FF851B}{\varepsilon}
+\end{aligned}
+$$
+
+:::
+
+::: {.column  width="60%"}
+
+
+```{r}
+#| echo: false
+#| eval: true
+#| fig-align: "center"
+#| out-width: "100%"
+
+
+cookies_with_residual
+```
+
+:::
+:::
+
+
+
+## Residuos {.text-orange-gold}
+
+
+```{r}
+#| echo: false
+#| eval: true
+#| fig-align: "center"
+#| out-width: "100%"
+
+
+cookies_with_residual
+```
+
+$$
+\text{Residuo} = \text{Observado} - \text{Predicho} = y - \hat{y}
+$$
+
+ 
+## La línea de los mínimos cuadrados {.text-orange-gold}
+
+- El residuo para la observación $i^{th}$ es:
+
+$$e_i= \text{Observado} - \text{Predicho}=y_i - \hat{y_i}$$
+- La **suma de los residuos al cuadrado** es:
+
+$$e_1^2+e_2^2+e_3^2+..+e_n^2$$
+
+- La **línea de los mínimos cuadrados** es la que minimiza la suma de los residuos al cuadrado
+
+## 
+
+```{r}
+#| eval: true
+#| echo: false
+#| fig-align: "center"
+#| out-width: "100%"
+knitr::include_graphics("images/meme.png")
+
+```
+
+## Construyendo modelos en R {.text-orange-gold}
+
+- La sintáxis para los resultados del modelo es:
+
+```{r}
+#| eval: false
+#| echo: true
+
+name_of_model <- lm(Y ~ X, data = DATA)
+
+summary(name_of_model)  # Para ver los detalles del modelo
+```
+
+
+:::{.fragment}
+
+- Otras opciones para evaluar el modelo son:
+
+```{r}
+#| eval: false
+#| echo: true
+
+library(broom)
+
+# Convierte los resultados del modelo a un data frame para graficar
+tidy(name_of_model)
+
+# Convierte los diagnósticos del modelo a un data frame
+glance(name_of_model)
+```
+
+:::
+
+
+
+## Modelando Galletas y Felicidad {.text-orange-gold}
+
+::: columns
+::: {.column width="40%"}
+
+$$\widehat{Felicidad}=\hat{\beta_0}+\hat{\beta_1}\times Galletas$$
+
+```{r}
+#| echo: true
+#| eval: true
+happiness_model <- 
+  lm(happiness ~ cookies,
+     data = cookies_data)
+```
+
+:::
+
+::: {.column  width="60%"}
+
+```{r}
+#| echo: false
+#| label: cookies-happiness-again
+#| results: hide
+
+
+cookies_base +
+  geom_smooth(method = "lm", color = "#0074D9") +
+  coord_cartesian(xlim = c(0, 10), ylim = c(0, 4))
+```
+
+
+:::
+:::
+
+
+
+## Modelando Galletas y Felicidad {.text-orange-gold} 
+
+
+```{r}
+#| echo: true
+tidy(happiness_model, conf.int = TRUE)
+```
+
+
+:::{.fragment}
+
+```{r}
+#| echo: true
+glance(happiness_model)
+```
+:::
+
+
+## Traduciendo los resultados a matemáticas  {.text-orange-gold}
+
+::: columns
+::: {.column width="40%"}
+
+
+
+```{r}
+#| echo: false
+tidy(happiness_model, conf.int = TRUE) |> 
+  select(term, estimate)
+```
+
+$$
+\begin{aligned}
+&\widehat{\text{Felicidad}} = \\ 
+&\beta_0 + \beta_1 \times \text{Galletas} + \varepsilon
+\end{aligned}
+$$
+
+
+$$
+\begin{aligned}
+&\widehat{\text{Felicidad}} = \\ 
+&1.1 + 0.16 \times \text{Galletas} + \varepsilon
+\end{aligned}
+$$
+:::
+
+::: {.column  width="60%"}
+
+```{r}
+#| echo: false
+cookies_base +
+  geom_smooth(method = "lm", color = "#0074D9") +
+  coord_cartesian(xlim = c(0, 10), ylim = c(0, 4))
+```
+
+:::
+:::
+
+## Interpretación de los resultados {.text-orange-gold}
+
+Un incremento en una unidad de $X$ está *asociado* con un incremento (o reducción) promedio de $\beta_1$ unidades en $Y$
+
+
+$$\widehat{Felicidad}=\hat{\beta_0}+\hat{\beta_1}\times Galletas$$
+
+
+$$\widehat{Felicidad} = 1.1 + 0.16 \times Galletas$$
+
+
+
+#
+
+```{r}
+#| echo: false
+#| eval: true
+#| fig-align: "center"
+#| fig-width: 8
+#| fig-height: 4
+
+set.seed(123)
+
+# Create a tibble with the same slope but different intercepts for professors and students, adding noise
+cookies_data <- tibble(
+  cookies = rep(1:7, 2),  # Cookies eaten (1 through 7 for both groups)
+  group = rep(c("Professor", "Student"), each = 7),  # Group variable
+  happiness = c(0.5 + 0.15 * (1:7) + rnorm(7, sd = 0.2),  # Happiness for professors with noise
+                1.5 + 0.15 * (1:7) + rnorm(7, sd = 0.2))  # Happiness for students with noise
+)
+
+
+ggplot(cookies_data, aes(x = cookies, y = happiness)) +
+  geom_point( size = 3) +  # Points still colored by group for clarity
+  geom_smooth(method = "lm", se = FALSE, color = "#0074D9") +  # Single regression line for the entire dataset
+  labs(x = "Cookies eaten", y = "Level of happiness") +
+  theme_minimal(base_size = 14) +
+  coord_cartesian(xlim = c(0, 8), ylim = c(0, 3)) +
+  scale_x_continuous(breaks = 0:8) +
+  theme(panel.grid.minor = element_blank())
+
+
+```
+
+
+
+# 
+
+```{r}
+#| echo: false
+#| eval: true
+#| fig-align: "center"
+#| fig-width: 8
+#| fig-height: 4
+
+ggplot(cookies_data, aes(x = cookies, y = happiness)) +
+  geom_point(aes(color = group), size = 3) +  # Points still colored by group for clarity
+  geom_smooth(method = "lm", se = FALSE, color = "#0074D9") +  # Single regression line for the entire dataset
+  labs(x = "Cookies eaten", y = "Level of happiness", color = "Group") +
+  theme_minimal(base_size = 14) +
+  coord_cartesian(xlim = c(0, 8), ylim = c(0, 3)) +
+  scale_color_manual(values = c("Professor" = "navy", "Student" = "darkred")) +
+  scale_x_continuous(breaks = 0:8) +
+  theme(panel.grid.minor = element_blank())
+
+
+```
+
+
+
+
+# 
+
+```{r}
+#| echo: false
+#| eval: true
+#| fig-align: "center"
+#| fig-width: 8
+#| fig-height: 4
+
+ggplot(cookies_data, aes(x = cookies, y = happiness, color = group)) +
+  geom_point(size = 3) +
+  geom_smooth(method = "lm", se = FALSE) +  # Add linear regression lines
+  labs(x = "Cookies eaten", y = "Level of happiness", color = "Group") +
+  theme_minimal(base_size = 14) +
+  coord_cartesian(xlim = c(0, 8), ylim = c(0, 3)) +
+  scale_color_manual(values = c("Professor" = "navy", "Student" = "darkred")) +
+  scale_x_continuous(breaks = 0:8) +
+  theme(panel.grid.minor = element_blank())
+
+```
+
+
+
+# Inferencia
+
+## Inferencia de los coeficientes
+
+$$
+\hat{\beta} \xrightarrow{\text{🤞 ojalá 🤞}} \beta
+$$
+
+
+:::{.fragment}
+
+```{r}
+#| echo: true
+glance(happiness_model)
+```
+:::

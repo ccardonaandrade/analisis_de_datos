@@ -28,6 +28,71 @@
       margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
       vertical-align: middle;
     }
+    /* CSS for syntax highlighting */
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+      }
+    pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+    div.sourceCode
+      { color: #24292e;  }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span { color: #24292e; } /* Normal */
+    code span.al { color: #ff5555; font-weight: bold; } /* Alert */
+    code span.an { color: #6a737d; } /* Annotation */
+    code span.at { color: #d73a49; } /* Attribute */
+    code span.bn { color: #005cc5; } /* BaseN */
+    code span.bu { color: #d73a49; } /* BuiltIn */
+    code span.cf { color: #d73a49; } /* ControlFlow */
+    code span.ch { color: #032f62; } /* Char */
+    code span.cn { color: #005cc5; } /* Constant */
+    code span.co { color: #6a737d; } /* Comment */
+    code span.cv { color: #6a737d; } /* CommentVar */
+    code span.do { color: #6a737d; } /* Documentation */
+    code span.dt { color: #d73a49; } /* DataType */
+    code span.dv { color: #005cc5; } /* DecVal */
+    code span.er { color: #ff5555; text-decoration: underline; } /* Error */
+    code span.ex { color: #d73a49; font-weight: bold; } /* Extension */
+    code span.fl { color: #005cc5; } /* Float */
+    code span.fu { color: #6f42c1; } /* Function */
+    code span.im { color: #032f62; } /* Import */
+    code span.in { color: #6a737d; } /* Information */
+    code span.kw { color: #d73a49; } /* Keyword */
+    code span.op { color: #24292e; } /* Operator */
+    code span.ot { color: #6f42c1; } /* Other */
+    code span.pp { color: #d73a49; } /* Preprocessor */
+    code span.re { color: #6a737d; } /* RegionMarker */
+    code span.sc { color: #005cc5; } /* SpecialChar */
+    code span.ss { color: #032f62; } /* SpecialString */
+    code span.st { color: #032f62; } /* String */
+    code span.va { color: #e36209; } /* Variable */
+    code span.vs { color: #032f62; } /* VerbatimString */
+    code span.wa { color: #ff5555; } /* Warning */
   </style>
   <link rel="stylesheet" href="regression_files/libs/revealjs/dist/theme/quarto.css" id="theme">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.2/font/bootstrap-icons.css">
@@ -547,13 +612,286 @@ Regresión Lineal
 
 <img data-src="regression_files/figure-revealjs/unnamed-chunk-10-1.png" width="768" class="r-stretch quarto-figure-center"></section>
 
+<section>
 <section id="section-7" class="title-slide slide level1 center">
 <h1></h1>
 
-<img data-src="regression_files/figure-revealjs/unnamed-chunk-11-1.png" width="768" class="r-stretch quarto-figure-center"><div class="footer footer-default">
-
+<img data-src="regression_files/figure-revealjs/unnamed-chunk-11-1.png" width="768" class="r-stretch quarto-figure-center"></section>
+<section id="pendiente-de-una-recta" class="slide level2 text-orange-gold">
+<h2>Pendiente de una recta</h2>
+<p><span class="math display">\[
+y = mx + b
+\]</span></p>
+<table>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;"><span class="math inline">\(y\)</span></td>
+<td style="text-align: center;">Un número</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><span class="math inline">\(x\)</span></td>
+<td style="text-align: center;">Un número</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><span class="math inline">\(m\)</span></td>
+<td style="text-align: center;">La pendiente <span class="math inline">\(\frac{\Delta y}{\Delta x}\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><span class="math inline">\(b\)</span></td>
+<td style="text-align: center;">El intercepto con <span class="math inline">\(y\)</span></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="pendiente-de-una-recta-1" class="slide level2 text-orange-gold">
+<h2>Pendiente de una recta</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p><span class="math display">\[
+y = 2x - 1
+\]</span></p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="regression_files/figure-revealjs/unnamed-chunk-12-1.png" width="460"></p>
+</figure>
+</div>
+</div>
+</div>
+</div><div class="column fragment" style="width:50%;">
+<p><span class="math display">\[
+y = -0.5x + 6
+\]</span></p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="regression_files/figure-revealjs/unnamed-chunk-13-1.png" width="460"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
 </div>
 </section>
+<section id="regresión-lineal-simple" class="slide level2 text-orange-gold">
+<h2>Regresión lineal simple</h2>
+<p><span class="math display">\[
+Y = \beta_0 + \beta_1 X + \varepsilon
+\]</span></p>
+<ul>
+<li><p><span class="math inline">\(\beta_1\)</span>: la pendiente verdadera de la relación entre <span class="math inline">\(X\)</span> y <span class="math inline">\(Y\)</span></p></li>
+<li><p><span class="math inline">\(\beta_0\)</span>: el intercepto verdadero de la relación entre <span class="math inline">\(X\)</span> y <span class="math inline">\(Y\)</span></p></li>
+<li><p><span class="math inline">\(\varepsilon\)</span>: el error</p></li>
+</ul>
+</section>
+<section id="regresión-lineal-simple-1" class="slide level2 text-orange-gold">
+<h2>Regresión lineal simple</h2>
+<p><span class="math display">\[
+\hat{y} = \hat{\beta_0} + \hat{\beta_1} x_1
+\]</span></p>
+<ul>
+<li><p><span class="math inline">\(\hat{\beta_1}\)</span>: la pendiente estimado de la relación entre <span class="math inline">\(X\)</span> y <span class="math inline">\(Y\)</span></p></li>
+<li><p><span class="math inline">\(\hat{\beta_0}\)</span>: el intercepto estimado de la relación entre <span class="math inline">\(X\)</span> y <span class="math inline">\(Y\)</span></p></li>
+<li><p>No hay error!!!</p></li>
+</ul>
+</section>
+<section id="modelo-de-regresión" class="slide level2 text-orange-gold">
+<h2>Modelo de Regresión</h2>
+<div class="columns">
+<div class="column" style="width:40%;">
+<p><span class="math display">\[  
+  \begin{aligned}
+Y &amp;= \color{#0074D9}{\text{Modelo}} + \color{#FF851B}{\text{Error}} \\
+  &amp;= \color{#0074D9}{f(X)} + \color{#FF851B}{\varepsilon}
+\end{aligned}
+\]</span></p>
+</div><div class="column" style="width:60%;">
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="regression_files/figure-revealjs/unnamed-chunk-14-1.png" style="width:100.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="residuos" class="slide level2 text-orange-gold">
+<h2>Residuos</h2>
+
+<img data-src="regression_files/figure-revealjs/unnamed-chunk-15-1.png" style="width:100.0%" class="r-stretch quarto-figure-center"><p><span class="math display">\[
+\text{Residuo} = \text{Observado} - \text{Predicho} = y - \hat{y}
+\]</span></p>
+</section>
+<section id="la-línea-de-los-mínimos-cuadrados" class="slide level2 text-orange-gold">
+<h2>La línea de los mínimos cuadrados</h2>
+<ul>
+<li>El residuo para la observación <span class="math inline">\(i^{th}\)</span> es:</li>
+</ul>
+<p><span class="math display">\[e_i= \text{Observado} - \text{Predicho}=y_i - \hat{y_i}\]</span> - La <strong>suma de los residuos al cuadrado</strong> es:</p>
+<p><span class="math display">\[e_1^2+e_2^2+e_3^2+..+e_n^2\]</span></p>
+<ul>
+<li>La <strong>línea de los mínimos cuadrados</strong> es la que minimiza la suma de los residuos al cuadrado</li>
+</ul>
+</section>
+<section id="section-8" class="slide level2">
+<h2></h2>
+
+<img data-src="images/meme.png" style="width:100.0%" class="r-stretch quarto-figure-center"></section>
+<section id="construyendo-modelos-en-r" class="slide level2 text-orange-gold">
+<h2>Construyendo modelos en R</h2>
+<ul>
+<li>La sintáxis para los resultados del modelo es:</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a>name_of_model <span class="ot">&lt;-</span> <span class="fu">lm</span>(Y <span class="sc">~</span> X, <span class="at">data =</span> DATA)</span>
+<span id="cb2-2"><a href="#cb2-2"></a></span>
+<span id="cb2-3"><a href="#cb2-3"></a><span class="fu">summary</span>(name_of_model)  <span class="co"># Para ver los detalles del modelo</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="fragment">
+<ul>
+<li>Otras opciones para evaluar el modelo son:</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a><span class="fu">library</span>(broom)</span>
+<span id="cb3-2"><a href="#cb3-2"></a></span>
+<span id="cb3-3"><a href="#cb3-3"></a><span class="co"># Convierte los resultados del modelo a un data frame para graficar</span></span>
+<span id="cb3-4"><a href="#cb3-4"></a><span class="fu">tidy</span>(name_of_model)</span>
+<span id="cb3-5"><a href="#cb3-5"></a></span>
+<span id="cb3-6"><a href="#cb3-6"></a><span class="co"># Convierte los diagnósticos del modelo a un data frame</span></span>
+<span id="cb3-7"><a href="#cb3-7"></a><span class="fu">glance</span>(name_of_model)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+</section>
+<section id="modelando-galletas-y-felicidad" class="slide level2 text-orange-gold">
+<h2>Modelando Galletas y Felicidad</h2>
+<div class="columns">
+<div class="column" style="width:40%;">
+<p><span class="math display">\[\widehat{Felicidad}=\hat{\beta_0}+\hat{\beta_1}\times Galletas\]</span></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a>happiness_model <span class="ot">&lt;-</span> </span>
+<span id="cb4-2"><a href="#cb4-2"></a>  <span class="fu">lm</span>(happiness <span class="sc">~</span> cookies,</span>
+<span id="cb4-3"><a href="#cb4-3"></a>     <span class="at">data =</span> cookies_data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div><div class="column" style="width:60%;">
+<div class="cell">
+<div class="cell-output-display">
+<p><img data-src="regression_files/figure-revealjs/cookies-happiness-again-1.png" width="960"></p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="modelando-galletas-y-felicidad-1" class="slide level2 text-orange-gold">
+<h2>Modelando Galletas y Felicidad</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a><span class="fu">tidy</span>(happiness_model, <span class="at">conf.int =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 2 x 7
+  term        estimate std.error statistic p.value conf.low conf.high
+  &lt;chr&gt;          &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;   &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt;
+1 (Intercept)    1.1      0.470       2.34  0.0475   0.0156     2.18 
+2 cookies        0.164    0.0758      2.16  0.0629  -0.0111     0.338</code></pre>
+</div>
+</div>
+<div class="fragment">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a><span class="fu">glance</span>(happiness_model)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 1 x 12
+  r.squared adj.r.squared sigma statistic p.value    df logLik   AIC   BIC
+      &lt;dbl&gt;         &lt;dbl&gt; &lt;dbl&gt;     &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
+1     0.368         0.289 0.688      4.66  0.0629     1  -9.34  24.7  25.6
+# i 3 more variables: deviance &lt;dbl&gt;, df.residual &lt;int&gt;, nobs &lt;int&gt;</code></pre>
+</div>
+</div>
+</div>
+</section>
+<section id="traduciendo-los-resultados-a-matemáticas" class="slide level2 text-orange-gold">
+<h2>Traduciendo los resultados a matemáticas</h2>
+<div class="columns">
+<div class="column" style="width:40%;">
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 2 x 2
+  term        estimate
+  &lt;chr&gt;          &lt;dbl&gt;
+1 (Intercept)    1.1  
+2 cookies        0.164</code></pre>
+</div>
+</div>
+<p><span class="math display">\[
+\begin{aligned}
+&amp;\widehat{\text{Felicidad}} = \\
+&amp;\beta_0 + \beta_1 \times \text{Galletas} + \varepsilon
+\end{aligned}
+\]</span></p>
+<p><span class="math display">\[
+\begin{aligned}
+&amp;\widehat{\text{Felicidad}} = \\
+&amp;1.1 + 0.16 \times \text{Galletas} + \varepsilon
+\end{aligned}
+\]</span></p>
+</div><div class="column" style="width:60%;">
+<div class="cell">
+<div class="cell-output-display">
+<p><img data-src="regression_files/figure-revealjs/unnamed-chunk-24-1.png" width="960"></p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="interpretación-de-los-resultados" class="slide level2 text-orange-gold">
+<h2>Interpretación de los resultados</h2>
+<p>Un incremento en una unidad de <span class="math inline">\(X\)</span> está <em>asociado</em> con un incremento (o reducción) promedio de <span class="math inline">\(\beta_1\)</span> unidades en <span class="math inline">\(Y\)</span></p>
+<p><span class="math display">\[\widehat{Felicidad}=\hat{\beta_0}+\hat{\beta_1}\times Galletas\]</span></p>
+<p><span class="math display">\[\widehat{Felicidad} = 1.1 + 0.16 \times Galletas\]</span></p>
+</section></section>
+<section id="section-9" class="title-slide slide level1 center">
+<h1></h1>
+
+<img data-src="regression_files/figure-revealjs/unnamed-chunk-25-1.png" width="768" class="r-stretch quarto-figure-center"></section>
+
+<section id="section-10" class="title-slide slide level1 center">
+<h1></h1>
+
+<img data-src="regression_files/figure-revealjs/unnamed-chunk-26-1.png" width="768" class="r-stretch quarto-figure-center"></section>
+
+<section id="section-11" class="title-slide slide level1 center">
+<h1></h1>
+
+<img data-src="regression_files/figure-revealjs/unnamed-chunk-27-1.png" width="768" class="r-stretch quarto-figure-center"></section>
+
+<section>
+<section id="inferencia" class="title-slide slide level1 center">
+<h1>Inferencia</h1>
+
+</section>
+<section id="inferencia-de-los-coeficientes" class="slide level2">
+<h2>Inferencia de los coeficientes</h2>
+<p><span class="math display">\[
+\hat{\beta} \xrightarrow{\text{🤞 ojalá 🤞}} \beta
+\]</span></p>
+<div class="fragment">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1"></a><span class="fu">glance</span>(happiness_model)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 1 x 12
+  r.squared adj.r.squared sigma statistic p.value    df logLik   AIC   BIC
+      &lt;dbl&gt;         &lt;dbl&gt; &lt;dbl&gt;     &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
+1     0.368         0.289 0.688      4.66  0.0629     1  -9.34  24.7  25.6
+# i 3 more variables: deviance &lt;dbl&gt;, df.residual &lt;int&gt;, nobs &lt;int&gt;</code></pre>
+</div>
+</div>
+</div>
+<div class="footer footer-default">
+
+</div>
+</section></section>
     </div>
   </div>
 
