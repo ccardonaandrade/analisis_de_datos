@@ -8,7 +8,6 @@
       css:
          - https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.2/font/bootstrap-icons.css
 ---
-        
 
 ##  {.center}
 
@@ -26,35 +25,282 @@ Analítica de Datos
 
 # Tabla de contenido
 
-1.  [Regresión Lineal](#lm)
+1. [Correlación](#corr)
+2. [Regresión Lineal Simple](#lm)
+3. [Regresión Lineal Múltiple](#multiple)
 
-# [Regresión Lineal]{.hl .hl-gold} {#lm .text-wash-black background="linear-gradient(45deg, #f37335, #fdc830)"}
+# Correlación {#corr .text-wash-black background="linear-gradient(45deg, #00aadd, #66dd00)"}
 
 
-# Cookies and happiness {.text-orange-gold}
+## Algunos fundamentos básicos de R {.text-lime-cyan}
+
+```{r}
+#| echo: false
+#| eval: true
+#| fig-align: "center"
+#| fig-width: 8
+#| fig-height: 4
+
+library(tidyverse)
+library(readxl)
+library(janitor)
+hollywood <- read_excel("C:/Users/ccard/Downloads/KEL702-XLS-ENG.xls", sheet = "Exhibit 1")
+hollywood <- hollywood %>%
+  clean_names()
+hollywood <- hollywood %>% rename(us_gross = total_u_s_gross)
+hollywood <- hollywood %>% rename(non_us_gross = total_non_u_s_gross)
+
+```
+
+```{r}
+#| echo: true
+#| eval: true
+#| fig-align: center
+#| code-fold: true
+
+ggplot(data = hollywood, aes(x = (opening_gross / 1000000), y = (us_gross / 1000000))) +
+    geom_point() +
+    labs(
+        x = "Opening Gross (in millions)",
+        y = "US Total Gross (in millions)"
+    ) +
+    theme_minimal()
+
+```
+
+## Algunos fundamentos básicos de R {.text-lime-cyan}
+
+- Podemos utilizar un diagrama de dispersión para realizar un primer análisis de la relación entre dos variables
+
+- El coeficiente de correlación (lineal) es utilizado para medir la fuerza de la asociación (lineal) entre dos variables
+
+- La correlación entre el recaudo en US y el recaudo el primer fin de semana:
+
+```{r}
+#| echo: true
+cor(hollywood$us_gross,hollywood$opening_gross)
+```
 
 
-::: {.box-inv-2.medium}
-**Prediction**
+## Algunos fundamentos básicos de R {.text-lime-cyan}
+
+```{r}
+#| echo: true
+#| eval: false
+#| fig-align: center
+
+# RECUERDEN INSTALAR EL PAQUETE PRIMERO!!!
+# install.packages("corrplot")
+
+# Cargamos el paquete
+library(corrplot)
+
+# Creemos una base de datos temporal sólo con estas 4 variables
+hollywood_sub <- hollywood %>% select( us_gross, opening_gross, non_us_gross, budget) 
+
+# Creemos la matriz de correlaciones
+corrplot(cor(hollywood_sub ),
+         method = "number",
+         type = "upper")
+
+```
+
+
+
+## Algunos fundamentos básicos de R {.text-lime-cyan}
+```{r}
+#| echo: false
+#| eval: true
+#| fig-align: center
+
+# RECUERDEN INSTALARLA PRIMERO!!!
+# install.packages("corrplot)
+
+# Cargamos el paquete
+library(corrplot)
+
+# Creemos una base de datos temporal sólo con estas 4 variables
+hollywood_sub <- hollywood %>% select( us_gross, opening_gross, non_us_gross, budget) 
+
+# Creemos la matriz de correlaciones
+corrplot(cor(hollywood_sub ),
+         method = "number",
+         type = "upper")
+
+```
+
+
+
+## Algunos fundamentos básicos de R {.text-lime-cyan}
+
+
+```{r}
+#| echo: false
+#| eval: true
+#| fig-align: center
+
+library(datasauRus)
+library(patchwork)
+
+dino <- datasaurus_dozen %>%
+  filter(dataset == "dino")
+
+star <- datasaurus_dozen %>%
+  filter(dataset == "star")
+
+hlines <- datasaurus_dozen %>%
+  filter(dataset == "h_lines")
+
+dino %>%
+  summarize(
+      mean_x    = mean(x),
+      mean_y    = mean(y),
+      std_dev_x = sd(x),
+      std_dev_y = sd(y),
+      corr_x_y  = cor(x, y)
+  )
+
+
+
+```
+
+
+
+```{r}
+#| echo: false
+#| eval: true
+#| fig-align: center
+#| fig-width: 7
+#| fig-height: 3.5
+
+ggplot(dino, aes(x=x, y=y))+
+  geom_point(color = "darkred") + theme_minimal()
+```
+
+
+
+
+## Algunos fundamentos básicos de R {.text-lime-cyan}
+
+
+```{r}
+#| echo: false
+#| eval: true
+#| fig-align: center
+star %>%
+  summarize(
+      mean_x    = mean(x),
+      mean_y    = mean(y),
+      std_dev_x = sd(x),
+      std_dev_y = sd(y),
+      corr_x_y  = cor(x, y)
+  )
+```
+
+```{r}
+#| echo: false
+#| eval: true
+#| fig-align: center
+#| fig-width: 7
+#| fig-height: 3.5
+ggplot(star, aes(x=x, y=y))+
+  geom_point(color = "navy") + theme_minimal()
+
+```
+
+
+## Algunos fundamentos básicos de R {.text-lime-cyan}
+
+
+```{r}
+#| echo: false
+#| eval: true
+#| fig-align: center
+#| fig-width: 7
+#| fig-height: 3.5
+hlines %>%
+  summarize(
+      mean_x    = mean(x),
+      mean_y    = mean(y),
+      std_dev_x = sd(x),
+      std_dev_y = sd(y),
+      corr_x_y  = cor(x, y)
+  )
+```
+
+```{r}
+#| echo: false
+#| eval: true
+#| fig-align: center
+
+ggplot(hlines, aes(x=x, y=y))+
+  geom_point(color = "orange") + theme_minimal()
+
+```
+
+
+
+# Regresión Lineal <br>[Simple]{.hl .hl-gold} {#lm .text-wash-black background="linear-gradient(45deg, #f37335, #fdc830)"}
+
+## Partes esenciales de una regresión {.text-orange-gold}
+
+::: columns
+::: {.column width="50%"}
+### Y  {.text-orange-gold .center}
+
+- Variable dependiente
+
+- Variable resultado
+
+- Básicamente lo que queremos predecir o explicar
+
 :::
 
-::: {.box-2}
-**Forecast the future**
+::: {.column .fragment width="50%"}
+
+### X  {.text-orange-gold .center}
+
+- Variable explicatoria
+
+- Predictor
+
+- Variable independiente
+
+- Lo que usamos para predecir o explicar Y
+:::
 :::
 
-::: {.box-2.sp-after}
-Focus is on **Y**
-:::
 
-::: {.box-inv-2.small}
-Netflix trying to<br>guess your next show
-:::
+## ¿Por qué una regresión? {.text-orange-gold}
 
-::: {.box-inv-2.small}
-Predicting who will enroll in SNAP
-:::
+Usualmente ajustamos a una línea por dos razones:
 
-# Cookies and happiness {.text-orange-gold}
+### Predicción
+
+- Predecir el futuro
+
+- Nos enfocamos en Y
+
+- Netflix tratando de predecir la siguiente serie que veremos
+
+### Explicación
+
+- Explicar el efecto de X en Y
+
+- Nos enfocamos en X
+
+- Netflix evaluando el efecto de la hora del día en la selección de una serie
+
+
+# ¿Cómo? {.text-orange-gold}
+
+1. Graficar X y Y
+
+2. Dibujar una recta que se aproxime a la relación observada (ojalá funcione para datos que no están en la muestra)
+
+3. Estimar los números que componen esa recta
+
+4. Interpretar esos números
 
 ```{r}
 #| echo: false
@@ -74,21 +320,6 @@ cookies_fitted <- augment(cookies_model)
 
 # Cookies and happiness {.text-orange-gold}
 
-
-
-```{r}
-#| echo: false
-#| eval: true
-
-cookies |> 
-  knitr::kable(format = "html")
-```
-
-
-# Cookies and happiness {.text-orange-gold}
-
-
-
 ```{r}
 #| echo: false
 #| eval: true
@@ -98,17 +329,6 @@ cookies |>
   kableExtra::kable_styling(font_size = 30) # Adjust the font size as needed
 ```
 
-
-# Cookies and happiness {.text-orange-gold}
-
-
-
-```{r}
-#| echo: false
-#| eval: true
-
-cookies
-```
 
 
 # 
@@ -121,11 +341,12 @@ cookies
 #| fig-height: 4
 
 
+
 cookies_base <- ggplot(cookies_fitted, aes(x = cookies, y = happiness)) +
   geom_point(size = 3) +
   coord_cartesian(xlim = c(0, 10), ylim = c(0, 3)) +
   scale_x_continuous(breaks = 0:10) +
-  labs(x = "Cookies eaten", y = "Level of happiness") +
+  labs(x = "Galletas consumidas", y = "Nivel de Felicidad") +
   theme_minimal(base_size = 14) +
   theme(panel.grid.minor = element_blank(),
         plot.title = element_text(face = "bold"))
@@ -149,8 +370,6 @@ cookies_base +
   geom_smooth(method = lm, color = "#0074D9", formula = y ~ splines::bs(x, 7), se = FALSE)
 ```
 
-
-
 # 
 
 ```{r}
@@ -164,8 +383,6 @@ cookies_base +
   geom_smooth(method = "loess", color = "#0074D9", se = FALSE)
 ```
 
-
-
 # 
 
 ```{r}
@@ -178,8 +395,6 @@ cookies_base +
 cookies_base +
   geom_smooth(method = "lm", color = "#0074D9", se = FALSE)
 ```
-
-
 
 # 
 
@@ -197,7 +412,6 @@ cookies_with_residual <- cookies_base +
 cookies_with_residual
 ```
 
-
 # 
 
 ```{r}
@@ -213,16 +427,13 @@ cookies_residual_only <- ggplot(cookies_fitted, aes(x = cookies, y = .resid)) +
   geom_segment(aes(xend = cookies, yend = 0), color = "#FF851B", size = 1) +
   coord_cartesian(xlim = c(0, 10), ylim = c(-1.5, 1.5)) +
   scale_x_continuous(breaks = 0:10) +
-  labs(x = "Cookies eaten", y = "Distance from line") +
+  labs(x = "Galletas consumidas", y = "Distance from line") +
   theme_minimal(base_size = 14) +
   theme(panel.grid.minor = element_blank(),
         plot.title = element_text(face = "bold"))
 
 cookies_residual_only
 ```
-
-
-
 
 # 
 
@@ -237,32 +448,26 @@ cookies_residual_only
   (cookies_residual_only + labs(title = "Residual errors"))
 ```
 
-
 ## Pendiente de una recta {.text-orange-gold}
 
 $$
 y = mx + b
 $$
 
-|       |                                         |
-|:-----:|:---------------------------------------:|
-| $y$   | Un número                               |
-| $x$   | Un número                               |
-| $m$   | La pendiente $\frac{\Delta y}{\Delta x}$ |
-| $b$   | El intercepto con $y$                   |
-
+|     |                                          |
+|:---:|:----------------------------------------:|
+| $y$ |                Un número                 |
+| $x$ |                Un número                 |
+| $m$ | La pendiente $\frac{\Delta y}{\Delta x}$ |
+| $b$ |          El intercepto con $y$           |
 
 ## Pendiente de una recta {.text-orange-gold}
 
-
-
 ::: columns
 ::: {.column width="50%"}
-
 $$
 y = 2x - 1
 $$
-
 
 ```{r}
 #| echo: false
@@ -281,11 +486,11 @@ ggplot(data = tibble(x = 0:5), aes(x = x)) +
   theme(panel.grid.minor = element_blank())
 ```
 
-
 :::
 
-::: {.column .fragment  width="50%"}
 
+
+::: {.column .fragment width="50%"}
 $$
 y = -0.5x + 6
 $$
@@ -297,12 +502,12 @@ $$
 #| fig-width: 4.8
 #| fig-height: 3.5
 
-ggplot(data = tibble(x = 0:5), aes(x = x)) +
-  stat_function(fun = function(x) 2 * x - 1, 
+ggplot(data = tibble(x = 0:14), aes(x = x)) +
+  stat_function(fun = function(x) -0.5 * x + 6, 
                 color = "#BF3984", size = 1.5) +
   geom_vline(xintercept = 0) +
   geom_hline(yintercept = 0) +
-  scale_x_continuous(breaks = 0:5) +
+  scale_x_continuous(breaks = 0:14) +
   scale_y_continuous(breaks = -1:9) +
   theme(panel.grid.minor = element_blank())
 ```
@@ -310,21 +515,17 @@ ggplot(data = tibble(x = 0:5), aes(x = x)) +
 :::
 :::
 
-
-
 ## Regresión lineal simple {.text-orange-gold}
 
 $$
 Y = \beta_0 + \beta_1 X + \varepsilon
 $$
 
+-   $\beta_1$: la pendiente verdadera de la relación entre $X$ y $Y$
 
-- $\beta_1$: la pendiente verdadera de la relación entre $X$ y $Y$
+-   $\beta_0$: el intercepto verdadero de la relación entre $X$ y $Y$
 
-- $\beta_0$: el intercepto verdadero de la relación entre $X$ y $Y$
-
-- $\varepsilon$: el error 
-
+-   $\varepsilon$: el error
 
 ## Regresión lineal simple {.text-orange-gold}
 
@@ -332,32 +533,25 @@ $$
 \hat{y} = \hat{\beta_0} + \hat{\beta_1} x_1 
 $$
 
-- $\hat{\beta_1}$: la pendiente estimado de la relación entre $X$ y $Y$
+-   $\hat{\beta_1}$: la pendiente estimado de la relación entre $X$ y $Y$
 
-- $\hat{\beta_0}$: el intercepto estimado de la relación entre $X$ y $Y$
+-   $\hat{\beta_0}$: el intercepto estimado de la relación entre $X$ y $Y$
 
-- No hay error!!! 
-
+-   No hay error!!!
 
 ## Modelo de Regresión {.text-orange-gold}
 
 ::: columns
 ::: {.column width="40%"}
-
-
-
 $$  
   \begin{aligned}
 Y &= \color{#0074D9}{\text{Modelo}} + \color{#FF851B}{\text{Error}} \\
   &= \color{#0074D9}{f(X)} + \color{#FF851B}{\varepsilon}
 \end{aligned}
 $$
-
 :::
 
-::: {.column  width="60%"}
-
-
+::: {.column width="60%"}
 ```{r}
 #| echo: false
 #| eval: true
@@ -367,14 +561,10 @@ $$
 
 cookies_with_residual
 ```
-
 :::
 :::
-
-
 
 ## Residuos {.text-orange-gold}
-
 
 ```{r}
 #| echo: false
@@ -390,17 +580,15 @@ $$
 \text{Residuo} = \text{Observado} - \text{Predicho} = y - \hat{y}
 $$
 
- 
 ## La línea de los mínimos cuadrados {.text-orange-gold}
 
-- El residuo para la observación $i^{th}$ es:
+-   El residuo para la observación $i^{th}$ es:
 
-$$e_i= \text{Observado} - \text{Predicho}=y_i - \hat{y_i}$$
-- La **suma de los residuos al cuadrado** es:
+$$e_i= \text{Observado} - \text{Predicho}=y_i - \hat{y_i}$$ - La **suma de los residuos al cuadrado** es:
 
 $$e_1^2+e_2^2+e_3^2+..+e_n^2$$
 
-- La **línea de los mínimos cuadrados** es la que minimiza la suma de los residuos al cuadrado
+-   La **línea de los mínimos cuadrados** es la que minimiza la suma de los residuos al cuadrado
 
 ## 
 
@@ -415,7 +603,7 @@ knitr::include_graphics("images/meme.png")
 
 ## Construyendo modelos en R {.text-orange-gold}
 
-- La sintáxis para los resultados del modelo es:
+-   La sintáxis para los resultados del modelo es:
 
 ```{r}
 #| eval: false
@@ -426,10 +614,8 @@ name_of_model <- lm(Y ~ X, data = DATA)
 summary(name_of_model)  # Para ver los detalles del modelo
 ```
 
-
-:::{.fragment}
-
-- Otras opciones para evaluar el modelo son:
+::: fragment
+-   Otras opciones para evaluar el modelo son:
 
 ```{r}
 #| eval: false
@@ -443,16 +629,12 @@ tidy(name_of_model)
 # Convierte los diagnósticos del modelo a un data frame
 glance(name_of_model)
 ```
-
 :::
-
-
 
 ## Modelando Galletas y Felicidad {.text-orange-gold}
 
 ::: columns
 ::: {.column width="40%"}
-
 $$\widehat{Felicidad}=\hat{\beta_0}+\hat{\beta_1}\times Galletas$$
 
 ```{r}
@@ -462,11 +644,9 @@ happiness_model <-
   lm(happiness ~ cookies,
      data = cookies_data)
 ```
-
 :::
 
-::: {.column  width="60%"}
-
+::: {.column width="60%"}
 ```{r}
 #| echo: false
 #| label: cookies-happiness-again
@@ -477,38 +657,27 @@ cookies_base +
   geom_smooth(method = "lm", color = "#0074D9") +
   coord_cartesian(xlim = c(0, 10), ylim = c(0, 4))
 ```
-
-
 :::
 :::
 
-
-
-## Modelando Galletas y Felicidad {.text-orange-gold} 
-
+## Modelando Galletas y Felicidad {.text-orange-gold}
 
 ```{r}
 #| echo: true
 tidy(happiness_model, conf.int = TRUE)
 ```
 
-
-:::{.fragment}
-
+::: fragment
 ```{r}
 #| echo: true
 glance(happiness_model)
 ```
 :::
 
-
-## Traduciendo los resultados a matemáticas  {.text-orange-gold}
+## Traduciendo los resultados a matemáticas {.text-orange-gold}
 
 ::: columns
 ::: {.column width="40%"}
-
-
-
 ```{r}
 #| echo: false
 tidy(happiness_model, conf.int = TRUE) |> 
@@ -522,7 +691,6 @@ $$
 \end{aligned}
 $$
 
-
 $$
 \begin{aligned}
 &\widehat{\text{Felicidad}} = \\ 
@@ -531,31 +699,339 @@ $$
 $$
 :::
 
-::: {.column  width="60%"}
-
+::: {.column width="60%"}
 ```{r}
 #| echo: false
 cookies_base +
   geom_smooth(method = "lm", color = "#0074D9") +
   coord_cartesian(xlim = c(0, 10), ylim = c(0, 4))
 ```
-
 :::
 :::
 
-## Interpretación de los resultados {.text-orange-gold}
+## Interpretación de los coeficientes {.text-orange-gold}
 
 Un incremento en una unidad de $X$ está *asociado* con un incremento (o reducción) promedio de $\beta_1$ unidades en $Y$
 
-
 $$\widehat{Felicidad}=\hat{\beta_0}+\hat{\beta_1}\times Galletas$$
-
 
 $$\widehat{Felicidad} = 1.1 + 0.16 \times Galletas$$
 
+:::{.incremental}
+
+- En *promedio*, una galleta adicional está asociado a aumento en la felicidad de 0.16 unidades
+
+- Si no hay consumo de galletas, esperamos que el puntaje de felicidad sea 1.1 unidades
+:::
 
 
-#
+## ¿Es el intercepto importante? {.text-orange-gold}
+
+- La interpretación del intercepto es importante si en el contexto de los datos:
+
+  1. La variable independiente puede tomar valores iguales o cercanos a cero
+  
+  2. La variable independiente tiene valores cercanos a cero en los datos observados
+  
+:::{.incremental}
+  
+- En caso contrario, el intercepto no tiene ninguna interpretación práctica
+
+- Veremos más ejemplos sobre esto más adelante...
+:::
+
+
+## Volvamos a Hollywood Rules  {.text-orange-gold}
+
+- Según la sabiduría popular en Hollywood, el recaudo durante el primer fin de semana es un fuerte predictor del éxito comercial de una película
+- Grafiquemos la relación entre el recaudo en Estados Unidos y el recaudo en el primer fin de semana para evaluar esta creencia:
+
+
+
+
+## Volvamos a Hollywood Rules  {.text-orange-gold}
+
+
+```{r}
+#| echo: false
+#| eval: true
+#| fig-align: center
+
+ggplot(data = hollywood, aes(x = (opening_gross / 1000000), y = (us_gross / 1000000))) +
+    geom_point() +
+    labs(
+        x = "Opening Gross (in millions)",
+        y = "US Total Gross (in millions)"
+    ) +
+    theme_minimal()
+
+```
+
+
+
+## Volvamos a Hollywood Rules  {.text-orange-gold}
+
+```{r}
+#| echo: true
+#| eval: true
+hollywood_model <- lm(us_gross ~ opening_gross, data=hollywood)
+tidy(hollywood_model, conf.int = TRUE)
+
+```
+
+:::{.fragment}
+
+Entonces nuestro modelo lineal es:
+
+$$\widehat{\text{US Total Gross}} = 5,108,220 + 3.12 \times \text{Opening Gross}$$
+
+:::
+
+:::{.fragment}
+¿Cuál es la interpretación de $\hat{\beta_1}$ en este caso?¿Y de $\hat{\beta_0}$?
+:::
+
+
+
+## ¿ Cómo graficar la línea de regresión? {.text-orange-gold}
+
+`geom_smooth(method="lm")`es la función dentro de ggplot para gráficar la línea de regresión y su respectivo intervalo de confianza.
+
+
+```{r}
+#| echo: true
+#| eval: false
+#| fig-width: 8
+#| fig-height: 4
+#| fig-align: center
+#| code-line-numbers: "3"
+ggplot(data = hollywood, aes(x = (opening_gross / 1000000), y = (us_gross / 1000000))) +
+    geom_point() +
+    geom_smooth(method="lm") +
+    labs(
+        x = "Opening Gross (in millions)",
+        y = "US Total Gross (in millions)"
+    ) +
+    theme_minimal()
+
+```
+
+
+## ¿ Cómo graficar la línea de regresión? {.text-orange-gold}
+
+
+```{r}
+#| echo: false
+#| eval: true
+#| fig-width: 8
+#| fig-height: 4
+#| fig-align: center
+
+ggplot(data = hollywood, aes(x = (opening_gross / 1000000), y = (us_gross / 1000000))) +
+    geom_point() +
+    geom_smooth(method="lm") +
+    labs(
+        x = "Opening Gross (in millions)",
+        y = "US Total Gross (in millions)"
+    ) +
+    theme_minimal()
+
+```
+
+
+## Predicción  {.text-orange-gold}
+
+Según nuestro modelo, ¿cuál sería el recaudo en US de una película cuyo recaudo en el primer fin de semana fue de \$50,000,000?
+
+
+
+$$  
+  \begin{aligned}
+\widehat{\text{US Gross}} &= 5,108,220 + 3.12 \times \text{Opening Gross} \\
+  &= 5,108,220 + 3.12 \times \color{red}{50,000,000} \\
+  &= 161,108,220
+\end{aligned}
+$$
+
+
+## Predicción  {.text-orange-gold}
+
+
+```{r}
+#| echo: false
+#| eval: true
+#| fig-align: center
+#| fig-height: 4
+#| fig-width: 8
+
+model <- lm(us_gross ~ opening_gross , data = hollywood)
+
+# Predict the corresponding y value when x = 50
+predicted_y <- predict(model, newdata = data.frame(opening_gross = 50 * 1000000))
+
+# Plot
+ggplot(data = hollywood, aes(x = (opening_gross / 1000000), y = (us_gross / 1000000))) +
+  geom_point() +
+  geom_smooth(method = "lm") +
+  geom_vline(xintercept = 50, linetype = "dashed", color = "blue") +   # Dashed vertical line at x = 50
+  geom_hline(yintercept = predicted_y/ 1000000, linetype = "dashed", color = "blue") + # Dashed horizontal line at predicted y
+  geom_point(aes(x = 50, y = predicted_y/ 1000000), color = "red", size = 3) + # Point at (50, predicted_y)
+  labs(
+    x = "Opening Gross (in millions)",
+    y = "US Total Gross (in millions)"
+  ) +
+  theme_minimal()
+```
+
+
+
+
+
+## ¿Es posible la extrapolación? {.text-orange-gold}
+
+Extrapolar es tratar de predecir Y fuera del rango de valores de X. Es posible pero no aconsejable.
+
+```{r}
+#| echo: false
+#| eval: true
+#| fig-align: center
+#| fig-height: 4
+#| fig-width: 8
+# Predict the corresponding y value when x = 80
+predicted_y <- predict(model, newdata = data.frame(opening_gross = 80 * 1000000))
+
+# Plot
+ggplot(data = hollywood, aes(x = (opening_gross / 1000000), y = (us_gross / 1000000))) +
+    geom_point() +
+    geom_smooth(method = "lm") +
+    geom_vline(xintercept = 80, linetype = "dashed", color = "blue") +   # Dashed vertical line at x = 80
+    geom_hline(yintercept = predicted_y/ 1000000, linetype = "dashed", color = "blue") + # Dashed horizontal line at predicted y
+    geom_point(aes(x = 80, y = predicted_y/ 1000000), color = "red", size = 3) + # Point at (80, predicted_y)
+    labs(
+        x = "Opening Gross (in millions)",
+        y = "US Total Gross (in millions)"
+    ) + theme_minimal()
+
+```
+
+
+## Inferencia de los coeficientes {.text-orange-gold}
+
+Cuando trabajamos con distribuciones muestrales, la idea era que:
+
+$$
+\bar{X} \xrightarrow{\text{🤞 ojalá 🤞}} \mu
+$$
+
+:::{.fragment}
+
+De igual manera, en el modelo de regresión queremos:
+
+$$
+\hat{\beta} \xrightarrow{\text{🤞 ojalá 🤞}} \beta
+$$
+:::
+
+
+
+## Inferencia de los coeficientes {.text-orange-gold}
+
+$$\widehat{\text{US Total Gross}} = 5,108,220 + 3.12 \times \text{Opening Gross}$$
+
+- Es $\beta_1$ diferente de cero?
+
+
+::: fragment
+```{r}
+#| echo: true
+tidy(hollywood_model, conf.int = TRUE)
+```
+:::
+
+
+## Más pruebas de hipótesis {.text-orange-gold}
+
+$$H_0:\beta_1=0$$
+$$H_1: \beta_1 \neq 0$$
+
+:::{.fragment}
+
+$$Z=\dfrac{3.12-0}{0.218}=14.3>Z_{\frac{\alpha}{2}}=1.96$$
+
+- Rechazamos la $H_0$ a un nivel de significancia del 5%! 
+
+- El p-value es 7.07e-23 (en notación científica), el cual es mucho menor a 0.05. 
+
+:::
+
+
+
+# [Regresión Lineal<br>[[Múltiple]{.hl .hl-purple}]{style="font-size:75%;"}]{style="color:white"} {#multiple background="linear-gradient(45deg, #4a00e0, #ff0099)"}
+
+
+## Regresión Múltiple {.text-indigo-pink}
+
+No estamos limitados a una sola variable explicativa!
+
+$$
+\hat{y} = \beta_0 + \beta_1 x_1 + \beta_2 x_2 + \cdots + \beta_n x_n + \varepsilon
+$$
+
+:::{.fragment}
+
+```{r}
+#| echo: true
+hollywood_model <- lm(us_gross ~ opening_gross + budget + sequel, data=hollywood)
+```
+
+$$
+\widehat{\text{US Gross}} = \hat{\beta_0} + \hat{\beta_1} \text{Opening Gross} + \hat{\beta_2} \text{Budget} + \hat{\beta_3} \text{Sequel}
+$$
+
+:::
+
+
+## Regresión Múltiple {.text-indigo-pink}
+
+```{r}
+#| echo: true
+hollywood_model <- lm(us_gross ~ opening_gross + budget + sequel, data=hollywood)
+tidy(hollywood_model, conf.int = TRUE)
+```
+
+
+$$  
+  \begin{aligned}
+\widehat{\text{US Gross}} = &-8,785,254 + 2.99 \times \text{Opening Gross} + 0.356 \times \text{Budget} \\
+  & - 11,929,834 \times \text{Sequel}
+\end{aligned}
+$$
+
+## Variables Categóricas vs Variables Continuas {.text-indigo-pink}
+
+```{r}
+#| eval: true
+#| echo: false
+#| fig-align: "center"
+#| out-width: "100%"
+knitr::include_graphics("images/slider-switch-plain-80.jpg")
+
+```
+
+
+## Variables Categóricas vs Variables Continuas {.text-indigo-pink}
+
+```{r}
+#| eval: true
+#| echo: false
+#| fig-align: "center"
+#| out-width: "100%"
+knitr::include_graphics("images/slider-switch-annotated-80.jpg")
+
+```
+
+
+# 
 
 ```{r}
 #| echo: false
@@ -568,8 +1044,8 @@ set.seed(123)
 
 # Create a tibble with the same slope but different intercepts for professors and students, adding noise
 cookies_data <- tibble(
-  cookies = rep(1:7, 2),  # Cookies eaten (1 through 7 for both groups)
-  group = rep(c("Professor", "Student"), each = 7),  # Group variable
+  cookies = rep(1:7, 2),  # Galletas consumidas (1 through 7 for both groups)
+  group = rep(c("Profesores", "Estudiantes"), each = 7),  # Group variable
   happiness = c(0.5 + 0.15 * (1:7) + rnorm(7, sd = 0.2),  # Happiness for professors with noise
                 1.5 + 0.15 * (1:7) + rnorm(7, sd = 0.2))  # Happiness for students with noise
 )
@@ -578,7 +1054,7 @@ cookies_data <- tibble(
 ggplot(cookies_data, aes(x = cookies, y = happiness)) +
   geom_point( size = 3) +  # Points still colored by group for clarity
   geom_smooth(method = "lm", se = FALSE, color = "#0074D9") +  # Single regression line for the entire dataset
-  labs(x = "Cookies eaten", y = "Level of happiness") +
+  labs(x = "Galletas consumidas", y = "Nivel de Felicidad") +
   theme_minimal(base_size = 14) +
   coord_cartesian(xlim = c(0, 8), ylim = c(0, 3)) +
   scale_x_continuous(breaks = 0:8) +
@@ -586,8 +1062,6 @@ ggplot(cookies_data, aes(x = cookies, y = happiness)) +
 
 
 ```
-
-
 
 # 
 
@@ -601,18 +1075,15 @@ ggplot(cookies_data, aes(x = cookies, y = happiness)) +
 ggplot(cookies_data, aes(x = cookies, y = happiness)) +
   geom_point(aes(color = group), size = 3) +  # Points still colored by group for clarity
   geom_smooth(method = "lm", se = FALSE, color = "#0074D9") +  # Single regression line for the entire dataset
-  labs(x = "Cookies eaten", y = "Level of happiness", color = "Group") +
+  labs(x = "Galletas consumidas", y = "Nivel de Felicidad", color = "Grupo") +
   theme_minimal(base_size = 14) +
   coord_cartesian(xlim = c(0, 8), ylim = c(0, 3)) +
-  scale_color_manual(values = c("Professor" = "navy", "Student" = "darkred")) +
+  scale_color_manual(values = c("Profesores" = "navy", "Estudiantes" = "darkred")) +
   scale_x_continuous(breaks = 0:8) +
   theme(panel.grid.minor = element_blank())
 
 
 ```
-
-
-
 
 # 
 
@@ -626,30 +1097,103 @@ ggplot(cookies_data, aes(x = cookies, y = happiness)) +
 ggplot(cookies_data, aes(x = cookies, y = happiness, color = group)) +
   geom_point(size = 3) +
   geom_smooth(method = "lm", se = FALSE) +  # Add linear regression lines
-  labs(x = "Cookies eaten", y = "Level of happiness", color = "Group") +
+  labs(x = "Galletas consumidas", y = "Nivel de Felicidad", color = "Grupo") +
   theme_minimal(base_size = 14) +
   coord_cartesian(xlim = c(0, 8), ylim = c(0, 3)) +
-  scale_color_manual(values = c("Professor" = "navy", "Student" = "darkred")) +
+  scale_color_manual(values = c("Profesores" = "navy", "Estudiantes" = "darkred")) +
   scale_x_continuous(breaks = 0:8) +
   theme(panel.grid.minor = element_blank())
 
 ```
 
 
+## Variables Categóricas {.text-indigo-pink}
 
-# Inferencia
 
-## Inferencia de los coeficientes
+$$\widehat{Felicidad}=\hat{\beta_0}+\hat{\beta_1}\times Galletas+\hat{\beta_2} \times Estudiante$$
 
+:::{.incremental}
+
+- EL intercepto para las observaciones de los profesores será $\hat{\beta_0}$ porque $Estudiante=0$
+
+- El intercepto para las observaciones de los estudiantes será $\hat{\beta_0}+\hat{\beta_2}$ porque $Estudiante=1$
+:::
+
+
+## Filtrar la variación {.text-indigo-pink}
+
+- Cada **X** en el modelo explica una porción de la variación en **Y**
+
+- La interpretación acá es más complicada que en el modelo de regresión simple porque sólo se puede mover una variable a la vez
+
+
+## Plantilla para variables continuas {.text-indigo-pink}
+
+Manteniendo todo lo demás constante, un incremento de una unidad en **X** está asociado con un incremento/reducción promedio de $\beta_n$ en **Y**
+
+$$  
+  \begin{aligned}
+\widehat{\text{US Gross}} = &-8,785,254 + 2.99 \times \text{Opening Gross} + 0.356 \times \text{Budget} \\
+  & - 11,929,834 \times \text{Sequel}
+\end{aligned}
 $$
-\hat{\beta} \xrightarrow{\text{🤞 ojalá 🤞}} \beta
+
+:::{.fragment}
+Manteniendo todo lo demás constante, un incremento de un dólar en el recaudo del primer fin de semana está asociado con un incremento promedio de 2.99 dólares en el recaudo total en US
+:::
+
+
+## Plantilla para variables categóricas {.text-indigo-pink}
+
+Manteniendo todo lo demás constante, **Y** es, en promedio, $\beta_n$ unidades mayor/menor para **X**<sub>n</sub> comparado con **X**<sub>omitida</sub>
+
+$$  
+  \begin{aligned}
+\widehat{\text{US Gross}} = &-8,785,254 + 2.99 \times \text{Opening Gross} + 0.356 \times \text{Budget} \\
+  & - 11,929,834 \times \text{Sequel}
+\end{aligned}
 $$
 
 
 :::{.fragment}
 
-```{r}
-#| echo: true
-glance(happiness_model)
-```
+Manteniendo todo lo demás constante, las sequelas están asociadas a un recaudo promedio menor, en aproximadamente $11.9 millones, comparadas con las películas que no son secuelas
+
 :::
+
+
+## Variable categóricas con más de 2 niveles {.text-indigo-pink}
+
+$$  
+  \begin{aligned}
+\widehat{\text{US Gross}} = &-8,785,254 + 2.99 \times \text{Opening Gross} + 0.356 \times \text{Budget} \\
+  & - 11,929,834 \times \text{Sequel} - 15,000,000 \times \text{Trilogy}
+\end{aligned}
+$$
+
+Si es la primera película $Sequel=Trilogy=0$, el modelo es:
+
+$$\widehat{\text{US Gross}} = -8,785,254 + 2.99 \times \text{Opening Gross} + 0.356 \times \text{Budget}$$
+
+
+## Variable categóricas con más de 2 niveles {.text-indigo-pink}
+
+$$  
+  \begin{aligned}
+\widehat{\text{US Gross}} = &-8,785,254 + 2.99 \times \text{Opening Gross} + 0.356 \times \text{Budget} \\
+  & - 11,929,834 \times \text{Sequel} - 15,000,000 \times \text{Trilogy}
+\end{aligned}
+$$
+
+
+Si es trilogía, entonces $Sequel=0$ y $Trilogy=1$. En este caso, el modelo es:
+
+$$  
+  \begin{aligned}
+\widehat{\text{US Gross}} = &-8,785,254 + 2.99 \times \text{Opening Gross} + 0.356 \times \text{Budget} \\
+  & - 15,000,000 
+\end{aligned}
+$$
+
+Manteniendo lo demás constante, estimamos que una trilogía tendrá, en promedio, un recaudo 15 millones de dólares menor que una primera entrega
+
