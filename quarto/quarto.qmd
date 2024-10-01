@@ -56,21 +56,7 @@ knitr::include_graphics("images/quarto_intro.png")
 
 
 
-
-## Quarto {.text-indigo-pink}
-
-```{r}
-#| eval: true
-#| echo: false
-#| fig-align: "center"
-#| out-width: "100%"
-library(knitr)
-knitr::include_graphics("images/quarto_intro.png")
-
-```
-
-
-## Quarto {.text-indigo-pink}
+## Crear el documento en Quarto {.text-indigo-pink}
 
 ```{r}
 #| eval: true
@@ -82,7 +68,7 @@ knitr::include_graphics("images/quarto_1.png")
 ```
 
 
-## Quarto {.text-indigo-pink}
+## Crear el documento en Quarto {.text-indigo-pink}
 
 ```{r}
 #| eval: true
@@ -94,7 +80,7 @@ knitr::include_graphics("images/quarto_2.png")
 ```
 
 
-## Quarto {.text-indigo-pink}
+## Crear el documento en Quarto {.text-indigo-pink}
 
 ```{r}
 #| eval: true
@@ -106,7 +92,7 @@ knitr::include_graphics("images/quarto_3.png")
 ```
 
 
-## Quarto {.text-indigo-pink}
+## Crear el documento en Quarto {.text-indigo-pink}
 
 ```{r}
 #| eval: true
@@ -118,7 +104,7 @@ knitr::include_graphics("images/quarto_4.png")
 ```
 
 
-## Quarto {.text-indigo-pink}
+## Crear el documento en Quarto {.text-indigo-pink}
 
 ```{r}
 #| eval: true
@@ -130,7 +116,7 @@ knitr::include_graphics("images/quarto_5.png")
 ```
 
 
-## Quarto {.text-indigo-pink}
+## Crear el documento en Quarto {.text-indigo-pink}
 
 ```{r}
 #| eval: true
@@ -141,7 +127,7 @@ knitr::include_graphics("images/quarto_6.png")
 
 ```
 
-## Quarto {.text-indigo-pink}
+## Componentes del documento {.text-indigo-pink}
 
 Los documentos de Quarto pueden estar conformados por tres tipos de contenidos:
 
