@@ -974,15 +974,32 @@ Y &amp;= \color{#0074D9}{\text{Modelo}} + \color{#FF851B}{\text{Error}} \\
 \end{aligned}
 \]</span></p>
 </section>
+<section id="predicción-con-r" class="slide level2 text-orange-gold">
+<h2>Predicción con R</h2>
+<p>El comando <code>predict()</code> nos permite predecir <span class="math inline">\(\widehat{\text{US Gross}}\)</span> para uno o varios valores:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1"></a><span class="co"># Creamos los valores para los cuales queremos predecir</span></span>
+<span id="cb19-2"><a href="#cb19-2"></a>valores_opening <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">opening_gross =</span> <span class="fu">c</span>(<span class="dv">20000000</span>,<span class="dv">40000000</span>,<span class="dv">50000000</span>))</span>
+<span id="cb19-3"><a href="#cb19-3"></a></span>
+<span id="cb19-4"><a href="#cb19-4"></a></span>
+<span id="cb19-5"><a href="#cb19-5"></a><span class="co"># Predice los valores con los coeficientes estimados</span></span>
+<span id="cb19-6"><a href="#cb19-6"></a><span class="co"># en hollywood_model</span></span>
+<span id="cb19-7"><a href="#cb19-7"></a><span class="fu">predict</span>(hollywood_model, <span class="at">newdata =</span> valores_opening)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>        1         2         3 
+ 67520606 129932991 161139184 </code></pre>
+</div>
+</div>
+</section>
 <section id="predicción-2" class="slide level2 text-orange-gold">
 <h2>Predicción</h2>
 
-<img data-src="regression_files/figure-revealjs/unnamed-chunk-38-1.png" width="768" class="r-stretch quarto-figure-center"></section>
+<img data-src="regression_files/figure-revealjs/unnamed-chunk-39-1.png" width="768" class="r-stretch quarto-figure-center"></section>
 <section id="es-posible-la-extrapolación" class="slide level2 text-orange-gold">
 <h2>¿Es posible la extrapolación?</h2>
 <p>Extrapolar es tratar de predecir Y fuera del rango de valores de X. Es posible pero no aconsejable.</p>
 
-<img data-src="regression_files/figure-revealjs/unnamed-chunk-39-1.png" width="768" class="r-stretch quarto-figure-center"></section>
+<img data-src="regression_files/figure-revealjs/unnamed-chunk-40-1.png" width="768" class="r-stretch quarto-figure-center"></section>
 <section id="inferencia-de-los-coeficientes" class="slide level2 text-orange-gold">
 <h2>Inferencia de los coeficientes</h2>
 <p>Cuando trabajamos con distribuciones muestrales, la idea era que:</p>
@@ -1004,7 +1021,7 @@ Y &amp;= \color{#0074D9}{\text{Modelo}} + \color{#FF851B}{\text{Error}} \\
 </ul>
 <div class="fragment">
 <div class="cell">
-<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1"></a><span class="fu">tidy</span>(hollywood_model, <span class="at">conf.int =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1"></a><span class="fu">tidy</span>(hollywood_model, <span class="at">conf.int =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 2 x 7
   term            estimate   std.error statistic  p.value    conf.low  conf.high
@@ -1039,7 +1056,7 @@ Y &amp;= \color{#0074D9}{\text{Modelo}} + \color{#FF851B}{\text{Error}} \\
 \]</span></p>
 <div class="fragment">
 <div class="cell">
-<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1"></a>hollywood_model <span class="ot">&lt;-</span> <span class="fu">lm</span>(us_gross <span class="sc">~</span> opening_gross <span class="sc">+</span> budget <span class="sc">+</span> sequel, <span class="at">data=</span>hollywood)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1"></a>hollywood_model <span class="ot">&lt;-</span> <span class="fu">lm</span>(us_gross <span class="sc">~</span> opening_gross <span class="sc">+</span> budget <span class="sc">+</span> sequel, <span class="at">data=</span>hollywood)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p><span class="math display">\[
 \widehat{\text{US Gross}} = \hat{\beta_0} + \hat{\beta_1} \text{Opening Gross} + \hat{\beta_2} \text{Budget} + \hat{\beta_3} \text{Sequel}
@@ -1049,8 +1066,8 @@ Y &amp;= \color{#0074D9}{\text{Modelo}} + \color{#FF851B}{\text{Error}} \\
 <section id="regresión-múltiple-1" class="slide level2 text-indigo-pink">
 <h2>Regresión Múltiple</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1"></a>hollywood_model <span class="ot">&lt;-</span> <span class="fu">lm</span>(us_gross <span class="sc">~</span> opening_gross <span class="sc">+</span> budget <span class="sc">+</span> sequel, <span class="at">data=</span>hollywood)</span>
-<span id="cb22-2"><a href="#cb22-2"></a><span class="fu">tidy</span>(hollywood_model, <span class="at">conf.int =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1"></a>hollywood_model <span class="ot">&lt;-</span> <span class="fu">lm</span>(us_gross <span class="sc">~</span> opening_gross <span class="sc">+</span> budget <span class="sc">+</span> sequel, <span class="at">data=</span>hollywood)</span>
+<span id="cb24-2"><a href="#cb24-2"></a><span class="fu">tidy</span>(hollywood_model, <span class="at">conf.int =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 4 x 7
   term               estimate   std.error statistic  p.value  conf.low conf.high
@@ -1068,6 +1085,64 @@ Y &amp;= \color{#0074D9}{\text{Modelo}} + \color{#FF851B}{\text{Error}} \\
 \end{aligned}
 \]</span></p>
 </section>
+<section id="predicción-en-regresión-múltiple" class="slide level2 text-indigo-pink">
+<h2>Predicción en Regresión Múltiple</h2>
+<p>Así como en el caso con una variable, usamos el comando <code>predict()</code> para predecir <span class="math inline">\(\widehat{\text{US Gross}}\)</span>. En este caso, necesitamos al menos un valor para cada variable que está en la regresión.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1"></a>multiples_valores <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">opening_gross=</span><span class="dv">50000000</span>,</span>
+<span id="cb26-2"><a href="#cb26-2"></a>                             <span class="at">budget=</span><span class="dv">100000000</span>,</span>
+<span id="cb26-3"><a href="#cb26-3"></a>                             <span class="at">sequel=</span><span class="dv">1</span>)</span>
+<span id="cb26-4"><a href="#cb26-4"></a><span class="fu">predict</span>(hollywood_model, <span class="at">newdata =</span> multiples_valores)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>        1 
+164132342 </code></pre>
+</div>
+</div>
+</section>
+<section id="predicción-en-regresión-múltiple-1" class="slide level2 text-indigo-pink">
+<h2>Predicción en Regresión Múltiple</h2>
+<p>Hagamos una predicción para una de las observaciones en nuestros datos. En este caso, para la película “The Holiday”.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1"></a><span class="co"># Seleccionemos las 3 variables dependientes para The Holiday</span></span>
+<span id="cb28-2"><a href="#cb28-2"></a>the_holiday <span class="ot">&lt;-</span> hollywood <span class="sc">%&gt;%</span> </span>
+<span id="cb28-3"><a href="#cb28-3"></a>  <span class="fu">filter</span>(movie<span class="sc">==</span><span class="st">"The Holiday"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb28-4"><a href="#cb28-4"></a>  <span class="fu">select</span>(opening_gross, budget, sequel)</span>
+<span id="cb28-5"><a href="#cb28-5"></a></span>
+<span id="cb28-6"><a href="#cb28-6"></a><span class="co"># Usamos el comando predict nuevamente</span></span>
+<span id="cb28-7"><a href="#cb28-7"></a>predicho <span class="ot">&lt;-</span> <span class="fu">predict</span>(hollywood_model, <span class="at">newdata =</span> the_holiday)</span>
+<span id="cb28-8"><a href="#cb28-8"></a>predicho</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>       1 
+59596928 </code></pre>
+</div>
+</div>
+</section>
+<section id="predicción-en-regresión-múltiple-2" class="slide level2 text-indigo-pink">
+<h2>Predicción en Regresión Múltiple</h2>
+<ul>
+<li>¿Es precisa nuestra estimación?</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1"></a><span class="co"># El valor observado</span></span>
+<span id="cb30-2"><a href="#cb30-2"></a>observado <span class="ot">&lt;-</span> hollywood <span class="sc">%&gt;%</span></span>
+<span id="cb30-3"><a href="#cb30-3"></a>  <span class="fu">filter</span>(movie <span class="sc">==</span> <span class="st">"The Holiday"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb30-4"><a href="#cb30-4"></a>  <span class="fu">pull</span>(us_gross)</span>
+<span id="cb30-5"><a href="#cb30-5"></a>observado</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 63224849</code></pre>
+</div>
+</div>
+<ul>
+<li>El residuo para “The Holiday” será:</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1"></a>observado<span class="sc">-</span>predicho</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>      1 
+3627921 </code></pre>
+</div>
+</div>
+</section>
 <section id="variables-categóricas-vs-variables-continuas" class="slide level2 text-indigo-pink">
 <h2>Variables Categóricas vs Variables Continuas</h2>
 
@@ -1079,18 +1154,18 @@ Y &amp;= \color{#0074D9}{\text{Modelo}} + \color{#FF851B}{\text{Error}} \\
 <section id="section-9" class="title-slide slide level1 center">
 <h1></h1>
 
-<img data-src="regression_files/figure-revealjs/unnamed-chunk-45-1.png" width="768" class="r-stretch quarto-figure-center"></section>
+<img data-src="regression_files/figure-revealjs/unnamed-chunk-50-1.png" width="768" class="r-stretch quarto-figure-center"></section>
 
 <section id="section-10" class="title-slide slide level1 center">
 <h1></h1>
 
-<img data-src="regression_files/figure-revealjs/unnamed-chunk-46-1.png" width="768" class="r-stretch quarto-figure-center"></section>
+<img data-src="regression_files/figure-revealjs/unnamed-chunk-51-1.png" width="768" class="r-stretch quarto-figure-center"></section>
 
 <section>
 <section id="section-11" class="title-slide slide level1 center">
 <h1></h1>
 
-<img data-src="regression_files/figure-revealjs/unnamed-chunk-47-1.png" width="768" class="r-stretch quarto-figure-center"></section>
+<img data-src="regression_files/figure-revealjs/unnamed-chunk-52-1.png" width="768" class="r-stretch quarto-figure-center"></section>
 <section id="variables-categóricas" class="slide level2 text-indigo-pink">
 <h2>Variables Categóricas</h2>
 <p><span class="math display">\[\widehat{Felicidad}=\hat{\beta_0}+\hat{\beta_1}\times Galletas+\hat{\beta_2} \times Estudiante\]</span></p>
@@ -1108,8 +1183,8 @@ Y &amp;= \color{#0074D9}{\text{Modelo}} + \color{#FF851B}{\text{Error}} \\
 <li><p>La interpretación acá es más complicada que en el modelo de regresión simple porque sólo se puede mover una variable a la vez</p></li>
 </ul>
 </section>
-<section id="plantilla-para-variables-continuas" class="slide level2 text-indigo-pink">
-<h2>Plantilla para variables continuas</h2>
+<section id="interpretación-para-variables-continuas" class="slide level2 text-indigo-pink">
+<h2>Interpretación para variables continuas</h2>
 <p>Manteniendo todo lo demás constante, un incremento de una unidad en <strong>X</strong> está asociado con un incremento/reducción promedio de <span class="math inline">\(\beta_n\)</span> en <strong>Y</strong></p>
 <p><span class="math display">\[  
   \begin{aligned}
@@ -1121,8 +1196,8 @@ Y &amp;= \color{#0074D9}{\text{Modelo}} + \color{#FF851B}{\text{Error}} \\
 <p>Manteniendo todo lo demás constante, un incremento de un dólar en el recaudo del primer fin de semana está asociado con un incremento promedio de 2.99 dólares en el recaudo total en US</p>
 </div>
 </section>
-<section id="plantilla-para-variables-categóricas" class="slide level2 text-indigo-pink">
-<h2>Plantilla para variables categóricas</h2>
+<section id="interpretación-para-variables-categóricas" class="slide level2 text-indigo-pink">
+<h2>Interpretación para variables categóricas</h2>
 <p>Manteniendo todo lo demás constante, <strong>Y</strong> es, en promedio, <span class="math inline">\(\beta_n\)</span> unidades mayor/menor para <strong>X</strong><sub>n</sub> comparado con <strong>X</strong><sub>omitida</sub></p>
 <p><span class="math display">\[  
   \begin{aligned}
@@ -1176,7 +1251,7 @@ Y &amp;= \color{#0074D9}{\text{Modelo}} + \color{#FF851B}{\text{Error}} \\
 <h2>¿Qué tan bueno es el modelo?</h2>
 <p>Con la función <code>glance()</code> podemos ver diferentes aspectos que evalúan el modelo:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1"></a><span class="fu">glance</span>(hollywood_model)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1"></a><span class="fu">glance</span>(hollywood_model)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 1 x 12
   r.squared adj.r.squared     sigma statistic  p.value    df logLik   AIC   BIC
@@ -1188,7 +1263,7 @@ Y &amp;= \color{#0074D9}{\text{Modelo}} + \color{#FF851B}{\text{Error}} \\
 <div class="fragment">
 <p>Este modelo de regresión explica el 79% de la varianza del recaudo total en US</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1"></a>hollywood_model <span class="ot">&lt;-</span> <span class="fu">lm</span>(us_gross <span class="sc">~</span> opening_gross <span class="sc">+</span> budget <span class="sc">+</span> sequel, <span class="at">data=</span>hollywood)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1"></a>hollywood_model <span class="ot">&lt;-</span> <span class="fu">lm</span>(us_gross <span class="sc">~</span> opening_gross <span class="sc">+</span> budget <span class="sc">+</span> sequel, <span class="at">data=</span>hollywood)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </div>
 <div class="footer footer-default">

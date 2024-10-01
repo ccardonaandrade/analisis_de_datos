@@ -858,6 +858,26 @@ $$
 \end{aligned}
 $$
 
+## Predicción con R {.text-orange-gold}
+
+El comando `predict()` nos permite predecir $\widehat{\text{US Gross}}$ para uno o varios valores:
+
+
+
+```{r}
+#| echo: true
+#| eval: true
+
+# Creamos los valores para los cuales queremos predecir
+valores_opening <- data.frame(opening_gross = c(20000000,40000000,50000000))
+
+
+# Predice los valores con los coeficientes estimados
+# en hollywood_model
+predict(hollywood_model, newdata = valores_opening)
+
+```
+
 
 ## Predicción  {.text-orange-gold}
 
@@ -1012,6 +1032,63 @@ $$
 \end{aligned}
 $$
 
+
+## Predicción en Regresión Múltiple {.text-indigo-pink}
+
+Así como en el caso con una variable, usamos el comando `predict()` para predecir $\widehat{\text{US Gross}}$. En este caso, necesitamos al menos un valor para cada variable que está en la regresión.
+
+```{r}
+#| echo: true
+#| eval: true
+multiples_valores <- data.frame(opening_gross=50000000,
+                             budget=100000000,
+                             sequel=1)
+predict(hollywood_model, newdata = multiples_valores)
+
+```
+
+## Predicción en Regresión Múltiple {.text-indigo-pink}
+
+Hagamos una predicción para una de las observaciones en nuestros datos. En este caso, para la película "The Holiday".
+
+```{r}
+#| echo: true
+#| eval: true
+# Seleccionemos las 3 variables dependientes para The Holiday
+the_holiday <- hollywood %>% 
+  filter(movie=="The Holiday") %>%
+  select(opening_gross, budget, sequel)
+
+# Usamos el comando predict nuevamente
+predicho <- predict(hollywood_model, newdata = the_holiday)
+predicho
+```
+
+
+## Predicción en Regresión Múltiple {.text-indigo-pink}
+
+
+- ¿Es precisa nuestra estimación?
+
+```{r}
+#| echo: true
+#| eval: true
+# El valor observado
+observado <- hollywood %>%
+  filter(movie == "The Holiday") %>%
+  pull(us_gross)
+observado
+```
+
+- El residuo para "The Holiday" será:
+
+```{r}
+#| echo: true
+#| eval: true
+observado-predicho
+```
+
+
 ## Variables Categóricas vs Variables Continuas {.text-indigo-pink}
 
 ```{r}
@@ -1132,7 +1209,7 @@ $$\widehat{Felicidad}=\hat{\beta_0}+\hat{\beta_1}\times Galletas+\hat{\beta_2} \
 - La interpretación acá es más complicada que en el modelo de regresión simple porque sólo se puede mover una variable a la vez
 
 
-## Plantilla para variables continuas {.text-indigo-pink}
+## Interpretación para variables continuas {.text-indigo-pink}
 
 Manteniendo todo lo demás constante, un incremento de una unidad en **X** está asociado con un incremento/reducción promedio de $\beta_n$ en **Y**
 
@@ -1148,7 +1225,7 @@ Manteniendo todo lo demás constante, un incremento de un dólar en el recaudo d
 :::
 
 
-## Plantilla para variables categóricas {.text-indigo-pink}
+## Interpretación para variables categóricas {.text-indigo-pink}
 
 Manteniendo todo lo demás constante, **Y** es, en promedio, $\beta_n$ unidades mayor/menor para **X**<sub>n</sub> comparado con **X**<sub>omitida</sub>
 
