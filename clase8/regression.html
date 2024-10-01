@@ -419,8 +419,8 @@ Regresión Lineal
 <h1>Correlación</h1>
 
 </section>
-<section id="algunos-fundamentos-básicos-de-r" class="slide level2 text-lime-cyan">
-<h2>Algunos fundamentos básicos de R</h2>
+<section id="us-total-gross-vs-opening-gross" class="slide level2 text-lime-cyan">
+<h2>US Total Gross vs Opening Gross</h2>
 <div class="cell" data-layout-align="center">
 <details>
 <summary>Code</summary>
@@ -435,8 +435,8 @@ Regresión Lineal
 
 </div>
 <img data-src="regression_files/figure-revealjs/unnamed-chunk-2-1.png" class="quarto-discovered-preview-image r-stretch quarto-figure-center" width="960"></section>
-<section id="algunos-fundamentos-básicos-de-r-1" class="slide level2 text-lime-cyan">
-<h2>Algunos fundamentos básicos de R</h2>
+<section id="la-correlación-en-r" class="slide level2 text-lime-cyan">
+<h2>La correlación en R</h2>
 <ul>
 <li><p>Podemos utilizar un diagrama de dispersión para realizar un primer análisis de la relación entre dos variables</p></li>
 <li><p>El coeficiente de correlación (lineal) es utilizado para medir la fuerza de la asociación (lineal) entre dos variables</p></li>
@@ -449,11 +449,11 @@ Regresión Lineal
 </div>
 </div>
 </section>
-<section id="algunos-fundamentos-básicos-de-r-2" class="slide level2 text-lime-cyan">
-<h2>Algunos fundamentos básicos de R</h2>
+<section id="función-corrplot" class="slide level2 text-lime-cyan">
+<h2>Función <code>corrplot</code></h2>
 <div class="cell" data-layout-align="center">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a><span class="co"># RECUERDEN INSTALAR EL PAQUETE PRIMERO!!!</span></span>
-<span id="cb4-2"><a href="#cb4-2"></a><span class="co"># install.packages("corrplot)</span></span>
+<span id="cb4-2"><a href="#cb4-2"></a><span class="co"># install.packages("corrplot")</span></span>
 <span id="cb4-3"><a href="#cb4-3"></a></span>
 <span id="cb4-4"><a href="#cb4-4"></a><span class="co"># Cargamos el paquete</span></span>
 <span id="cb4-5"><a href="#cb4-5"></a><span class="fu">library</span>(corrplot)</span>
@@ -467,12 +467,12 @@ Regresión Lineal
 <span id="cb4-13"><a href="#cb4-13"></a>         <span class="at">type =</span> <span class="st">"upper"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
-<section id="algunos-fundamentos-básicos-de-r-3" class="slide level2 text-lime-cyan">
-<h2>Algunos fundamentos básicos de R</h2>
+<section id="función-corrplot-1" class="slide level2 text-lime-cyan">
+<h2>Función <code>corrplot</code></h2>
 
 <img data-src="regression_files/figure-revealjs/unnamed-chunk-5-1.png" width="960" class="r-stretch quarto-figure-center"></section>
-<section id="algunos-fundamentos-básicos-de-r-4" class="slide level2 text-lime-cyan">
-<h2>Algunos fundamentos básicos de R</h2>
+<section id="la-correlación-no-es-suficiente" class="slide level2 text-lime-cyan">
+<h2>La correlación no es suficiente</h2>
 <div class="cell" data-layout-align="center">
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 1 x 5
@@ -483,8 +483,8 @@ Regresión Lineal
 </div>
 
 <img data-src="regression_files/figure-revealjs/unnamed-chunk-7-1.png" width="672" class="r-stretch quarto-figure-center"></section>
-<section id="algunos-fundamentos-básicos-de-r-5" class="slide level2 text-lime-cyan">
-<h2>Algunos fundamentos básicos de R</h2>
+<section id="la-correlación-no-es-suficiente-1" class="slide level2 text-lime-cyan">
+<h2>La correlación no es suficiente</h2>
 <div class="cell" data-layout-align="center">
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 1 x 5
@@ -495,8 +495,8 @@ Regresión Lineal
 </div>
 
 <img data-src="regression_files/figure-revealjs/unnamed-chunk-9-1.png" width="672" class="r-stretch quarto-figure-center"></section>
-<section id="algunos-fundamentos-básicos-de-r-6" class="slide level2 text-lime-cyan">
-<h2>Algunos fundamentos básicos de R</h2>
+<section id="la-correlación-no-es-suficiente-2" class="slide level2 text-lime-cyan">
+<h2>La correlación no es suficiente</h2>
 <div class="cell" data-layout-align="center">
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 1 x 5
@@ -526,7 +526,7 @@ Regresión Lineal
 <!-- -->
 <h3 class="text-orange-gold center" id="x">X</h3>
 <ul>
-<li><p>Variable explicatoria</p></li>
+<li><p>Variable explicativa</p></li>
 <li><p>Predictor</p></li>
 <li><p>Variable independiente</p></li>
 <li><p>Lo que usamos para predecir o explicar Y</p></li>
@@ -560,15 +560,15 @@ Regresión Lineal
 </ol>
 </section>
 
-<section id="cookies-and-happiness" class="title-slide slide level1 text-orange-gold center">
-<h1>Cookies and happiness</h1>
+<section id="galletas-y-felicidad" class="title-slide slide level1 text-orange-gold center">
+<h1>Galletas y Felicidad</h1>
 <div class="cell">
 <div class="cell-output-display">
 <table class="table" data-quarto-postprocess="true" style="font-size: 30px; margin-left: auto; margin-right: auto;">
 <thead>
 <tr class="header">
-<th style="text-align: right;" data-quarto-table-cell-role="th">happiness</th>
-<th style="text-align: right;" data-quarto-table-cell-role="th">cookies</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">felicidad</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">galletas</th>
 </tr>
 </thead>
 <tbody>
@@ -727,7 +727,7 @@ Y = \beta_0 + \beta_1 X + \varepsilon
 <section id="regresión-lineal-simple-1" class="slide level2 text-orange-gold">
 <h2>Regresión lineal simple</h2>
 <p><span class="math display">\[
-\hat{y} = \hat{\beta_0} + \hat{\beta_1} x_1
+\hat{Y} = \hat{\beta_0} + \hat{\beta_1} X
 \]</span></p>
 <ul>
 <li><p><span class="math inline">\(\hat{\beta_1}\)</span>: la pendiente estimado de la relación entre <span class="math inline">\(X\)</span> y <span class="math inline">\(Y\)</span></p></li>
@@ -800,7 +800,7 @@ Y &amp;= \color{#0074D9}{\text{Modelo}} + \color{#FF851B}{\text{Error}} \\
 <span id="cb9-3"><a href="#cb9-3"></a><span class="co"># Convierte los resultados del modelo a un data frame para graficar</span></span>
 <span id="cb9-4"><a href="#cb9-4"></a><span class="fu">tidy</span>(name_of_model)</span>
 <span id="cb9-5"><a href="#cb9-5"></a></span>
-<span id="cb9-6"><a href="#cb9-6"></a><span class="co"># Convierte los diagnósticos del modelo a un data frame</span></span>
+<span id="cb9-6"><a href="#cb9-6"></a><span class="co"># Convierte los parámetros que evalúan el modelo a un data frame</span></span>
 <span id="cb9-7"><a href="#cb9-7"></a><span class="fu">glance</span>(name_of_model)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </div>
@@ -811,9 +811,9 @@ Y &amp;= \color{#0074D9}{\text{Modelo}} + \color{#FF851B}{\text{Error}} \\
 <div class="column" style="width:40%;">
 <p><span class="math display">\[\widehat{Felicidad}=\hat{\beta_0}+\hat{\beta_1}\times Galletas\]</span></p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1"></a>happiness_model <span class="ot">&lt;-</span> </span>
-<span id="cb10-2"><a href="#cb10-2"></a>  <span class="fu">lm</span>(happiness <span class="sc">~</span> cookies,</span>
-<span id="cb10-3"><a href="#cb10-3"></a>     <span class="at">data =</span> cookies_data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1"></a>modelo_felicidad <span class="ot">&lt;-</span> </span>
+<span id="cb10-2"><a href="#cb10-2"></a>  <span class="fu">lm</span>(felicidad <span class="sc">~</span> galletas,</span>
+<span id="cb10-3"><a href="#cb10-3"></a>     <span class="at">data =</span> galletas_datos)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </div><div class="column" style="width:60%;">
 <div class="cell">
@@ -826,19 +826,21 @@ Y &amp;= \color{#0074D9}{\text{Modelo}} + \color{#FF851B}{\text{Error}} \\
 </section>
 <section id="modelando-galletas-y-felicidad-1" class="slide level2 text-orange-gold">
 <h2>Modelando Galletas y Felicidad</h2>
+<p>Podemos ver los coeficientes, error estándar, p-value e IC:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1"></a><span class="fu">tidy</span>(happiness_model, <span class="at">conf.int =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1"></a><span class="fu">tidy</span>(modelo_felicidad, <span class="at">conf.int =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 2 x 7
   term        estimate std.error statistic p.value conf.low conf.high
   &lt;chr&gt;          &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;   &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt;
 1 (Intercept)    1.1      0.470       2.34  0.0475   0.0156     2.18 
-2 cookies        0.164    0.0758      2.16  0.0629  -0.0111     0.338</code></pre>
+2 galletas       0.164    0.0758      2.16  0.0629  -0.0111     0.338</code></pre>
 </div>
 </div>
 <div class="fragment">
+<p>Para ver aspectos evaluando el ajuste del modelo:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1"></a><span class="fu">glance</span>(happiness_model)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1"></a><span class="fu">glance</span>(modelo_felicidad)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 1 x 12
   r.squared adj.r.squared sigma statistic p.value    df logLik   AIC   BIC
@@ -859,19 +861,19 @@ Y &amp;= \color{#0074D9}{\text{Modelo}} + \color{#FF851B}{\text{Error}} \\
   term        estimate
   &lt;chr&gt;          &lt;dbl&gt;
 1 (Intercept)    1.1  
-2 cookies        0.164</code></pre>
+2 galletas       0.164</code></pre>
 </div>
 </div>
 <p><span class="math display">\[
 \begin{aligned}
-&amp;\widehat{\text{Felicidad}} = \\
-&amp;\beta_0 + \beta_1 \times \text{Galletas} + \varepsilon
+&amp;\widehat{Felicidad} = \\
+&amp;\hat{\beta_0}+\hat{\beta_1}\times Galletas
 \end{aligned}
 \]</span></p>
 <p><span class="math display">\[
 \begin{aligned}
-&amp;\widehat{\text{Felicidad}} = \\
-&amp;1.1 + 0.16 \times \text{Galletas} + \varepsilon
+&amp;\widehat{Felicidad} = \\
+&amp;1.1 + 0.16 \times Galletas
 \end{aligned}
 \]</span></p>
 </div><div class="column" style="width:60%;">
@@ -1033,7 +1035,7 @@ Y &amp;= \color{#0074D9}{\text{Modelo}} + \color{#FF851B}{\text{Error}} \\
 <h2>Regresión Múltiple</h2>
 <p>No estamos limitados a una sola variable explicativa!</p>
 <p><span class="math display">\[
-\hat{y} = \beta_0 + \beta_1 x_1 + \beta_2 x_2 + \cdots + \beta_n x_n + \varepsilon
+\hat{y} = \hat{\beta_0}  + \hat{\beta_1} x_1 + \hat{\beta_2} x_2 + \cdots + \hat{\beta_n} x_n
 \]</span></p>
 <div class="fragment">
 <div class="cell">
@@ -1159,6 +1161,36 @@ Y &amp;= \color{#0074D9}{\text{Modelo}} + \color{#FF851B}{\text{Error}} \\
 \end{aligned}
 \]</span></p>
 <p>Manteniendo lo demás constante, estimamos que una trilogía tendrá, en promedio, un recaudo 15 millones de dólares menor que una primera entrega</p>
+</section>
+<section id="qué-tan-bueno-es-el-modelo" class="slide level2 text-indigo-pink">
+<h2>¿Qué tan bueno es el modelo?</h2>
+<h3 id="r-squared">R-Squared</h3>
+<p>El <span class="math inline">\(R^2\)</span> es el porcentaje de la varianza de la variable dependiente explicada por el modelo de regresión</p>
+<p><span class="math display">\[R^2=Corr(x,y)^2=Corr(y,\hat{y})\]</span></p>
+<ul>
+<li><p>Está entre 0 (nuestro modelo no predice nada) y 1 (predicción perfecta)</p></li>
+<li><p>No tiene unidad de medida</p></li>
+</ul>
+</section>
+<section id="qué-tan-bueno-es-el-modelo-1" class="slide level2 text-indigo-pink">
+<h2>¿Qué tan bueno es el modelo?</h2>
+<p>Con la función <code>glance()</code> podemos ver diferentes aspectos que evalúan el modelo:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1"></a><span class="fu">glance</span>(hollywood_model)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 1 x 12
+  r.squared adj.r.squared     sigma statistic  p.value    df logLik   AIC   BIC
+      &lt;dbl&gt;         &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
+1     0.790         0.782 18824686.      89.3 4.91e-24     3 -1361. 2731. 2743.
+# i 3 more variables: deviance &lt;dbl&gt;, df.residual &lt;int&gt;, nobs &lt;int&gt;</code></pre>
+</div>
+</div>
+<div class="fragment">
+<p>Este modelo de regresión explica el 79% de la varianza del recaudo total en US</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1"></a>hollywood_model <span class="ot">&lt;-</span> <span class="fu">lm</span>(us_gross <span class="sc">~</span> opening_gross <span class="sc">+</span> budget <span class="sc">+</span> sequel, <span class="at">data=</span>hollywood)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
 <div class="footer footer-default">
 
 </div>

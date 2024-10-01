@@ -1,0 +1,57 @@
+---
+title: "Hollywood Rules"
+author: "Nombre Apellido"
+format: pdf
+editor: visual
+---
+  
+  
+# Preliminares
+
+Para el caso "Hollywood Rules", usaremos los siguientes paquetes:
+  
+```{r}
+#| echo: true
+#| warning: false
+library(tidyverse)
+library(readxl)
+library(janitor)
+library(broom)
+library(corrplot)
+```
+
+# Estadísticas Descriptivas
+
+## Recaudo en el primer fin de semana
+
+Acá tenemos las estadística descriptivas para el recaudo en el primer fin de semana:
+  
+```{r}
+#| echo: false
+#| warning: false
+hollywood <- read_excel("C:/Users/ccard/Downloads/KEL702-XLS-ENG.xls", sheet = "Exhibit 1")
+hollywood <- hollywood %>%
+clean_names()
+hollywood <- hollywood %>% rename(us_gross = total_u_s_gross)
+hollywood <- hollywood %>% rename(non_us_gross = total_non_u_s_gross)
+summary(hollywood$opening_gross)
+```
+
+El mínimo es `r min(hollywood$opening_gross)`. Sin embargo, ese formato no me gusta. Lo prefiero así: `r format(min(hollywood$opening_gross), scientific = FALSE)`
+
+## Distribución del recaudo en el primer fin de semana
+
+La siguiente gráfica presenta la distribución del recaudo en el fin de semana del estreno de las películas.
+
+```{r}
+#| echo: false
+#| warning: false
+#| fig-align: center
+#| fig-pos: H
+ggplot(hollywood, aes(x=(opening_gross/1000000))) +
+  geom_density()+
+    labs(
+        x = "Opening Gross (in millions)"
+    ) +
+    theme_minimal()
+```

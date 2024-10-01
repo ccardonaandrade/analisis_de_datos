@@ -32,7 +32,7 @@ Analítica de Datos
 # Correlación {#corr .text-wash-black background="linear-gradient(45deg, #00aadd, #66dd00)"}
 
 
-## Algunos fundamentos básicos de R {.text-lime-cyan}
+## US Total Gross vs Opening Gross {.text-lime-cyan}
 
 ```{r}
 #| echo: false
@@ -68,7 +68,7 @@ ggplot(data = hollywood, aes(x = (opening_gross / 1000000), y = (us_gross / 1000
 
 ```
 
-## Algunos fundamentos básicos de R {.text-lime-cyan}
+## La correlación en R {.text-lime-cyan}
 
 - Podemos utilizar un diagrama de dispersión para realizar un primer análisis de la relación entre dos variables
 
@@ -82,7 +82,7 @@ cor(hollywood$us_gross,hollywood$opening_gross)
 ```
 
 
-## Algunos fundamentos básicos de R {.text-lime-cyan}
+## Función `corrplot` {.text-lime-cyan}
 
 ```{r}
 #| echo: true
@@ -107,7 +107,8 @@ corrplot(cor(hollywood_sub ),
 
 
 
-## Algunos fundamentos básicos de R {.text-lime-cyan}
+## Función `corrplot` {.text-lime-cyan}
+
 ```{r}
 #| echo: false
 #| eval: true
@@ -131,7 +132,7 @@ corrplot(cor(hollywood_sub ),
 
 
 
-## Algunos fundamentos básicos de R {.text-lime-cyan}
+## La correlación no es suficiente {.text-lime-cyan}
 
 
 ```{r}
@@ -180,7 +181,7 @@ ggplot(dino, aes(x=x, y=y))+
 
 
 
-## Algunos fundamentos básicos de R {.text-lime-cyan}
+## La correlación no es suficiente {.text-lime-cyan}
 
 
 ```{r}
@@ -209,7 +210,7 @@ ggplot(star, aes(x=x, y=y))+
 ```
 
 
-## Algunos fundamentos básicos de R {.text-lime-cyan}
+## La correlación no es suficiente {.text-lime-cyan}
 
 
 ```{r}
@@ -260,7 +261,7 @@ ggplot(hlines, aes(x=x, y=y))+
 
 ### X  {.text-orange-gold .center}
 
-- Variable explicatoria
+- Variable explicativa
 
 - Predictor
 
@@ -308,23 +309,23 @@ library(tidyverse)
 library(patchwork)
 library(broom)
 library(knitr)
-cookies <- tibble(happiness = c(0.5, 2, 1, 2.5, 3, 1.5, 2, 2.5, 2, 3),
-                  cookies = 1:10)
+galletas <- tibble(felicidad = c(0.5, 2, 1, 2.5, 3, 1.5, 2, 2.5, 2, 3),
+                  galletas = 1:10)
 
-cookies_data <- cookies
-cookies_model <- lm(happiness ~ cookies, data = cookies)
-cookies_fitted <- augment(cookies_model)
+galletas_datos <- galletas
+modelo_galletas <- lm(felicidad ~ galletas, data = galletas_datos)
+predict_galletas <- augment(modelo_galletas)
 ```
 
 
 
-# Cookies and happiness {.text-orange-gold}
+# Galletas y Felicidad {.text-orange-gold}
 
 ```{r}
 #| echo: false
 #| eval: true
 
-cookies |> 
+galletas |> 
   knitr::kable(format = "html") |> 
   kableExtra::kable_styling(font_size = 30) # Adjust the font size as needed
 ```
@@ -342,7 +343,7 @@ cookies |>
 
 
 
-cookies_base <- ggplot(cookies_fitted, aes(x = cookies, y = happiness)) +
+base_cookies <- ggplot(predict_galletas, aes(x = galletas, y = felicidad)) +
   geom_point(size = 3) +
   coord_cartesian(xlim = c(0, 10), ylim = c(0, 3)) +
   scale_x_continuous(breaks = 0:10) +
@@ -351,7 +352,7 @@ cookies_base <- ggplot(cookies_fitted, aes(x = cookies, y = happiness)) +
   theme(panel.grid.minor = element_blank(),
         plot.title = element_text(face = "bold"))
 
-cookies_base
+base_cookies
 ```
 
 
@@ -366,7 +367,7 @@ cookies_base
 #| fig-width: 8
 #| fig-height: 4
 
-cookies_base +
+base_cookies +
   geom_smooth(method = lm, color = "#0074D9", formula = y ~ splines::bs(x, 7), se = FALSE)
 ```
 
@@ -379,7 +380,7 @@ cookies_base +
 #| fig-width: 8
 #| fig-height: 4
 
-cookies_base +
+base_cookies +
   geom_smooth(method = "loess", color = "#0074D9", se = FALSE)
 ```
 
@@ -392,7 +393,7 @@ cookies_base +
 #| fig-width: 8
 #| fig-height: 4
 
-cookies_base +
+base_cookies +
   geom_smooth(method = "lm", color = "#0074D9", se = FALSE)
 ```
 
@@ -405,11 +406,11 @@ cookies_base +
 #| fig-width: 8
 #| fig-height: 4
 
-cookies_with_residual <- cookies_base +
+galletas_con_residuo <- base_cookies +
   geom_smooth(method = "lm", color = "#0074D9", se = FALSE) +
-  geom_segment(aes(xend = cookies, yend = .fitted), color = "#FF851B", size = 1)
+  geom_segment(aes(xend = galletas, yend = .fitted), color = "#FF851B", size = 1)
 
-cookies_with_residual
+galletas_con_residuo
 ```
 
 # 
@@ -421,18 +422,18 @@ cookies_with_residual
 #| fig-width: 8
 #| fig-height: 4
 
-cookies_residual_only <- ggplot(cookies_fitted, aes(x = cookies, y = .resid)) +
+galletas_solo_residuo <- ggplot(predict_galletas, aes(x = galletas, y = .resid)) +
   geom_hline(yintercept = 0, color = "#B10DC9", size = 1) +
   geom_point(size = 3) +
-  geom_segment(aes(xend = cookies, yend = 0), color = "#FF851B", size = 1) +
+  geom_segment(aes(xend = galletas, yend = 0), color = "#FF851B", size = 1) +
   coord_cartesian(xlim = c(0, 10), ylim = c(-1.5, 1.5)) +
   scale_x_continuous(breaks = 0:10) +
-  labs(x = "Galletas consumidas", y = "Distance from line") +
+  labs(x = "Galletas consumidas", y = "Distancia a la línea") +
   theme_minimal(base_size = 14) +
   theme(panel.grid.minor = element_blank(),
         plot.title = element_text(face = "bold"))
 
-cookies_residual_only
+galletas_solo_residuo
 ```
 
 # 
@@ -444,8 +445,8 @@ cookies_residual_only
 #| fig-width: 8
 #| fig-height: 4
 
-(cookies_with_residual + labs(title = "Cookies and happiness")) + 
-  (cookies_residual_only + labs(title = "Residual errors"))
+(galletas_con_residuo + labs(title = "Galletas y Felicidad")) + 
+  (galletas_solo_residuo + labs(title = "Residuos"))
 ```
 
 ## Pendiente de una recta {.text-orange-gold}
@@ -530,7 +531,7 @@ $$
 ## Regresión lineal simple {.text-orange-gold}
 
 $$
-\hat{y} = \hat{\beta_0} + \hat{\beta_1} x_1 
+\hat{Y} = \hat{\beta_0} + \hat{\beta_1} X 
 $$
 
 -   $\hat{\beta_1}$: la pendiente estimado de la relación entre $X$ y $Y$
@@ -559,7 +560,7 @@ $$
 #| out-width: "100%"
 
 
-cookies_with_residual
+galletas_con_residuo
 ```
 :::
 :::
@@ -573,7 +574,8 @@ cookies_with_residual
 #| out-width: "100%"
 
 
-cookies_with_residual
+galletas_con_residuo
+
 ```
 
 $$
@@ -626,7 +628,7 @@ library(broom)
 # Convierte los resultados del modelo a un data frame para graficar
 tidy(name_of_model)
 
-# Convierte los diagnósticos del modelo a un data frame
+# Convierte los parámetros que evalúan el modelo a un data frame
 glance(name_of_model)
 ```
 :::
@@ -640,9 +642,9 @@ $$\widehat{Felicidad}=\hat{\beta_0}+\hat{\beta_1}\times Galletas$$
 ```{r}
 #| echo: true
 #| eval: true
-happiness_model <- 
-  lm(happiness ~ cookies,
-     data = cookies_data)
+modelo_felicidad <- 
+  lm(felicidad ~ galletas,
+     data = galletas_datos)
 ```
 :::
 
@@ -653,7 +655,7 @@ happiness_model <-
 #| results: hide
 
 
-cookies_base +
+base_cookies +
   geom_smooth(method = "lm", color = "#0074D9") +
   coord_cartesian(xlim = c(0, 10), ylim = c(0, 4))
 ```
@@ -662,15 +664,18 @@ cookies_base +
 
 ## Modelando Galletas y Felicidad {.text-orange-gold}
 
+Podemos ver los coeficientes, error estándar, p-value e IC:
+
 ```{r}
 #| echo: true
-tidy(happiness_model, conf.int = TRUE)
+tidy(modelo_felicidad, conf.int = TRUE)
 ```
 
 ::: fragment
+Para ver aspectos evaluando el ajuste del modelo:
 ```{r}
 #| echo: true
-glance(happiness_model)
+glance(modelo_felicidad)
 ```
 :::
 
@@ -680,21 +685,21 @@ glance(happiness_model)
 ::: {.column width="40%"}
 ```{r}
 #| echo: false
-tidy(happiness_model, conf.int = TRUE) |> 
+tidy(modelo_felicidad, conf.int = TRUE) |> 
   select(term, estimate)
 ```
 
 $$
 \begin{aligned}
-&\widehat{\text{Felicidad}} = \\ 
-&\beta_0 + \beta_1 \times \text{Galletas} + \varepsilon
+&\widehat{Felicidad} = \\ 
+&\hat{\beta_0}+\hat{\beta_1}\times Galletas
 \end{aligned}
 $$
 
 $$
 \begin{aligned}
-&\widehat{\text{Felicidad}} = \\ 
-&1.1 + 0.16 \times \text{Galletas} + \varepsilon
+&\widehat{Felicidad} = \\ 
+&1.1 + 0.16 \times Galletas
 \end{aligned}
 $$
 :::
@@ -702,7 +707,7 @@ $$
 ::: {.column width="60%"}
 ```{r}
 #| echo: false
-cookies_base +
+base_cookies +
   geom_smooth(method = "lm", color = "#0074D9") +
   coord_cartesian(xlim = c(0, 10), ylim = c(0, 4))
 ```
@@ -974,7 +979,7 @@ $$Z=\dfrac{3.12-0}{0.218}=14.3>Z_{\frac{\alpha}{2}}=1.96$$
 No estamos limitados a una sola variable explicativa!
 
 $$
-\hat{y} = \beta_0 + \beta_1 x_1 + \beta_2 x_2 + \cdots + \beta_n x_n + \varepsilon
+\hat{y} = \hat{\beta_0}  + \hat{\beta_1} x_1 + \hat{\beta_2} x_2 + \cdots + \hat{\beta_n} x_n 
 $$
 
 :::{.fragment}
@@ -1197,3 +1202,35 @@ $$
 
 Manteniendo lo demás constante, estimamos que una trilogía tendrá, en promedio, un recaudo 15 millones de dólares menor que una primera entrega
 
+
+## ¿Qué tan bueno es el modelo? {.text-indigo-pink}
+
+### R-Squared
+
+El $R^2$ es el porcentaje de la varianza de la variable dependiente explicada por el modelo de regresión
+
+$$R^2=Corr(x,y)^2=Corr(y,\hat{y})$$
+
+- Está entre 0 (nuestro modelo no predice nada) y 1 (predicción perfecta)
+
+- No tiene unidad de medida
+
+
+
+## ¿Qué tan bueno es el modelo? {.text-indigo-pink}
+
+Con la función `glance()` podemos ver diferentes aspectos que evalúan el modelo:
+
+```{r}
+#| echo: true
+glance(hollywood_model)
+```
+
+:::{.fragment}
+Este modelo de regresión explica el 79% de la varianza del recaudo total en US
+
+```{r}
+#| echo: true
+hollywood_model <- lm(us_gross ~ opening_gross + budget + sequel, data=hollywood)
+```
+:::

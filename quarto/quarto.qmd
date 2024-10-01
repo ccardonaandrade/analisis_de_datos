@@ -1,0 +1,249 @@
+---
+  format:
+   revealjs: 
+      theme: [default, style.scss]
+      slide-number: true
+      highlight-style: github
+      width: 1400
+      css:
+       - https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.2/font/bootstrap-icons.css
+---
+  
+##  {.center}
+
+<h1 class="text-indigo-pink">
+
+Analítica de Datos
+
+<h1>
+
+<h2>Quarto</h2>
+
+::: {style="margin-top:50px"}
+### Carlos Cardona Andrade {.text-orange-gold}
+:::
+
+## Quarto {.text-indigo-pink}
+
+::: columns
+::: {.column width="60%"}
+
+- Quarto es un entorno de trabajo que facilita estructurar un documento que reúna las salidas, tanto gráficas como de texto, junto con el código que las genera. 
+
+- El proceso involucra dos archivos: un **archivo fuente** y el **documento de salida** para la lectura.
+
+- Para referencias más elaboradas: [Quarto para R](https://quarto.org/docs/get-started/hello/rstudio.html) y [Guía de Quarto en Español](https://bookdown.org/gcorrea/Rpap/quarto.html)
+
+:::
+
+
+
+::: {.column .fragment width="40%"}
+
+
+```{r}
+#| eval: true
+#| echo: false
+#| fig-align: "center"
+#| out-width: "100%"
+library(knitr)
+knitr::include_graphics("images/quarto_intro.png")
+
+```
+
+:::
+:::
+
+
+
+
+## Quarto {.text-indigo-pink}
+
+```{r}
+#| eval: true
+#| echo: false
+#| fig-align: "center"
+#| out-width: "100%"
+library(knitr)
+knitr::include_graphics("images/quarto_intro.png")
+
+```
+
+
+## Quarto {.text-indigo-pink}
+
+```{r}
+#| eval: true
+#| echo: false
+#| fig-align: "center"
+#| out-width: "100%"
+knitr::include_graphics("images/quarto_1.png")
+
+```
+
+
+## Quarto {.text-indigo-pink}
+
+```{r}
+#| eval: true
+#| echo: false
+#| fig-align: "center"
+#| out-width: "100%"
+knitr::include_graphics("images/quarto_2.png")
+
+```
+
+
+## Quarto {.text-indigo-pink}
+
+```{r}
+#| eval: true
+#| echo: false
+#| fig-align: "center"
+#| out-width: "100%"
+knitr::include_graphics("images/quarto_3.png")
+
+```
+
+
+## Quarto {.text-indigo-pink}
+
+```{r}
+#| eval: true
+#| echo: false
+#| fig-align: "center"
+#| out-width: "100%"
+knitr::include_graphics("images/quarto_4.png")
+
+```
+
+
+## Quarto {.text-indigo-pink}
+
+```{r}
+#| eval: true
+#| echo: false
+#| fig-align: "center"
+#| out-width: "100%"
+knitr::include_graphics("images/quarto_5.png")
+
+```
+
+
+## Quarto {.text-indigo-pink}
+
+```{r}
+#| eval: true
+#| echo: false
+#| fig-align: "center"
+#| out-width: "100%"
+knitr::include_graphics("images/quarto_6.png")
+
+```
+
+## Quarto {.text-indigo-pink}
+
+Los documentos de Quarto pueden estar conformados por tres tipos de contenidos:
+
+1. Un encabezado en formato YAML
+2. Fragmentos de código
+3. Texto
+
+## Encabezado YAML {.text-indigo-pink}
+
+El encabezado en formato **YAML** (YAML Ain’t Markup Language) aparece al principio del documento de Quarto.
+
+Allí suelen incluirse:
+
+- metadatos (tales como título, autor y fecha)
+
+- opciones generales que determinan la edición y las salidas (tales como el modo de edición predeterminado, el formato de salida y el tamaño de las imágenes).
+
+
+## Encabezado YAML {.text-indigo-pink}
+
+
+```{{r}}
+---
+title: "Hollywood Rules"
+author: "Carlos Cardona"
+format: pdf
+editor: visual
+---
+```
+
+## Fragmentos de código {.text-indigo-pink}
+
+Tódo código debe ir dentro de la siguiente expresión:
+
+
+```{r}
+#| eval: true
+#| echo: false
+cat("```{r}\n\n```")
+```
+
+Luego agreguen las opciones `#| eval: true` y `#| echo: true`.
+
+1. `#| eval: true` le dice a R que ejecute el código. A menos de que se especifique `false`, R los asume verdadero
+
+2. `#| echo: true` es para incluir el código dentro del documento.
+
+
+## Fragmentos de código {.text-indigo-pink}
+
+Primero carguen los siguientes paquetes:
+
+- `broom` y `corrplot` son nuevos así que **instalenlos primero** (`install.packages(c("broom", "corrplot"))`)
+
+```{r}
+#| eval: true
+#| echo: true
+library(tidyverse)
+library(readxl)
+library(janitor)
+library(broom)
+library(corrplot)
+
+```
+
+
+
+## Fragmentos de código {.text-indigo-pink}
+
+```{r}
+#| eval: true
+#| echo: true
+hollywood <- read_excel("C:/Users/ccard/Downloads/KEL702-XLS-ENG.xls", sheet = "Exhibit 1")
+hollywood <- hollywood %>%
+  clean_names()
+hollywood <- hollywood %>% rename(us_gross = total_u_s_gross)
+hollywood <- hollywood %>% rename(non_us_gross = total_non_u_s_gross)
+glimpse(hollywood)
+
+```
+
+## Texto {.text-indigo-pink}
+
+### Títulos
+
+```{{r}}
+# TÍTULOS DE NIVEL 1
+
+## TÍTULOS DE NIVEL 2
+
+### TÍTULOS DE NIVEL 3
+
+```
+
+### Formato de Texto
+
+```{{r}}
+*itálica*
+
+**negrilla**
+
+***negrilla e itálica***
+
+~~tachado~~
+```
