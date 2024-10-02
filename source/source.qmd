@@ -35,7 +35,7 @@ knitr::include_graphics("images/graph.png")
 
 ::: columns
 ::: {.column width="40%"}
-¿Podría ser esta relación entre el consumo de carne y la expectativa de vida espuria? 
+¿Podría ser esta relación entre el consumo de carne y la expectativa de vida espuria?¿Por qué?
 :::
 
 ::: {.column width="60%"}
