@@ -1,6 +1,6 @@
 ---
-title: "Hollywood Rules"
-author: "Nombre Apellido"
+title: "Consejos para usar Quarto"
+author: "Analítica de Datos"
 format: pdf
 editor: visual
 ---
@@ -11,7 +11,7 @@ Recuerden que tanto el YAML como todo código que ejecuten en el documento `.qmd
 
 # Código para antes de usar Render
 
-Recuerden que deben tener un procesador de text para que Quarto funcione. Así como hicimos en clase, ejecuten el siguiente código antes de usar `Render` la primera vez.
+Para poder trabajar con Quarto que deben tener un procesador de texto que maneje. Así como hicimos en clase, ejecuten el siguiente código antes de usar `Render` la primera vez.
 
 ```{r}
 #| echo: true
