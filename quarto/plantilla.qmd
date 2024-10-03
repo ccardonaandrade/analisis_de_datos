@@ -1,0 +1,36 @@
+---
+title: "Hollywood Rules"
+author: "Nombre Apellido"
+format: pdf
+editor: visual
+---
+
+# Preliminares
+
+Los paquetes para este ejercicio son:
+
+```{r}
+#| echo: true
+#| warning: false
+library(tidyverse)
+library(readxl)
+library(janitor)
+library(broom)
+library(corrplot)
+```
+
+# Punto 1
+
+# Punto 2
+
+# Punto 3
+
+# Punto 4
+
+## Punto 4 a)
+
+## Punto 4 b)
+
+## Punto 4 c)
+
+# Punto 5

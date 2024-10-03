@@ -1,0 +1,171 @@
+---
+title: "Hollywood Rules"
+author: "Nombre Apellido"
+format: pdf
+editor: visual
+---
+
+# YAML y Código en Quarto
+
+Recuerden que tanto el YAML como todo código que ejecuten en el documento `.qmd`, debe ir completamente justificado a la izquierda.
+
+# Código para antes de usar Render
+
+Recuerden que deben tener un procesador de text para que Quarto funcione. Así como hicimos en clase, ejecuten el siguiente código antes de usar `Render` la primera vez.
+
+```{r}
+#| echo: true
+#| warning: false
+#| eval: false
+install.packages("tinytex")
+library(tinytex)
+tinytex::install_tinytex()
+```
+
+# Preliminares
+
+Por ahora siempre en esta sección muestren los paquetes que van a usar. **No olviden instalarlos primero!!**
+
+```{r}
+#| echo: true
+#| warning: false
+library(tidyverse)
+library(readxl)
+library(janitor)
+library(broom)
+library(corrplot)
+```
+
+La opción `echo` es para mostrar (true) o no (false) el código en el documento de salida. La opción `warning` es para evitar que los mensajes del código aparezcan en el documento de salida.
+
+# Cargando el archivo *"KEL702-XLS-ENG.xls"*
+
+Si el archivo está en la misma carpeta que el archivo `.qmd`, no es necesario poner toda la ubicación al cargar el excel. En el código abajo ven como sería la sintáxis:
+
+```{r}
+#| echo: true
+#| warning: false
+hollywood <- read_excel("KEL702-XLS-ENG.xls", sheet = "Exhibit 1")
+```
+
+Sino lo tienen en la misma carpeta, deben poner todo el directorio donde el archivo está ubicado:
+
+```{r}
+#| echo: true
+#| warning: false
+#| eval: false
+hollywood <- read_excel("C:/Users/ccard/Downloads/KEL702-XLS-ENG.xls", sheet = "Exhibit 1")
+```
+
+Recuerden, R sólo lee `/` y no `\`. En el código arriba (en el archivo .qmd) les muestro la opcion `eval: false` que le dice a R que no ejectue el código.
+
+El código se sale el margen, para evitar eso, simplemente escriban en la en la siguiente línea. Recuerden que R entiende que las expresiones se cierran con el último paréntesis. El código abajo queda mejor:
+
+```{r}
+#| echo: true
+#| warning: false
+#| eval: false
+hollywood <- read_excel("C:/Users/ccard/Downloads/KEL702-XLS-ENG.xls",
+                        sheet = "Exhibit 1")
+
+```
+
+# Gráficas
+
+El siguiente código es para crear gráficas. Para la entrega, simplemente copien y peguen. Cambien las variables de acuerdo al ejercicio.
+
+```{r}
+#| echo: true
+#| warning: false
+#| fig-align: center
+#| fig-pos: H
+
+
+# Limpiando los nombres
+hollywood <- hollywood %>%
+  clean_names()
+
+# Cambiando los nombres del recaudo en US y non-US
+hollywood <- hollywood %>% rename(us_gross = total_u_s_gross)
+hollywood <- hollywood %>% rename(non_us_gross = total_non_u_s_gross)
+
+
+# Creando la gráfica
+ggplot(hollywood, aes(x=(opening_gross/1000000))) +
+geom_density()+
+labs(title = "Density of Opening Gross", 
+x = "Opening Gross (in millions)"
+) +
+theme_minimal()
+```
+
+Pueden jugar con el tamaño de la gráfica con las opciones `fig-height` y `fig-width` como en el código de abajo. En este caso `fig-height: 2` y `fig-width: 4`.
+
+```{r}
+#| echo: true
+#| warning: false
+#| fig-align: center
+#| fig-pos: H
+#| fig-height: 2
+#| fig-width: 4
+
+# Nuevamente la gráfica
+ggplot(hollywood, aes(x=(opening_gross/1000000))) +
+geom_density()+
+labs(title = "Density of Opening Gross",
+x = "Opening Gross (in millions)"
+) +
+theme_minimal()
+
+```
+
+# Codificación UTF-8
+
+Algo que podría pasar es abrir el archivo `.qmd` y ver algo como lo siguiente:
+
+```{r}
+#| echo: false
+#| warning: false
+#| fig-align: "center"
+#| out-width: "100%"
+
+library(knitr)
+knitr::include_graphics("images/quarto_encoding.png")
+
+
+```
+
+Noten que R no está leyendo tiles ni la letra ñ. Acá sólo es una cuestión de codificación. Dependiendo del lenguaje del computador que están usando, R puede o no identificar caracteres del idioma español. Estos caracteres son codificación UTF-8. Pueden leer más sobre esto [aquí](https://es.wikipedia.org/wiki/UTF-8){target="_blank"}.
+
+Para evitar este problema, guarden el archivo de la siguiente manera:
+
+```{r}
+#| echo: false
+#| warning: false
+#| fig-align: "center"
+knitr::include_graphics("images/save.png")
+```
+
+Y luego seleccionan la opción utf-8:
+
+```{r}
+#| echo: false
+#| warning: false
+#| fig-align: "center"
+#| out-width: "100%"
+#| fig-pos: H
+
+knitr::include_graphics("images/utf8.png")
+```
+
+Puede pasar que abran el archivo y a pesar de haberlo guardado como "utf-8", R no lea los caracteres del español. Simplemente reabran el archivo de la siguiente manera:
+
+```{r}
+#| echo: false
+#| warning: false
+#| fig-align: "center"
+#| fig-pos: H
+knitr::include_graphics("images/open.png")
+```
+
+Y nuevamente seleccionen utf-8.
