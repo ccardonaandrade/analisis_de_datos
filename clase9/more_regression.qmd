@@ -1,0 +1,227 @@
+---
+  format:
+    revealjs: 
+      theme: [default, style.scss]
+      slide-number: true
+      highlight-style: github
+      width: 1400
+      css:
+       - https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.2/font/bootstrap-icons.css
+---
+  
+##  {.center}
+
+<h1 class="text-indigo-pink">
+
+Analítica de Datos
+
+<h1>
+
+<h2>Regresión Lineal</h2>
+
+::: {style="margin-top:50px"}
+### Carlos Cardona Andrade {.text-orange-gold}
+:::
+
+# Tabla de contenido
+
+1. [Correlación](#corr)
+2. [Regresión Lineal Simple](#lm)
+3. [Regresión Lineal Múltiple](#multiple)
+
+# Correlación {#corr .text-wash-black background="linear-gradient(45deg, #00aadd, #66dd00)"}
+
+```{r}
+#| echo: false
+#| eval: true
+#| fig-align: "center"
+#| fig-width: 8
+#| fig-height: 4
+
+library(tidyverse)
+library(readxl)
+library(janitor)
+library(knitr)
+library(broom)
+hollywood <- read_excel("C:/Users/ccard/Downloads/KEL702-XLS-ENG.xls", sheet = "Exhibit 1")
+hollywood <- hollywood %>%
+  clean_names()
+hollywood <- hollywood %>% 
+  rename(us_gross = total_u_s_gross) %>%
+  mutate(us_gross=us_gross/1000000)
+hollywood <- hollywood %>% 
+  rename(non_us_gross = total_non_u_s_gross) %>%
+  mutate(non_us_gross=non_us_gross/1000000)
+hollywood <- hollywood %>% 
+  mutate(opening_gross=opening_gross/1000000)
+hollywood <- hollywood %>% 
+  mutate(budget=budget/1000000)
+
+```
+
+## Condiciones del modelo {.text-lime-cyan}
+
+::: incremental
+
+1. `Linealidad:` hay una relación lineal entre la variable dependiente y la variable explicativa
+
+2. `Varianza Constante:` la variabilidad de los errores es igual para todos los valores de la variable explicativa
+
+3. `Normalidad:` los errores siguen una distribución normal
+
+4. `Independencia:` los errores son independientes entre ellos
+
+:::
+
+
+
+## Condiciones del modelo {.text-lime-cyan}
+
+```{r}
+#| echo: true
+#| eval: true
+#| fig-align: center
+
+ggplot(data = hollywood, aes(x = budget, y = us_gross)) +
+    geom_point() +
+    labs(
+        x = "Budget (in millions)",
+        y = "Opening Gross (in millions)"
+    ) +
+    theme_minimal()
+
+```
+
+
+
+## Condiciones del modelo {.text-lime-cyan}
+
+
+
+```{r}
+#| echo: true
+#| eval: true
+hollywood_model <- lm(us_gross ~ budget, data=hollywood)
+tidy(hollywood_model, conf.int = TRUE)
+```
+
+
+## Condiciones del modelo {.text-lime-cyan}
+
+```{r}
+#| echo: false
+#| eval: true
+#| fig-align: center
+
+augment(hollywood_model) %>%
+  ggplot(aes(x = .fitted, y = .resid)) +
+  geom_point() +
+  geom_smooth(se = FALSE) +
+  labs(x = "Valores predichos", y = "Residuos")
+```
+
+✅Los residuos no siguen un patrón o estructura clara. Parecen aleatoriamente distribuidos
+
+## ❌  Claro patrón en los residuos {.text-lime-cyan}
+
+
+```{r}
+#| eval: true
+#| echo: false
+#| fig-align: "center"
+#| out-width: "100%"
+knitr::include_graphics("images/residuals_1.png")
+
+```
+
+
+## Evaluando varianza constante {.text-lime-cyan}
+
+```{r}
+#| echo: true
+#| eval: true
+#| fig-align: center
+
+augment(hollywood_model) %>%
+  ggplot(aes(x = .fitted, y = .resid)) +
+  geom_point() +
+  geom_smooth(se = FALSE) +
+  labs(x = "Valores predichos", y = "Residuos")
+```
+
+✅La dispersión vertical de los residuos es relativamente constante en la gráfica
+
+## ❌ La varianza no es constante {.text-lime-cyan}
+
+
+```{r}
+#| eval: true
+#| echo: false
+#| fig-align: "center"
+#| out-width: "100%"
+knitr::include_graphics("images/residuals_2.png")
+
+```
+
+
+
+## Condiciones del modelo {.text-lime-cyan}
+
+```{r}
+#| echo: true
+#| eval: true
+#| fig-align: center
+
+augment(hollywood_model) %>%
+  ggplot(aes(x = .resid)) +
+  geom_histogram() +
+  labs(title = "Distribución de los residuos",
+       x = "Residuos") +
+  theme_minimal()
+```
+
+✅La distribución de los errores se parece a una distribución normal
+
+
+
+## Independencia {.text-lime-cyan}
+
+::: incremental
+
+
+- Podemos verificar el supuesto de independencia a menudo basándonos en el contexto de los datos y en cómo se recolectaron las observaciones.
+
+- Si los datos se recolectaron en un orden particular, examina un diagrama de dispersión de los residuos versus el orden en que se recolectaron los datos.
+
+:::
+
+:::{.fragment}
+
+✅ Basado en la información disponible, el error de una película no nos dice nada sobre el error de otra película.
+
+:::
+
+
+## En la práctica.. {.text-lime-cyan}
+
+Al verificar las condiciones del modelo, preguntense si alguna desviación de estas condiciones es tan grande que:
+
+1. Se deba proponer un modelo diferente.
+
+2. Las conclusiones extraídas del modelo deban usarse con precaución.
+
+
+:::{.fragment}
+Si no es así, las condiciones se cumplen suficientemente y podemos proceder con el modelo actual.
+:::
+
+
+# Regresión Lineal <br>[Simple]{.hl .hl-gold} {#lm .text-wash-black background="linear-gradient(45deg, #f37335, #fdc830)"}
+
+## Partes esenciales de una regresión {.text-orange-gold}
+
+
+# [Regresión Lineal<br>[[Múltiple]{.hl .hl-purple}]{style="font-size:75%;"}]{style="color:white"} {#multiple background="linear-gradient(45deg, #4a00e0, #ff0099)"}
+
+
+## Regresión Múltiple {.text-indigo-pink}
