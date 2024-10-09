@@ -17,7 +17,7 @@ Analítica de Datos
 
 <h1>
 
-<h2>Regresión Lineal</h2>
+<h2>Más aspectos sobre Regresión Lineal</h2>
 
 ::: {style="margin-top:50px"}
 ### Carlos Cardona Andrade {.text-orange-gold}
@@ -25,11 +25,11 @@ Analítica de Datos
 
 # Tabla de contenido
 
-1. [Correlación](#corr)
-2. [Regresión Lineal Simple](#lm)
-3. [Regresión Lineal Múltiple](#multiple)
+1. [Condiciones del modelo](#condic)
+2. [Consideraciones para una Regresión](#regresion)
+3. [Transformación Logarítmica](#log)
 
-# Correlación {#corr .text-wash-black background="linear-gradient(45deg, #00aadd, #66dd00)"}
+# Condiciones del modelo {#condic .text-wash-black background="linear-gradient(45deg, #00aadd, #66dd00)"}
 
 ```{r}
 #| echo: false
@@ -59,6 +59,19 @@ hollywood <- hollywood %>%
 
 ```
 
+## Diagnóstico general de una regresión lineal {.text-lime-cyan}
+
+
+```{r}
+#| eval: true
+#| echo: false
+#| fig-align: "center"
+#| out-width: "100%"
+knitr::include_graphics("images/reg_intro.jpg")
+
+```
+
+
 ## Condiciones del modelo {.text-lime-cyan}
 
 ::: incremental
@@ -75,7 +88,7 @@ hollywood <- hollywood %>%
 
 
 
-## Condiciones del modelo {.text-lime-cyan}
+## US Gross vs Budget {.text-lime-cyan}
 
 ```{r}
 #| echo: true
@@ -94,8 +107,10 @@ ggplot(data = hollywood, aes(x = budget, y = us_gross)) +
 
 
 
-## Condiciones del modelo {.text-lime-cyan}
+## US Gross vs Budget {.text-lime-cyan}
 
+
+$$\widehat{\text{US Total Gross}} = 18 + 0.84 \times \text{Budget}$$
 
 
 ```{r}
@@ -106,7 +121,18 @@ tidy(hollywood_model, conf.int = TRUE)
 ```
 
 
-## Condiciones del modelo {.text-lime-cyan}
+
+## Error vs Residuo {.text-lime-cyan}
+
+$$
+Y = \beta_0 + \beta_1 X_1  + \varepsilon
+$$
+NUNCA vamos a conocer $\varepsilon$ pero podemos usar los residuos como un estimado de los errores. 
+
+$$Residuo=e_i=Y_i-\hat{Y_i}$$
+
+
+## ¿Son lineales los residuos? {.text-lime-cyan}
 
 ```{r}
 #| echo: false
@@ -216,12 +242,296 @@ Si no es así, las condiciones se cumplen suficientemente y podemos proceder con
 :::
 
 
-# Regresión Lineal <br>[Simple]{.hl .hl-gold} {#lm .text-wash-black background="linear-gradient(45deg, #f37335, #fdc830)"}
+# Consideraciones adicionales para una<br>[Regresión]{.hl .hl-gold} {#regresion .text-wash-black background="linear-gradient(45deg, #f37335, #fdc830)"}
 
-## Partes esenciales de una regresión {.text-orange-gold}
+## Cuarteto de Anscombe {.text-orange-gold}
+
+```{r}
+#| eval: true
+#| echo: false
+#| fig-align: "center"
+#| out-width: "100%"
+knitr::include_graphics("images/anscombe.jpg")
+
+```
+
+## Relaciones no lineales {.text-orange-gold}
+
+```{r}
+#| echo: false
+#| eval: true
+#| fig-align: center
+set.seed(123)
+
+# Create a tibble with 50 observations
+galletas <- tibble(
+  galletas = 1:20,
+  felicidad = 2 + 0.3 * galletas - 0.02 * galletas^2 + rnorm(20, mean = 0, sd = 0.5)  # Non-linear (inverted U-shape)
+)
 
 
-# [Regresión Lineal<br>[[Múltiple]{.hl .hl-purple}]{style="font-size:75%;"}]{style="color:white"} {#multiple background="linear-gradient(45deg, #4a00e0, #ff0099)"}
+base_cookies <- ggplot(galletas, aes(x=galletas, y=felicidad)) + 
+  geom_point(size = 3) +
+  coord_cartesian(xlim = c(0, 20), ylim = c(-1, 5)) +
+  scale_x_continuous(breaks = 0:20) +
+  labs(x = "Galletas consumidas", y = "Nivel de Felicidad") +
+  theme_minimal(base_size = 14) +
+  theme(panel.grid.minor = element_blank(),
+        plot.title = element_text(face = "bold"))
+
+base_cookies
+```
 
 
-## Regresión Múltiple {.text-indigo-pink}
+## Relaciones no lineales {.text-orange-gold}
+
+```{r}
+#| echo: false
+#| eval: true
+#| fig-align: center
+base_cookies +
+  geom_smooth(method = "lm", color = "#0074D9", se = FALSE)
+```
+
+
+
+## Relaciones no lineales {.text-orange-gold}
+
+```{r}
+#| echo: false
+#| eval: true
+#| fig-align: center
+base_cookies +
+  geom_smooth(method = "loess", color = "#0074D9", se = FALSE)
+```
+
+
+## Relaciones no lineales {.text-orange-gold}
+
+```{r}
+#| echo: true
+#| eval: true
+#| fig-align: center
+modelo_felicidad <- lm(felicidad ~ galletas + I(galletas^2), data = galletas)
+tidy(modelo_felicidad, conf.int = TRUE)
+```
+
+```{r}
+#| echo: true
+#| eval: true
+#| fig-align: center
+library(knitr)
+tidy(modelo_felicidad, conf.int = TRUE) %>%
+  knitr::kable(format = "html") %>%
+  kableExtra::kable_styling(font_size = 30)
+```
+
+
+## ¿Existe la relación cuadrática que vemos en la gráfica? {.text-orange-gold}
+
+$$\widehat{Felicidad}=\hat{\beta_0}+\hat{\beta_1}\times Galletas +\hat{\beta_2}\times Galletas^2 $$
+
+
+:::{.fragment}
+
+Evaluamos con una prueba de hipótesis:
+
+$$H_0:\hat{\beta_2}=0$$
+$$H_1: \hat{\beta_2} \neq 0$$
+:::
+
+## ¿Qué hacer con una observación atípica (outlier)? {.text-orange-gold}
+
+```{r}
+#| echo: false
+#| eval: true
+#| fig-align: center
+galletas <- tibble(
+  felicidad = c(0.5, 2, 1, 2.5, 3, 1.5, 2, 2.5, 8, 3),
+  galletas = 1:10
+)
+
+base_cookies <- ggplot(galletas, aes(x=galletas, y=felicidad)) + 
+  geom_point(size = 3) +
+  coord_cartesian(xlim = c(0, 10), ylim = c(0, 8)) +
+  scale_x_continuous(breaks = 0:10) +
+  labs(x = "Galletas consumidas", y = "Nivel de Felicidad") +
+  theme_minimal(base_size = 14) +
+  theme(panel.grid.minor = element_blank(),
+        plot.title = element_text(face = "bold"))
+
+base_cookies
+
+```
+
+
+## ¿Qué hacer con una observación atípica (outlier)? {.text-orange-gold}
+
+```{r}
+#| echo: false
+#| eval: true
+#| fig-align: center
+
+# Remove the outlier where felicidad == 8
+galletas_no_outlier <- galletas %>% filter(felicidad != 8)
+
+# Combine data with an indicator for whether it's with or without the outlier
+galletas$group <- "Con outlier"
+galletas_no_outlier$group <- "Sin outlier"
+
+# Combine both datasets
+combined_data <- bind_rows(galletas, galletas_no_outlier)
+
+# Base plot
+base_cookies <- ggplot(combined_data, aes(x = galletas, y = felicidad, group = group)) + 
+  geom_point(size = 3) +
+  coord_cartesian(xlim = c(0, 10), ylim = c(0, 8)) +
+  scale_x_continuous(breaks = 0:10) +
+  labs(x = "Galletas consumidas", y = "Nivel de Felicidad") +
+  theme_minimal(base_size = 14) +
+  theme(panel.grid.minor = element_blank(),
+        plot.title = element_text(face = "bold"))
+
+# Plot with legend for solid and dashed lines
+base_cookies +
+  geom_smooth(aes(color = group, linetype = group), method = "lm", se = FALSE) + 
+  scale_color_manual(values = c("Con outlier" = "#0074D9", "Sin outlier" = "red")) +
+  scale_linetype_manual(values = c("Con outlier" = "solid", "Sin outlier" = "dashed")) +
+  labs(title = "",
+       color = "Regresión", linetype = "Regresión")
+
+```
+
+
+## ¿Cómo identificar los outliers? {.text-orange-gold}
+
+No existen reglas estrictas. Depende del conocimiento del área y la comprensión de la recopilación de datos para identificar valores atípicos, inusuales e imposibles.
+
+- Pero tenemos algunas herramientas:
+    1. Histogramas
+    2. Diagramas de caja
+    3. Análisis de de los residuos
+    
+
+## Efecto interacción {.text-orange-gold}
+
+Hasta ahora hemos asumido que el efecto de una variable es independiente de otra:
+
+$$
+Y = \beta_0 + \beta_1 X_1 + \beta_2 X_2 + \varepsilon
+$$
+El efecto del incremento en una unidad de $X_1$ en $Y$, es siempre $\beta_1$ e independiente de $X_2$
+
+
+## Efecto interacción {.text-orange-gold}
+
+Si pensamos que el efecto de $X_1$ depende del valor de $X_2$, entonces debemos agregar una tercera variable de interacción al modelo:
+
+$$
+Y = \beta_0 + \beta_1 X_1 + \beta_2 X_2 + \beta_3 X_1X_2+ \varepsilon
+$$
+El termino de interacción es $X_1X_2$
+
+
+## Efecto interacción - Hollywood {.text-orange-gold}
+
+El productor de Hollywood piensa que las críticas afectan menos el recaudo en US de las comedias que del resto de películas. Para eso estimamos:
+
+
+```{r}
+#| echo: true
+#| eval: true
+#| fig-align: center
+hollywood <- hollywood %>%
+  mutate(comedy = ifelse(genre == "Comedy", 1, 0))
+model_part9<- lm(us_gross ~ opening_gross + budget + mpaa_d 
+                 + comedy * critics_opinion , data=hollywood)
+tidy(model_part9, conf.int = TRUE)
+```
+
+
+
+# [Transformación<br>[[Logarítmica]{.hl .hl-purple}]{style="font-size:75%;"}]{style="color:white"} {#multiple background="linear-gradient(45deg, #4a00e0, #ff0099)"}
+
+
+## Transformación logarítmica {.text-indigo-pink}
+
+Podemos considerar una transformación logarítmica de las variables de nuestro modelo (tanto variable dependiente e independientes) cuando:
+
+::: incremental
+
+- Exista una relación no-lineal (exponencial) entre la variable dependiente y la explicativa.
+
+- Alguna de las variables tenga una distribución sesgada (muy distinta a la normal).
+:::
+
+
+## Transformación logarítmica {.text-indigo-pink}
+
+```{r}
+#| echo: false
+#| eval: true
+#| fig-align: center
+ggplot(data = hollywood, aes(x = us_gross)) +
+    geom_density() +
+    labs(
+        x = "US Gross (in millions)",
+    ) +
+    theme_minimal()
+```
+
+
+## Transformación logarítmica {.text-indigo-pink}
+
+```{r}
+#| echo: false
+#| eval: true
+#| fig-align: center
+ggplot(data = hollywood, aes(x = log(us_gross))) +
+    geom_density() +
+    labs(
+        x = "US Gross (in logs)",
+    ) +
+    theme_minimal()
+```
+
+
+## Transformación logarítmica {.text-indigo-pink}
+
+
+```{r}
+#| echo: true
+#| eval: true
+
+hollywood_model <- lm(us_gross ~ opening_gross, data=hollywood)
+tidy(hollywood_model, conf.int = TRUE)
+
+
+hollywood <- hollywood %>% 
+  mutate(log_opening_gross=log(opening_gross),
+         log_us_gross=log(us_gross))
+
+hollywood_model_logs <- lm(log_us_gross ~ log_opening_gross, data=hollywood)
+tidy(hollywood_model_logs, conf.int = TRUE)
+```
+
+
+## Regresión Nivel-Nivel {.text-indigo-pink}
+
+$$Y=\beta_0+\beta_1X+\varepsilon$$
+Interpretación: un cambio de una unidad en $X$, está asociado a un cambio en $\beta_1$ unidades en $Y$.
+
+## Regresión Nivel-Log {.text-indigo-pink}
+
+$$Y=\beta_0+\beta_1log(X)+\varepsilon$$
+Interpretación: un aumento de 1% en $X$, es asociado a un cambio en $\beta_1/100$ unidades a $Y$.
+
+## Regresión Log-Nivel {.text-indigo-pink}
+
+$$log(Y)=\beta_0+\beta_1X+\varepsilon$$
+Interpretación: un incremento de una unidad en $X$, está asociado a un cambio de $(\beta_1\times 100)\%$ en $Y$.
+
+## Regresión Log-Log {.text-indigo-pink}
+
+$$log(Y)=\beta_0+\beta_1log(X)+\varepsilon$$
+Interpretación: un aumento de 1% en $X$, está asociado a un cambio de $\beta_1\%$  en $Y$.

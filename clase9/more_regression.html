@@ -384,6 +384,9 @@
       margin-right: 0; 
     }
   </style>
+  
+  <script src="more_regression_files/libs/kePrint-0.0.1/kePrint.js"></script>
+  <link href="more_regression_files/libs/lightable-0.0.1/lightable.css" rel="stylesheet">
 </head>
 <body class="quarto-light">
   <div class="reveal">
@@ -396,7 +399,7 @@
 <p>Analítica de Datos</p>
 </h1><h1>
 </h1><h2>
-Regresión Lineal
+Más aspectos sobre Regresión Lineal
 </h2>
 <section id="carlos-cardona-andrade" class="text-orange-gold" style="margin-top:50px">
 <h3 class="text-orange-gold">Carlos Cardona Andrade</h3>
@@ -405,17 +408,21 @@ Regresión Lineal
 <section id="tabla-de-contenido" class="title-slide slide level1 center">
 <h1>Tabla de contenido</h1>
 <ol type="1">
-<li><a href="#/corr">Correlación</a></li>
-<li><a href="#/lm">Regresión Lineal Simple</a></li>
-<li><a href="#/multiple">Regresión Lineal Múltiple</a></li>
+<li><a href="#/condic">Condiciones del modelo</a></li>
+<li><a href="#/regresion">Consideraciones para una Regresión</a></li>
+<li><a href="#/log">Transformación Logarítmica</a></li>
 </ol>
 </section>
 
 <section>
-<section id="corr" class="title-slide slide level1 text-wash-black center" data-background="linear-gradient(45deg, #00aadd, #66dd00)">
-<h1>Correlación</h1>
+<section id="condic" class="title-slide slide level1 text-wash-black center" data-background="linear-gradient(45deg, #00aadd, #66dd00)">
+<h1>Condiciones del modelo</h1>
 
 </section>
+<section id="diagnóstico-general-de-una-regresión-lineal" class="slide level2 text-lime-cyan">
+<h2>Diagnóstico general de una regresión lineal</h2>
+
+<img data-src="images/reg_intro.jpg" class="quarto-discovered-preview-image r-stretch quarto-figure-center" style="width:100.0%"></section>
 <section id="condiciones-del-modelo" class="slide level2 text-lime-cyan">
 <h2>Condiciones del modelo</h2>
 <div>
@@ -427,8 +434,8 @@ Regresión Lineal
 </ol>
 </div>
 </section>
-<section id="condiciones-del-modelo-1" class="slide level2 text-lime-cyan">
-<h2>Condiciones del modelo</h2>
+<section id="us-gross-vs-budget" class="slide level2 text-lime-cyan">
+<h2>US Gross vs Budget</h2>
 <div class="cell" data-layout-align="center">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> hollywood, <span class="fu">aes</span>(<span class="at">x =</span> budget, <span class="at">y =</span> us_gross)) <span class="sc">+</span></span>
 <span id="cb1-2"><a href="#cb1-2"></a>    <span class="fu">geom_point</span>() <span class="sc">+</span></span>
@@ -439,9 +446,10 @@ Regresión Lineal
 <span id="cb1-7"><a href="#cb1-7"></a>    <span class="fu">theme_minimal</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 
 </div>
-<img data-src="more_regression_files/figure-revealjs/unnamed-chunk-2-1.png" class="quarto-discovered-preview-image r-stretch quarto-figure-center" width="960"></section>
-<section id="condiciones-del-modelo-2" class="slide level2 text-lime-cyan">
-<h2>Condiciones del modelo</h2>
+<img data-src="more_regression_files/figure-revealjs/unnamed-chunk-3-1.png" width="960" class="r-stretch quarto-figure-center"></section>
+<section id="us-gross-vs-budget-1" class="slide level2 text-lime-cyan">
+<h2>US Gross vs Budget</h2>
+<p><span class="math display">\[\widehat{\text{US Total Gross}} = 18 + 0.84 \times \text{Budget}\]</span></p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a>hollywood_model <span class="ot">&lt;-</span> <span class="fu">lm</span>(us_gross <span class="sc">~</span> budget, <span class="at">data=</span>hollywood)</span>
 <span id="cb2-2"><a href="#cb2-2"></a><span class="fu">tidy</span>(hollywood_model, <span class="at">conf.int =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -454,10 +462,17 @@ Regresión Lineal
 </div>
 </div>
 </section>
-<section id="condiciones-del-modelo-3" class="slide level2 text-lime-cyan">
-<h2>Condiciones del modelo</h2>
+<section id="error-vs-residuo" class="slide level2 text-lime-cyan">
+<h2>Error vs Residuo</h2>
+<p><span class="math display">\[
+Y = \beta_0 + \beta_1 X_1  + \varepsilon
+\]</span> NUNCA vamos a conocer <span class="math inline">\(\varepsilon\)</span> pero podemos usar los residuos como un estimado de los errores.</p>
+<p><span class="math display">\[Residuo=e_i=Y_i-\hat{Y_i}\]</span></p>
+</section>
+<section id="son-lineales-los-residuos" class="slide level2 text-lime-cyan">
+<h2>¿Son lineales los residuos?</h2>
 
-<img data-src="more_regression_files/figure-revealjs/unnamed-chunk-4-1.png" width="960" class="r-stretch quarto-figure-center"><p>✅Los residuos no siguen un patrón o estructura clara. Parecen aleatoriamente distribuidos</p>
+<img data-src="more_regression_files/figure-revealjs/unnamed-chunk-5-1.png" width="960" class="r-stretch quarto-figure-center"><p>✅Los residuos no siguen un patrón o estructura clara. Parecen aleatoriamente distribuidos</p>
 </section>
 <section id="claro-patrón-en-los-residuos" class="slide level2 text-lime-cyan">
 <h2>❌ Claro patrón en los residuos</h2>
@@ -473,13 +488,13 @@ Regresión Lineal
 <span id="cb4-5"><a href="#cb4-5"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Valores predichos"</span>, <span class="at">y =</span> <span class="st">"Residuos"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 
 </div>
-<img data-src="more_regression_files/figure-revealjs/unnamed-chunk-6-1.png" width="960" class="r-stretch quarto-figure-center"><p>✅La dispersión vertical de los residuos es relativamente constante en la gráfica</p>
+<img data-src="more_regression_files/figure-revealjs/unnamed-chunk-7-1.png" width="960" class="r-stretch quarto-figure-center"><p>✅La dispersión vertical de los residuos es relativamente constante en la gráfica</p>
 </section>
 <section id="la-varianza-no-es-constante" class="slide level2 text-lime-cyan">
 <h2>❌ La varianza no es constante</h2>
 
 <img data-src="images/residuals_2.png" style="width:100.0%" class="r-stretch quarto-figure-center"></section>
-<section id="condiciones-del-modelo-4" class="slide level2 text-lime-cyan">
+<section id="condiciones-del-modelo-1" class="slide level2 text-lime-cyan">
 <h2>Condiciones del modelo</h2>
 <div class="cell" data-layout-align="center">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a><span class="fu">augment</span>(hollywood_model) <span class="sc">%&gt;%</span></span>
@@ -490,7 +505,7 @@ Regresión Lineal
 <span id="cb5-6"><a href="#cb5-6"></a>  <span class="fu">theme_minimal</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 
 </div>
-<img data-src="more_regression_files/figure-revealjs/unnamed-chunk-8-1.png" width="960" class="r-stretch quarto-figure-center"><p>✅La distribución de los errores se parece a una distribución normal</p>
+<img data-src="more_regression_files/figure-revealjs/unnamed-chunk-9-1.png" width="960" class="r-stretch quarto-figure-center"><p>✅La distribución de los errores se parece a una distribución normal</p>
 </section>
 <section id="independencia" class="slide level2 text-lime-cyan">
 <h2>Independencia</h2>
@@ -516,20 +531,223 @@ Regresión Lineal
 </div>
 </section></section>
 <section>
-<section id="lm" class="title-slide slide level1 text-wash-black center" data-background="linear-gradient(45deg, #f37335, #fdc830)">
-<h1>Regresión Lineal <br><span class="hl hl-gold">Simple</span></h1>
+<section id="regresion" class="title-slide slide level1 text-wash-black center" data-background="linear-gradient(45deg, #f37335, #fdc830)">
+<h1>Consideraciones adicionales para una<br><span class="hl hl-gold">Regresión</span></h1>
 
 </section>
-<section id="partes-esenciales-de-una-regresión" class="slide level2 text-orange-gold">
-<h2>Partes esenciales de una regresión</h2>
+<section id="cuarteto-de-anscombe" class="slide level2 text-orange-gold">
+<h2>Cuarteto de Anscombe</h2>
+
+<img data-src="images/anscombe.jpg" style="width:100.0%" class="r-stretch quarto-figure-center"></section>
+<section id="relaciones-no-lineales" class="slide level2 text-orange-gold">
+<h2>Relaciones no lineales</h2>
+
+<img data-src="more_regression_files/figure-revealjs/unnamed-chunk-11-1.png" width="960" class="r-stretch quarto-figure-center"></section>
+<section id="relaciones-no-lineales-1" class="slide level2 text-orange-gold">
+<h2>Relaciones no lineales</h2>
+
+<img data-src="more_regression_files/figure-revealjs/unnamed-chunk-12-1.png" width="960" class="r-stretch quarto-figure-center"></section>
+<section id="relaciones-no-lineales-2" class="slide level2 text-orange-gold">
+<h2>Relaciones no lineales</h2>
+
+<img data-src="more_regression_files/figure-revealjs/unnamed-chunk-13-1.png" width="960" class="r-stretch quarto-figure-center"></section>
+<section id="relaciones-no-lineales-3" class="slide level2 text-orange-gold">
+<h2>Relaciones no lineales</h2>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a>modelo_felicidad <span class="ot">&lt;-</span> <span class="fu">lm</span>(felicidad <span class="sc">~</span> galletas <span class="sc">+</span> <span class="fu">I</span>(galletas<span class="sc">^</span><span class="dv">2</span>), <span class="at">data =</span> galletas)</span>
+<span id="cb6-2"><a href="#cb6-2"></a><span class="fu">tidy</span>(modelo_felicidad, <span class="at">conf.int =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 3 x 7
+  term          estimate std.error statistic   p.value conf.low conf.high
+  &lt;chr&gt;            &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt;
+1 (Intercept)     2.00     0.378        5.30 0.0000588   1.21      2.80  
+2 galletas        0.334    0.0828       4.03 0.000871    0.159     0.509 
+3 I(galletas^2)  -0.0220   0.00383     -5.74 0.0000241  -0.0301   -0.0139</code></pre>
+</div>
+</div>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1"></a><span class="fu">library</span>(knitr)</span>
+<span id="cb8-2"><a href="#cb8-2"></a><span class="fu">tidy</span>(modelo_felicidad, <span class="at">conf.int =</span> <span class="cn">TRUE</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb8-3"><a href="#cb8-3"></a>  knitr<span class="sc">::</span><span class="fu">kable</span>(<span class="at">format =</span> <span class="st">"html"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb8-4"><a href="#cb8-4"></a>  kableExtra<span class="sc">::</span><span class="fu">kable_styling</span>(<span class="at">font_size =</span> <span class="dv">30</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<table class="table" data-quarto-postprocess="true" style="font-size: 30px; margin-left: auto; margin-right: auto;">
+<thead>
+<tr class="header">
+<th style="text-align: left;" data-quarto-table-cell-role="th">term</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">estimate</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">std.error</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">statistic</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">p.value</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">conf.low</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">conf.high</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">(Intercept)</td>
+<td style="text-align: right;">2.0019260</td>
+<td style="text-align: right;">0.3777083</td>
+<td style="text-align: right;">5.300191</td>
+<td style="text-align: right;">0.0000588</td>
+<td style="text-align: right;">1.2050311</td>
+<td style="text-align: right;">2.7988208</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">galletas</td>
+<td style="text-align: right;">0.3337378</td>
+<td style="text-align: right;">0.0828373</td>
+<td style="text-align: right;">4.028835</td>
+<td style="text-align: right;">0.0008711</td>
+<td style="text-align: right;">0.1589664</td>
+<td style="text-align: right;">0.5085091</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">I(galletas^2)</td>
+<td style="text-align: right;">-0.0219886</td>
+<td style="text-align: right;">0.0038316</td>
+<td style="text-align: right;">-5.738727</td>
+<td style="text-align: right;">0.0000241</td>
+<td style="text-align: right;">-0.0300726</td>
+<td style="text-align: right;">-0.0139046</td>
+</tr>
+</tbody>
+</table>
+
+
+</div>
+</div>
+</section>
+<section id="existe-la-relación-cuadrática-que-vemos-en-la-gráfica" class="slide level2 text-orange-gold">
+<h2>¿Existe la relación cuadrática que vemos en la gráfica?</h2>
+<p><span class="math display">\[\widehat{Felicidad}=\hat{\beta_0}+\hat{\beta_1}\times Galletas +\hat{\beta_2}\times Galletas^2 \]</span></p>
+<div class="fragment">
+<p>Evaluamos con una prueba de hipótesis:</p>
+<p><span class="math display">\[H_0:\hat{\beta_2}=0\]</span> <span class="math display">\[H_1: \hat{\beta_2} \neq 0\]</span></p>
+</div>
+</section>
+<section id="qué-hacer-con-una-observación-atípica-outlier" class="slide level2 text-orange-gold">
+<h2>¿Qué hacer con una observación atípica (outlier)?</h2>
+
+<img data-src="more_regression_files/figure-revealjs/unnamed-chunk-16-1.png" width="960" class="r-stretch quarto-figure-center"></section>
+<section id="qué-hacer-con-una-observación-atípica-outlier-1" class="slide level2 text-orange-gold">
+<h2>¿Qué hacer con una observación atípica (outlier)?</h2>
+
+<img data-src="more_regression_files/figure-revealjs/unnamed-chunk-17-1.png" width="960" class="r-stretch quarto-figure-center"></section>
+<section id="cómo-identificar-los-outliers" class="slide level2 text-orange-gold">
+<h2>¿Cómo identificar los outliers?</h2>
+<p>No existen reglas estrictas. Depende del conocimiento del área y la comprensión de la recopilación de datos para identificar valores atípicos, inusuales e imposibles.</p>
+<ul>
+<li>Pero tenemos algunas herramientas:
+<ol type="1">
+<li>Histogramas</li>
+<li>Diagramas de caja</li>
+<li>Análisis de de los residuos</li>
+</ol></li>
+</ul>
+</section>
+<section id="efecto-interacción" class="slide level2 text-orange-gold">
+<h2>Efecto interacción</h2>
+<p>Hasta ahora hemos asumido que el efecto de una variable es independiente de otra:</p>
+<p><span class="math display">\[
+Y = \beta_0 + \beta_1 X_1 + \beta_2 X_2 + \varepsilon
+\]</span> El efecto del incremento en una unidad de <span class="math inline">\(X_1\)</span> en <span class="math inline">\(Y\)</span>, es siempre <span class="math inline">\(\beta_1\)</span> e independiente de <span class="math inline">\(X_2\)</span></p>
+</section>
+<section id="efecto-interacción-1" class="slide level2 text-orange-gold">
+<h2>Efecto interacción</h2>
+<p>Si pensamos que el efecto de <span class="math inline">\(X_1\)</span> depende del valor de <span class="math inline">\(X_2\)</span>, entonces debemos agregar una tercera variable de interacción al modelo:</p>
+<p><span class="math display">\[
+Y = \beta_0 + \beta_1 X_1 + \beta_2 X_2 + \beta_3 X_1X_2+ \varepsilon
+\]</span> El termino de interacción es <span class="math inline">\(X_1X_2\)</span></p>
+</section>
+<section id="efecto-interacción---hollywood" class="slide level2 text-orange-gold">
+<h2>Efecto interacción - Hollywood</h2>
+<p>El productor de Hollywood piensa que las críticas afectan menos el recaudo en US de las comedias que del resto de películas. Para eso estimamos:</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1"></a>hollywood <span class="ot">&lt;-</span> hollywood <span class="sc">%&gt;%</span></span>
+<span id="cb9-2"><a href="#cb9-2"></a>  <span class="fu">mutate</span>(<span class="at">comedy =</span> <span class="fu">ifelse</span>(genre <span class="sc">==</span> <span class="st">"Comedy"</span>, <span class="dv">1</span>, <span class="dv">0</span>))</span>
+<span id="cb9-3"><a href="#cb9-3"></a>model_part9<span class="ot">&lt;-</span> <span class="fu">lm</span>(us_gross <span class="sc">~</span> opening_gross <span class="sc">+</span> budget <span class="sc">+</span> mpaa_d </span>
+<span id="cb9-4"><a href="#cb9-4"></a>                 <span class="sc">+</span> comedy <span class="sc">*</span> critics_opinion , <span class="at">data=</span>hollywood)</span>
+<span id="cb9-5"><a href="#cb9-5"></a><span class="fu">tidy</span>(model_part9, <span class="at">conf.int =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 7 x 7
+  term                  estimate std.error statistic  p.value conf.low conf.high
+  &lt;chr&gt;                    &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt;
+1 (Intercept)            -36.3      8.47      -4.28  5.90e- 5 -53.2      -19.4  
+2 opening_gross            2.78     0.194     14.3   3.08e-22   2.39       3.16 
+3 budget                   0.259    0.0951     2.72  8.24e- 3   0.0691     0.449
+4 mpaa_d                  -9.79     5.41      -1.81  7.46e- 2 -20.6        1.00 
+5 comedy                  16.7     14.4        1.16  2.51e- 1 -12.1       45.4  
+6 critics_opinion          0.684    0.161      4.24  6.99e- 5   0.362      1.01 
+7 comedy:critics_opini~   -0.228    0.296     -0.772 4.43e- 1  -0.818      0.362</code></pre>
+</div>
+</div>
 </section></section>
 <section>
 <section id="multiple" class="title-slide slide level1 center" data-background="linear-gradient(45deg, #4a00e0, #ff0099)">
-<h1><span style="color:white">Regresión Lineal<br><span style="font-size:75%;"><span class="hl hl-purple">Múltiple</span></span></span></h1>
+<h1><span style="color:white">Transformación<br><span style="font-size:75%;"><span class="hl hl-purple">Logarítmica</span></span></span></h1>
 
 </section>
-<section id="regresión-múltiple" class="slide level2 text-indigo-pink">
-<h2>Regresión Múltiple</h2>
+<section id="transformación-logarítmica" class="slide level2 text-indigo-pink">
+<h2>Transformación logarítmica</h2>
+<p>Podemos considerar una transformación logarítmica de las variables de nuestro modelo (tanto variable dependiente e independientes) cuando:</p>
+<div>
+<ul>
+<li class="fragment"><p>Exista una relación no-lineal (exponencial) entre la variable dependiente y la explicativa.</p></li>
+<li class="fragment"><p>Alguna de las variables tenga una distribución sesgada (muy distinta a la normal).</p></li>
+</ul>
+</div>
+</section>
+<section id="transformación-logarítmica-1" class="slide level2 text-indigo-pink">
+<h2>Transformación logarítmica</h2>
+
+<img data-src="more_regression_files/figure-revealjs/unnamed-chunk-19-1.png" width="960" class="r-stretch quarto-figure-center"></section>
+<section id="transformación-logarítmica-2" class="slide level2 text-indigo-pink">
+<h2>Transformación logarítmica</h2>
+
+<img data-src="more_regression_files/figure-revealjs/unnamed-chunk-20-1.png" width="960" class="r-stretch quarto-figure-center"></section>
+<section id="transformación-logarítmica-3" class="slide level2 text-indigo-pink">
+<h2>Transformación logarítmica</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1"></a>hollywood_model <span class="ot">&lt;-</span> <span class="fu">lm</span>(us_gross <span class="sc">~</span> opening_gross, <span class="at">data=</span>hollywood)</span>
+<span id="cb11-2"><a href="#cb11-2"></a><span class="fu">tidy</span>(hollywood_model, <span class="at">conf.int =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 2 x 7
+  term          estimate std.error statistic  p.value conf.low conf.high
+  &lt;chr&gt;            &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt;
+1 (Intercept)       5.11     4.50       1.13 2.60e- 1    -3.87     14.1 
+2 opening_gross     3.12     0.218     14.3  7.07e-23     2.69      3.56</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1"></a>hollywood <span class="ot">&lt;-</span> hollywood <span class="sc">%&gt;%</span> </span>
+<span id="cb13-2"><a href="#cb13-2"></a>  <span class="fu">mutate</span>(<span class="at">log_opening_gross=</span><span class="fu">log</span>(opening_gross),</span>
+<span id="cb13-3"><a href="#cb13-3"></a>         <span class="at">log_us_gross=</span><span class="fu">log</span>(us_gross))</span>
+<span id="cb13-4"><a href="#cb13-4"></a></span>
+<span id="cb13-5"><a href="#cb13-5"></a>hollywood_model_logs <span class="ot">&lt;-</span> <span class="fu">lm</span>(log_us_gross <span class="sc">~</span> log_opening_gross, <span class="at">data=</span>hollywood)</span>
+<span id="cb13-6"><a href="#cb13-6"></a><span class="fu">tidy</span>(hollywood_model_logs, <span class="at">conf.int =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 2 x 7
+  term              estimate std.error statistic  p.value conf.low conf.high
+  &lt;chr&gt;                &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt;
+1 (Intercept)          1.25     0.181       6.91 1.50e- 9    0.892      1.61
+2 log_opening_gross    0.977    0.0658     14.8  9.60e-24    0.845      1.11</code></pre>
+</div>
+</div>
+</section>
+<section id="regresión-nivel-nivel" class="slide level2 text-indigo-pink">
+<h2>Regresión Nivel-Nivel</h2>
+<p><span class="math display">\[Y=\beta_0+\beta_1X+\varepsilon\]</span> Interpretación: un cambio de una unidad en <span class="math inline">\(X\)</span>, está asociado a un cambio en <span class="math inline">\(\beta_1\)</span> unidades en <span class="math inline">\(Y\)</span>.</p>
+</section>
+<section id="regresión-nivel-log" class="slide level2 text-indigo-pink">
+<h2>Regresión Nivel-Log</h2>
+<p><span class="math display">\[Y=\beta_0+\beta_1log(X)+\varepsilon\]</span> Interpretación: un aumento de 1% en <span class="math inline">\(X\)</span>, es asociado a un cambio en <span class="math inline">\(\beta_1/100\)</span> unidades a <span class="math inline">\(Y\)</span>.</p>
+</section>
+<section id="regresión-log-nivel" class="slide level2 text-indigo-pink">
+<h2>Regresión Log-Nivel</h2>
+<p><span class="math display">\[log(Y)=\beta_0+\beta_1X+\varepsilon\]</span> Interpretación: un incremento de una unidad en <span class="math inline">\(X\)</span>, está asociado a un cambio de <span class="math inline">\((\beta_1\times 100)\%\)</span> en <span class="math inline">\(Y\)</span>.</p>
+</section>
+<section id="regresión-log-log" class="slide level2 text-indigo-pink">
+<h2>Regresión Log-Log</h2>
+<p><span class="math display">\[log(Y)=\beta_0+\beta_1log(X)+\varepsilon\]</span> Interpretación: un aumento de 1% en <span class="math inline">\(X\)</span>, está asociado a un cambio de <span class="math inline">\(\beta_1\%\)</span> en <span class="math inline">\(Y\)</span>.</p>
 <div class="footer footer-default">
 
 </div>
