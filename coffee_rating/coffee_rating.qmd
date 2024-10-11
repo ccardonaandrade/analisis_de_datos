@@ -1,0 +1,378 @@
+---
+title: "Coffee Ratings"
+author: "Carlos Cardona"
+format: pdf
+editor: visual
+---
+
+## Preliminares
+
+Los siguientes paquetes los usaré para resolver los ejercicios:
+
+```{r}
+#| echo: true
+#| warning: false
+library(tidyverse)
+library(readxl)
+library(broom)
+library(corrplot)
+```
+
+Adicionalmente voy a usar los siguientes paquetes. El paquete `patchwork` que me permite poner las gráficas, una al lado de la otra. Con el paquete `knitr` se pueden formatear las tablas para que sean más estéticas ( La documentación del paquete `patchwork` está en el siguiente [link](https://patchwork.data-imaginist.com/) y para `knitr` en este [link](https://sachsmc.github.io/knit-git-markr-guide/knitr/knit.html))
+
+```{r}
+#| echo: true
+#| warning: false
+library(patchwork)
+library(knitr)
+```
+
+Con estos paquetes agrego cosas nuevas a los códigos que ustedes ya conocían pero no es necesario que las integren. Simplemente es para que el documento salida se vea mejor. En los preliminares también deberían establecer el directorio de trabajo. En este documento no muestro el código por su longitud. Revisen el archivo `.qmd` para verlo.
+
+```{r}
+#| echo: false
+#| warning: false
+setwd("C:/Users/ccard/OneDrive/Documentos/GitHub/analisis_de_datos/coffee_rating")
+```
+
+
+# Parte Descriptiva
+
+## Punto 1
+
+```{r}
+#| echo: true
+#| warning: false
+coffee_data <- read.csv("coffee_ratings.csv")
+```
+
+## Punto 2
+
+```{r}
+#| echo: true
+#| warning: false
+coffee_data <- coffee_data %>%
+  filter(!total_cup_points==0)
+```
+
+## Punto 3
+
+
+```{r}
+#| echo: false
+#| warning: false
+#| fig-align: center
+p1 <- ggplot(coffee_data, aes(x=total_cup_points))+
+  geom_boxplot()+
+  labs(title = "Boxplot of Total Cup Points",
+       x = "Total Cup Points") + 
+  theme_minimal()
+
+
+p2 <- ggplot(coffee_data, aes(x=total_cup_points))+
+  geom_density()+
+  labs(title = "Density of Total Cup Points",
+       x = "Total Cup Points") + 
+  theme_minimal()
+
+p1+p2
+```
+
+Las estadística descriptivas más desagregadas están a continuación:
+
+```{r}
+#| echo: true
+#| warning: false
+#| fig-align: center
+summary(coffee_data$total_cup_points)
+```
+
+Como se puede observar en el diagrama de caja y la densidad, la distribución de `Total Cup Points` está sesgada hacia la izquierda dada la presencia de varios valores atípicos (outliers). El valor mínimo es 59 y el máximo 90. El valor que divide la distribución en la mitad es 82 puntos. La distribución está concentrada con un rango intercuartílico de aproximadamente 2 (83.67-81.10).
+
+¿Cambiaría la distribución si le aplicamos un logaritmo? Según la gráfica de abajo, no habría necesidad ya que la distribución seguiría siendo similar. Probablemente la presencia de outliers en ambos lados de la distribución impiden que `Total Cup Points` tenga una distribución log-normal. 
+
+```{r}
+#| echo: false
+#| warning: false
+#| fig-align: center
+ggplot(coffee_data, aes(x=log(total_cup_points)))+
+  geom_density()+
+  labs(title = "Density of Total Cup Points (logs)",
+       x = "Total Cup Points") + 
+  theme_minimal()
+```
+
+
+## Punto 4
+
+Con la variable `Aroma` sucede algo similar que en el punto anterior. Aunque el diagrama de caja sugiere la presencia de valores atípicos a ambos lados, la distribución está más sesgada a la izquierda. Nuevamente la distribución está bastante concentrada alrededor de la mediana, con un rango intercuartílico menor a 1 (7.7-7.4).
+
+```{r}
+#| echo: false
+#| warning: false
+#| fig-align: center
+#| fig-pos: H
+p3 <- ggplot(coffee_data, aes(x=aroma))+
+  geom_boxplot()+
+  labs(title = "Boxplot of Aroma",
+       x = "Aroma") + 
+  theme_minimal()
+
+
+p4 <- ggplot(coffee_data, aes(x=aroma))+
+  geom_density()+
+  labs(title = "Density of Aroma",
+       x = "Aroma") + 
+  theme_minimal()
+
+p3+p4
+```
+
+```{r}
+#| echo: true
+#| warning: false
+#| fig-align: center
+summary(coffee_data$aroma)
+```
+
+
+
+## Punto 5
+
+Tanto el diagrama de dispersión, como la correlación nos sugieren que hay una fuerte relación lineal entre ambas variables. Sin embargo, es importante resaltar que existen algunos casos que se alejan de la posible línea de regresión. Probablemente esto se conecte con los valores extremos que vimos para ambas variables en los puntos anteriores. 
+
+```{r}
+#| echo: false
+#| warning: false
+#| fig-align: center
+#| fig-pos: H
+
+ggplot(coffee_data, aes(x=aroma, y=total_cup_points))+
+  geom_point() +
+  labs(title = "Scatterplot",
+       x = "Aroma",
+       y = "Total Cup Points") + 
+  theme_minimal()
+
+```
+
+```{r}
+#| echo: true
+#| warning: false
+#| fig-align: center
+cor(coffee_data$total_cup_points, coffee_data$aroma)
+```
+
+## Punto 6
+
+La primera conclusión "global" de la matriz de correlación es que todas tienden hacia el color azul oscuro. En efecto, al evaluar los valores numéricos podríamos concluir que todas las variables están fuertemente correlacionadas la una con la otra ya que todos los coeficientes de correlación son mayores a 0,5.
+
+```{r}
+#| echo: true
+#| warning: false
+#| fig-align: center
+#| fig-pos: H
+subset_coffee <- coffee_data %>%
+  select(aroma, flavor, aftertaste, acidity, body)
+```
+
+
+```{r}
+#| echo: false
+#| warning: false
+#| fig-align: center
+
+corrplot(cor(subset_coffee ),
+         method = "number",
+         type = "upper")
+
+```
+
+
+# Parte Inferencial
+
+## Puntos 7 y 8
+
+```{r}
+#| echo: true
+#| warning: false
+#| fig-align: center
+
+coffee_model <- lm(total_cup_points ~ aroma, coffee_data)
+tidy(coffee_model,conf.int = TRUE ) %>%
+  knitr::kable(format = "latex", digits= 3)
+```
+
+En este caso tenemos un modelo de regresión simple donde ambas variables están en niveles. La interpretación del $\hat{\beta_1}$ en este caso sería que un aumento de 1 punto en la variable `Aroma` está asociado con un aumento de 5.83 puntos en `Total Cup Points`. 
+
+No tiene sentido interpretar el intercepto ya que, como vimos en el punto 4, no hay ningún café para el cual `Aroma` sea cero.
+
+## Punto 9
+
+Al graficar la variable `Total Cup Points` junto con una línea vertical en x=38 (el intercepto de la regresión en el punto 8), podemos ver que un café en esa parte de la distribución no sería la mejor elección.
+
+```{r}
+#| echo: false
+#| warning: false
+#| fig-align: center
+
+ggplot(coffee_data, aes(x=total_cup_points))+
+  geom_density()+ geom_vline(xintercept=38,
+                             linetype = "dashed",
+                             color="darkred")+
+  labs(title = "Density of Total Cup Points",
+       x = "Total Cup Points") + 
+  theme_minimal()
+```
+
+## Punto 10
+
+Con el gráfico a la izquierda podemos corroborar que no hay un patrón claro en los residuos y que la varianza es (parcialmente) constante. Todo esto es cierto si ignoramos la presencia algunos outliers, lo cual confirma que lo que analizamos en puntos anteriores sobre las distribuciones de `Total Cup Points` y `Aroma`. Todo esto sugeriría que para mejorar nuestro modelo, deberíamos eliminar esos valores atípicos de la estimación.
+
+
+```{r}
+#| echo: false
+#| warning: false
+#| fig-align: center
+#| fig-pos: H
+
+p5 <- augment(coffee_model) %>%
+  ggplot(aes(x = .fitted, y = .resid)) +
+  geom_point() +
+  geom_smooth(se = FALSE) +
+  labs(title = "Residuos vs Predichos",
+       x = "Valores predichos", y = "Residuos")+
+  theme_minimal()
+
+p6 <- augment(coffee_model) %>%
+  ggplot(aes(x = .resid)) +
+  geom_histogram() +
+  labs(title = "Distribución de los residuos",
+       x = "Residuos") +
+  theme_minimal()
+
+p5 + p6
+```
+
+
+## Punto 11
+
+```{r}
+#| echo: true
+#| warning: false
+#| fig-align: center
+tidy(coffee_model,conf.int = TRUE ) %>%
+  knitr::kable(format = "latex", digits= 3)
+
+```
+
+La prueba de hipótesis sería:
+
+$$H_0:\hat{\beta_1}=0$$
+$$H_1:\hat{\beta_1}\neq0$$
+La hipótesis nula es que la pendiente de la línea de regresión es 0. La hipótesis alternativa es que la pendiente es diferente de 0. El estadístico de la prueba es 34 que es mayor al valor crítico 1.96 para un nivel de significancia del 5% y El p-value es 0 incluyendo 3 dígitos. Como conclusión se rechaza la hipótesis nula, $\hat{\beta_1}$ es estadísticamente significativo (diferente de cero). 
+
+## Punto 12
+
+El 47% de la varianza de `Total Cup Points` es explicado por la variación de `Aroma`.
+
+```{r}
+#| echo: true
+#| warning: false
+#| fig-pos: H
+glance(coffee_model) %>%
+  knitr::kable(format = "latex", digits = 3) %>%
+  kableExtra::kable_styling(latex_options = c("scale_down", "hold_position"))
+```
+
+
+## Punto 13
+
+13% de los cafés en nuestra muestra provienen de Colombia.
+
+```{r}
+#| echo: true
+#| warning: false
+#| fig-align: center
+coffee_data <- coffee_data %>%
+  mutate(colombia = ifelse(country_of_origin == "Colombia", 1, 0))
+mean(coffee_data$colombia, na.rm = TRUE)
+```
+
+
+
+## Punto 14
+
+Manteniendo todo constante, los cafes colombianos tienen en promedio 0.5 puntos más que los cafés que vienen de otros lugares.
+
+```{r}
+#| echo: true
+#| warning: false
+#| fig-align: center
+coffee_model_colombia <- lm(total_cup_points ~ aroma + colombia, coffee_data)
+tidy(coffee_model_colombia,conf.int = TRUE ) %>%
+  knitr::kable(format = "latex", digits= 3)
+```
+
+## Punto 15
+
+El $R^2$ aumento en 0.5%. La variable `colombia` no añade mucho poder explicativo al modelo. 
+
+```{r}
+#| echo: true
+#| warning: false
+#| fig-align: center
+glance(coffee_model_colombia) %>%
+  knitr::kable(format = "latex", digits = 3) %>%
+  kableExtra::kable_styling(latex_options = c("scale_down", "hold_position"))
+```
+
+
+## Punto 16
+
+En este caso, `flavour` es un mejor predictor ya que su  varianza explica el 68% de la varianza de `Total Cup Points` en comparación con el 47% del punto 12.
+
+```{r}
+#| echo: true
+#| warning: false
+#| fig-align: center
+model_flavor <- lm(total_cup_points ~ flavor, coffee_data)
+glance(model_flavor) %>%
+  knitr::kable(format = "latex", digits = 3) %>%
+  kableExtra::kable_styling(latex_options = c("scale_down", "hold_position"))
+```
+
+
+## Punto 17
+
+La recomendación sería que invirtiera más en `flavour` ya que el retorno en la puntuación de la calidad es mayor por cada unidad más en el sabor del café.
+
+```{r}
+#| echo: true
+#| warning: false
+#| fig-align: center
+model_aroma_flavor <- lm(total_cup_points ~ aroma + flavor, coffee_data)
+tidy(model_aroma_flavor,conf.int = TRUE ) %>%
+  knitr::kable(format = "latex", digits= 3)
+```
+
+
+
+## Punto 18
+
+En este caso elegí la variable `body`.
+
+```{r}
+#| echo: true
+#| warning: false
+#| fig-align: center
+coffee_data <- coffee_data %>% 
+  mutate(log_cup_points=log(total_cup_points),
+         log_body=log(body))
+model_body <- lm(log_cup_points ~ log_body, coffee_data)
+tidy(model_body,conf.int = TRUE ) %>%
+  knitr::kable(format = "latex", digits= 3)
+```
+
+Un aumento de 1% en el cuerpo del café está asociado a un aumento de 0.48% en `Total Cup Points`.
+
