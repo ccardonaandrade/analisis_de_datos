@@ -1,0 +1,653 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.3.290">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="dcterms.date" content="2024-10-23">
+
+<title>Analítica de Datos</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="credit_exercise_files/libs/clipboard/clipboard.min.js"></script>
+<script src="credit_exercise_files/libs/quarto-html/quarto.js"></script>
+<script src="credit_exercise_files/libs/quarto-html/popper.min.js"></script>
+<script src="credit_exercise_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="credit_exercise_files/libs/quarto-html/anchor.min.js"></script>
+<link href="credit_exercise_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="credit_exercise_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="credit_exercise_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="credit_exercise_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="credit_exercise_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<style>html{ scroll-behavior: smooth; }</style>
+
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+</head>
+
+<body>
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article toc-left">
+<div id="quarto-sidebar-toc-left" class="sidebar toc-left">
+  <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#preliminares" id="toc-preliminares" class="nav-link active" data-scroll-target="#preliminares"><svg aria-label="Gear" role="img" viewbox="0 0 512 512" style="height:1em;width:1em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:#2e3175;overflow:visible;position:relative;"><title>Gear</title><path d="M495.9 166.6c3.2 8.7 .5 18.4-6.4 24.6l-43.3 39.4c1.1 8.3 1.7 16.8 1.7 25.4s-.6 17.1-1.7 25.4l43.3 39.4c6.9 6.2 9.6 15.9 6.4 24.6c-4.4 11.9-9.7 23.3-15.8 34.3l-4.7 8.1c-6.6 11-14 21.4-22.1 31.2c-5.9 7.2-15.7 9.6-24.5 6.8l-55.7-17.7c-13.4 10.3-28.2 18.9-44 25.4l-12.5 57.1c-2 9.1-9 16.3-18.2 17.8c-13.8 2.3-28 3.5-42.5 3.5s-28.7-1.2-42.5-3.5c-9.2-1.5-16.2-8.7-18.2-17.8l-12.5-57.1c-15.8-6.5-30.6-15.1-44-25.4L83.1 425.9c-8.8 2.8-18.6 .3-24.5-6.8c-8.1-9.8-15.5-20.2-22.1-31.2l-4.7-8.1c-6.1-11-11.4-22.4-15.8-34.3c-3.2-8.7-.5-18.4 6.4-24.6l43.3-39.4C64.6 273.1 64 264.6 64 256s.6-17.1 1.7-25.4L22.4 191.2c-6.9-6.2-9.6-15.9-6.4-24.6c4.4-11.9 9.7-23.3 15.8-34.3l4.7-8.1c6.6-11 14-21.4 22.1-31.2c5.9-7.2 15.7-9.6 24.5-6.8l55.7 17.7c13.4-10.3 28.2-18.9 44-25.4l12.5-57.1c2-9.1 9-16.3 18.2-17.8C227.3 1.2 241.5 0 256 0s28.7 1.2 42.5 3.5c9.2 1.5 16.2 8.7 18.2 17.8l12.5 57.1c15.8 6.5 30.6 15.1 44 25.4l55.7-17.7c8.8-2.8 18.6-.3 24.5 6.8c8.1 9.8 15.5 20.2 22.1 31.2l4.7 8.1c6.1 11 11.4 22.4 15.8 34.3zM256 336a80 80 0 1 0 0-160 80 80 0 1 0 0 160z"></path></svg> Preliminares</a></li>
+  <li><a href="#context" id="toc-context" class="nav-link" data-scroll-target="#context">Context</a></li>
+  <li><a href="#instructions" id="toc-instructions" class="nav-link" data-scroll-target="#instructions">Instructions</a></li>
+  <li><a href="#exercise-1" id="toc-exercise-1" class="nav-link" data-scroll-target="#exercise-1">Exercise 1</a></li>
+  <li><a href="#exercise-2" id="toc-exercise-2" class="nav-link" data-scroll-target="#exercise-2">Exercise 2</a></li>
+  <li><a href="#exercise-3" id="toc-exercise-3" class="nav-link" data-scroll-target="#exercise-3">Exercise 3</a></li>
+  <li><a href="#exercise-4" id="toc-exercise-4" class="nav-link" data-scroll-target="#exercise-4">Exercise 4</a></li>
+  <li><a href="#exercise-5" id="toc-exercise-5" class="nav-link" data-scroll-target="#exercise-5">Exercise 5</a></li>
+  <li><a href="#exercise-6" id="toc-exercise-6" class="nav-link" data-scroll-target="#exercise-6">Exercise 6</a></li>
+  <li><a href="#exercise-7" id="toc-exercise-7" class="nav-link" data-scroll-target="#exercise-7">Exercise 7</a></li>
+  <li><a href="#exercise-8" id="toc-exercise-8" class="nav-link" data-scroll-target="#exercise-8">Exercise 8</a></li>
+  <li><a href="#exercise-9" id="toc-exercise-9" class="nav-link" data-scroll-target="#exercise-9">Exercise 9</a></li>
+  <li><a href="#exercise-10" id="toc-exercise-10" class="nav-link" data-scroll-target="#exercise-10">Exercise 10</a></li>
+  <li><a href="#exercise-11" id="toc-exercise-11" class="nav-link" data-scroll-target="#exercise-11">Exercise 11</a></li>
+  <li><a href="#exercise-12" id="toc-exercise-12" class="nav-link" data-scroll-target="#exercise-12">Exercise 12</a></li>
+  <li><a href="#exercise-13" id="toc-exercise-13" class="nav-link" data-scroll-target="#exercise-13">Exercise 13</a></li>
+  <li><a href="#exercise-14" id="toc-exercise-14" class="nav-link" data-scroll-target="#exercise-14">Exercise 14</a></li>
+  <li><a href="#exercise-15" id="toc-exercise-15" class="nav-link" data-scroll-target="#exercise-15">Exercise 15</a></li>
+  <li><a href="#exercise-16" id="toc-exercise-16" class="nav-link" data-scroll-target="#exercise-16">Exercise 16</a></li>
+  <li><a href="#exercise-17" id="toc-exercise-17" class="nav-link" data-scroll-target="#exercise-17">Exercise 17</a></li>
+  <li><a href="#exercise-18" id="toc-exercise-18" class="nav-link" data-scroll-target="#exercise-18">Exercise 18</a></li>
+  <li><a href="#exercise-19" id="toc-exercise-19" class="nav-link" data-scroll-target="#exercise-19">Exercise 19</a></li>
+  </ul>
+</nav>
+</div>
+<div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+</div>
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Analítica de Datos</h1>
+<p class="subtitle lead">Predicting Bank Loan Default</p>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">October 23, 2024</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+</header>
+
+<section id="preliminares" class="level2">
+<h2 class="anchored" data-anchor-id="preliminares"><svg aria-label="Gear" role="img" viewbox="0 0 512 512" style="height:1em;width:1em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:#2e3175;overflow:visible;position:relative;"><title>Gear</title><path d="M495.9 166.6c3.2 8.7 .5 18.4-6.4 24.6l-43.3 39.4c1.1 8.3 1.7 16.8 1.7 25.4s-.6 17.1-1.7 25.4l43.3 39.4c6.9 6.2 9.6 15.9 6.4 24.6c-4.4 11.9-9.7 23.3-15.8 34.3l-4.7 8.1c-6.6 11-14 21.4-22.1 31.2c-5.9 7.2-15.7 9.6-24.5 6.8l-55.7-17.7c-13.4 10.3-28.2 18.9-44 25.4l-12.5 57.1c-2 9.1-9 16.3-18.2 17.8c-13.8 2.3-28 3.5-42.5 3.5s-28.7-1.2-42.5-3.5c-9.2-1.5-16.2-8.7-18.2-17.8l-12.5-57.1c-15.8-6.5-30.6-15.1-44-25.4L83.1 425.9c-8.8 2.8-18.6 .3-24.5-6.8c-8.1-9.8-15.5-20.2-22.1-31.2l-4.7-8.1c-6.1-11-11.4-22.4-15.8-34.3c-3.2-8.7-.5-18.4 6.4-24.6l43.3-39.4C64.6 273.1 64 264.6 64 256s.6-17.1 1.7-25.4L22.4 191.2c-6.9-6.2-9.6-15.9-6.4-24.6c4.4-11.9 9.7-23.3 15.8-34.3l4.7-8.1c6.6-11 14-21.4 22.1-31.2c5.9-7.2 15.7-9.6 24.5-6.8l55.7 17.7c13.4-10.3 28.2-18.9 44-25.4l12.5-57.1c2-9.1 9-16.3 18.2-17.8C227.3 1.2 241.5 0 256 0s28.7 1.2 42.5 3.5c9.2 1.5 16.2 8.7 18.2 17.8l12.5 57.1c15.8 6.5 30.6 15.1 44 25.4l55.7-17.7c8.8-2.8 18.6-.3 24.5 6.8c8.1 9.8 15.5 20.2 22.1 31.2l4.7 8.1c6.1 11 11.4 22.4 15.8 34.3zM256 336a80 80 0 1 0 0-160 80 80 0 1 0 0 160z"></path></svg> Preliminares</h2>
+</section>
+<section id="context" class="level2">
+<h2 class="anchored" data-anchor-id="context">Context</h2>
+<p>A bank has hired us to predict the probability that a client will default on their payment.</p>
+<p>We have two datasets:</p>
+<ol type="1">
+<li>Demographic information - September (<code>credit_demographics.csv</code>)</li>
+</ol>
+<ul>
+<li><p><code>ID</code>: ID of each client</p></li>
+<li><p><code>LIMIT_BAL</code>: Amount of given credit in dollars (includes individual and family/supplementary credit.</p></li>
+<li><p><code>SEX</code>: Gender (1=male, 2=female).</p></li>
+<li><p><code>EDUCATION</code>: Education level (1=graduate school, 2=university, 3=high school, 4=others, 5=unknown, 6=unknown).</p></li>
+<li><p><code>MARRIAGE</code>: Marital status (1=married, 2=single, 3=others)</p></li>
+<li><p><code>AGE</code>: Age in years.</p></li>
+<li><p><code>DEFAULT</code>: Default payment status (1=yes, 0=no).</p></li>
+</ul>
+<ol start="2" type="1">
+<li>Repayment information - April to September (<code>credit_payments.csv</code>)</li>
+</ol>
+<ul>
+<li><p><code>id</code>: ID of each client.</p></li>
+<li><p><code>month</code>: month of the information.</p></li>
+<li><p>`repayment_status``: Repayment status for that month (-1=pay duly, 1=payment delay for one month, 2=payment delay for two months, … 8=payment delay for eight months, 9=payment delay for nine months and above).</p></li>
+<li><p><code>payment_amount</code>: Amount of payment in that month.</p></li>
+</ul>
+<p>The objective of the task is to answer the following questions:</p>
+<ol type="1">
+<li><p>How does the probability of default payment vary by categories of different demographic variables?</p></li>
+<li><p>Which variables are the strongest predictors of default payment?</p></li>
+</ol>
+<p>We will address these questions step by step using graphs, descriptive statistics, confidence intervals, and regression analysis. For your final assignment, you are expected to follow a similar approach.</p>
+</section>
+<section id="instructions" class="level2">
+<h2 class="anchored" data-anchor-id="instructions">Instructions</h2>
+<p>Many of you have been running the code directly within the Quarto document. For this assignment, I will ask you to proceed as follows:</p>
+<ol type="1">
+<li>Write all the code required to solve the exercises in a separate <code>R script</code>. <strong>Do not</strong> include any answers in this file, but make sure to add comments indicating the exercise number, like this:</li>
+</ol>
+<pre><code># Exercise 1
+
+Whatever code you use for solving Exercise 1
+
+# Exercise 2
+
+Whatever code you use for solving Exercise 2
+</code></pre>
+<p>Start with this step, as it will make it easier to copy the code into the Quarto document later.</p>
+<ol start="2" type="1">
+<li><p>In a separate <code>PDF</code> created with Quarto, provide your answers and visualizations (e.g., plots). <strong>Do not</strong> include any of their codes in this document. However, regression outputs and other results should be included in the <code>PDF</code>, along with their respective code.</p></li>
+<li><p>Please submit both the <code>R script</code> and the <code>PDF</code> file when you are done. The file names should follow the usual format: <code>name_lastname</code>.</p></li>
+</ol>
+<p>As always, feel free to ask me any questions that may arise during the class.</p>
+</section>
+<section id="exercise-1" class="level2">
+<h2 class="anchored" data-anchor-id="exercise-1">Exercise 1</h2>
+<p>Let’s load our usual packages first:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(janitor)</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(broom)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Import both datasets into R. Name the dataset containing the demographic information <code>credit_demo</code> and the dataset with the payment and debt status <code>credit_pay</code> (both datasets are in <code>.csv</code> format not in Excel).</p>
+<p>Use the <code>glimpse()</code> function to inspect the variables and their data types for both datasets. How many clients do we have in the <code>credit_demo</code> dataset?</p>
+</section>
+<section id="exercise-2" class="level2">
+<h2 class="anchored" data-anchor-id="exercise-2">Exercise 2</h2>
+<p>So far, we have worked with datasets where each row represents a single observation. However, if you use the <code>View()</code> function with the <code>credit_pay</code> dataset, you will notice that there are multiple rows per observation. Each row corresponds to a client’s payment status or amount for a specific month.</p>
+<p>In contrast, the <code>credit_demo</code> dataset contains one row per client (confirm this with <code>View()</code> as well). To merge both datasets, we need to restructure <code>credit_pay</code> so that each client has only one row, similar to <code>credit_demo</code>.</p>
+<p>To achieve this, we need to rearrange the data using a process called <a href="https://tidyr.tidyverse.org/articles/pivot.html" target="_blank">pivoting</a>. Please review this resource, as pivoting is a crucial part of data cleaning and preparation.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>credit_pay <span class="ot">&lt;-</span> credit_pay <span class="sc">%&gt;%</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_wider</span>(</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">names_from =</span> month, <span class="co"># Use month as the new column names</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">values_from =</span> <span class="fu">c</span>(repayment_status, payment_amount),  <span class="co"># Specify which columns to widen</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">names_sep =</span> <span class="st">"_"</span> <span class="co"># Separator for new column names</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Check the new structure of the dataset using the <code>View()</code> function. Now, each row represents a single observation as intended.</p>
+</section>
+<section id="exercise-3" class="level2">
+<h2 class="anchored" data-anchor-id="exercise-3">Exercise 3</h2>
+<p>We need to merge the information from the <code>credit_pay</code> dataset with <code>credit_demo</code>. You could also do it the other way around since both datasets have the same number of observations.</p>
+<p>Check <a href="https://dplyr.tidyverse.org/reference/mutate-joins.html" target="_blank">this website</a> to learn about joining multiple datasets, as it will be useful for future tasks.</p>
+<p>The following code chunk demonstrates how to use the <code>left_join()</code> function to combine the datasets:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>final_data <span class="ot">&lt;-</span> <span class="fu">left_join</span>(credit_demo, credit_pay)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Oops! There’s a problem with the code above, and it’s a common one. The key variable used to merge the datasets does not have the same name in both datasets. In <code>credit_pay</code>, the variable is named <code>id</code>, while in <code>credit_demo</code>, it is named <code>ID</code>.</p>
+<p>The following code fixes this issue by renaming the key variable:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>credit_pay <span class="ot">&lt;-</span> credit_pay <span class="sc">%&gt;%</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">ID =</span> id)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Now, we can merge both datasets:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>final_data <span class="ot">&lt;-</span> <span class="fu">left_join</span>(credit_demo, credit_pay)</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="co"># We can remove the original datasets for now with the rm() function</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="fu">rm</span>(credit_demo, credit_pay)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>In this case, removing the initial datasets is harmless, but in certain situations, you might want to keep them for future analysis.</p>
+<p>At this point, you should have the following output:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(final_data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Rows: 30,000
+Columns: 19
+$ ID                         &lt;dbl&gt; 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, ~
+$ LIMIT_BAL                  &lt;dbl&gt; 20000, 120000, 90000, 50000, 50000, 50000, ~
+$ SEX                        &lt;dbl&gt; 2, 2, 2, 2, 1, 1, 1, 2, 2, 1, 2, 2, 2, 1, 1~
+$ EDUCATION                  &lt;dbl&gt; 2, 2, 2, 2, 2, 1, 1, 2, 3, 3, 3, 1, 2, 2, 1~
+$ MARRIAGE                   &lt;dbl&gt; 1, 2, 2, 1, 1, 2, 2, 2, 1, 2, 2, 2, 2, 2, 2~
+$ AGE                        &lt;dbl&gt; 24, 26, 34, 37, 57, 37, 29, 23, 28, 35, 34,~
+$ DEFAULT                    &lt;dbl&gt; 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0~
+$ repayment_status_september &lt;dbl&gt; 2, -1, 0, 0, -1, 0, 0, 0, 0, -2, 0, -1, -1,~
+$ repayment_status_august    &lt;dbl&gt; 2, 2, 0, 0, 0, 0, 0, -1, 0, -2, 0, -1, 0, 2~
+$ repayment_status_july      &lt;dbl&gt; -1, 0, 0, 0, -1, 0, 0, -1, 2, -2, 2, -1, -1~
+$ repayment_status_june      &lt;dbl&gt; -1, 0, 0, 0, 0, 0, 0, 0, 0, -2, 0, -1, -1, ~
+$ repayment_status_may       &lt;dbl&gt; -2, 0, 0, 0, 0, 0, 0, 0, 0, -1, 0, -1, -1, ~
+$ repayment_status_april     &lt;dbl&gt; -2, 2, 0, 0, 0, 0, 0, -1, 0, -1, -1, 2, -1,~
+$ payment_amount_september   &lt;dbl&gt; 0, 0, 1518, 2000, 2000, 2500, 55000, 380, 3~
+$ payment_amount_august      &lt;dbl&gt; 689, 1000, 1500, 2019, 36681, 1815, 40000, ~
+$ payment_amount_july        &lt;dbl&gt; 0, 1000, 1000, 1200, 10000, 657, 38000, 0, ~
+$ payment_amount_june        &lt;dbl&gt; 0, 1000, 1000, 1100, 9000, 1000, 20239, 581~
+$ payment_amount_may         &lt;dbl&gt; 0, 0, 1000, 1069, 689, 1000, 13750, 1687, 1~
+$ payment_amount_april       &lt;dbl&gt; 0, 2000, 5000, 1000, 679, 800, 13770, 1542,~</code></pre>
+</div>
+</div>
+</section>
+<section id="exercise-4" class="level2">
+<h2 class="anchored" data-anchor-id="exercise-4">Exercise 4</h2>
+<p>Clean the names of the variables with the <code>janitor</code> package as follows:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>final_data <span class="ot">&lt;-</span> final_data <span class="sc">%&gt;%</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">clean_names</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="exercise-5" class="level2">
+<h2 class="anchored" data-anchor-id="exercise-5">Exercise 5</h2>
+<p>It is generally preferable to have categorical variables as string characters rather than numeric values. The following code creates string variables that correspond to the names of the categories:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>final_data <span class="ot">&lt;-</span> final_data <span class="sc">%&gt;%</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">default_string =</span> <span class="fu">case_when</span>(</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>      default <span class="sc">==</span> <span class="dv">1</span> <span class="sc">~</span> <span class="st">"Default"</span>,</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>      default <span class="sc">==</span> <span class="dv">0</span> <span class="sc">~</span> <span class="st">"No Default"</span>,</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>      <span class="cn">TRUE</span> <span class="sc">~</span> <span class="cn">NA_character_</span>  <span class="co"># Assign NA for any unmatched values</span></span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>    ),</span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">sex_string =</span> <span class="fu">case_when</span>(</span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>      sex <span class="sc">==</span> <span class="dv">1</span> <span class="sc">~</span> <span class="st">"Male"</span>,</span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>      sex <span class="sc">==</span> <span class="dv">2</span> <span class="sc">~</span> <span class="st">"Female"</span>,</span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>      <span class="cn">TRUE</span> <span class="sc">~</span> <span class="cn">NA_character_</span>  <span class="co"># Assign NA for any unmatched values</span></span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>    ),</span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">education_string =</span> <span class="fu">case_when</span>(</span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a>      education <span class="sc">==</span> <span class="dv">1</span> <span class="sc">~</span> <span class="st">"Graduate School"</span>,</span>
+<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a>      education <span class="sc">==</span> <span class="dv">2</span> <span class="sc">~</span> <span class="st">"University"</span>,</span>
+<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a>      education <span class="sc">==</span> <span class="dv">3</span> <span class="sc">~</span> <span class="st">"High School"</span>,</span>
+<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a>      education <span class="sc">==</span> <span class="dv">4</span> <span class="sc">~</span> <span class="st">"Others"</span>,</span>
+<span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a>      education <span class="sc">==</span> <span class="dv">5</span> <span class="sc">~</span> <span class="st">"Unknown"</span>,</span>
+<span id="cb10-19"><a href="#cb10-19" aria-hidden="true" tabindex="-1"></a>      education <span class="sc">==</span> <span class="dv">6</span> <span class="sc">~</span> <span class="st">"Unknown"</span>,</span>
+<span id="cb10-20"><a href="#cb10-20" aria-hidden="true" tabindex="-1"></a>      <span class="cn">TRUE</span> <span class="sc">~</span> <span class="cn">NA_character_</span>  <span class="co"># Assign NA for any unmatched values</span></span>
+<span id="cb10-21"><a href="#cb10-21" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb10-22"><a href="#cb10-22" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Create a variable called <code>marriage_string</code> based on the <code>marriage</code> variable using a similar approach as shown above.</p>
+</section>
+<section id="exercise-6" class="level2">
+<h2 class="anchored" data-anchor-id="exercise-6">Exercise 6</h2>
+<p>Since we are tasked with predicting the probability of default payment, it is important to visualize the proportion of clients who default. The following code accomplishes this:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(final_data, <span class="fu">aes</span>(<span class="at">x =</span> default_string)) <span class="sc">+</span> </span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>() <span class="sc">+</span> </span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Number of Clients by Default Payment"</span>,</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">""</span>,</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"Frequency"</span>) <span class="sc">+</span></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">limits =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">30000</span>)) <span class="sc">+</span> </span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="credit_exercise_files/figure-html/unnamed-chunk-10-1.png" class="quarto-discovered-preview-image img-fluid" width="672"></p>
+</div>
+</div>
+<p>Combine the function <code>summarise()</code> and the function <code>n()</code> to compute the exact figures like this:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>final_data <span class="sc">%&gt;%</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(default_string) <span class="sc">%&gt;%</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">total_clients =</span> <span class="fu">n</span>())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>How many clients in our dataset are in default, and how many are not?</p>
+</section>
+<section id="exercise-7" class="level2">
+<h2 class="anchored" data-anchor-id="exercise-7">Exercise 7</h2>
+<p>To create a demographic profile of clients who are in default, plot the proportion of clients by sex within each default category:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(final_data, <span class="fu">aes</span>(<span class="at">fill=</span>sex_string, <span class="at">x=</span>default_string)) <span class="sc">+</span> </span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>() <span class="sc">+</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Number of Clients by Sex and Default Payment"</span>,</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>       <span class="at">fill=</span><span class="st">'Sex'</span>,</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">""</span>,</span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"Frecuency"</span>) <span class="sc">+</span></span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="credit_exercise_files/figure-html/unnamed-chunk-12-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>We have seen this type of graph before, but it does not provide a clear picture of the proportions across default status. Instead, use the <code>fill</code> option within the <code>geom_bar</code> to create a more informative version of the plot:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(final_data, <span class="fu">aes</span>(<span class="at">fill=</span>sex_string, <span class="at">x=</span>default_string)) <span class="sc">+</span> </span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">position=</span><span class="st">"fill"</span>) <span class="sc">+</span></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Number of Clients by Sex and Default Payment"</span>,</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>       <span class="at">fill=</span><span class="st">'Sex'</span>,</span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">""</span>,</span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"Proportion"</span>) <span class="sc">+</span></span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="credit_exercise_files/figure-html/unnamed-chunk-13-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>This plot indicates that the composition within each default status may not differ significantly. However, we should confirm this, as sex could be an important predictor of whether a client defaults.</p>
+</section>
+<section id="exercise-8" class="level2">
+<h2 class="anchored" data-anchor-id="exercise-8">Exercise 8</h2>
+<p>Estimate the following regression equation and call it <code>model_1</code>:</p>
+<p><span class="math display">\[\widehat{\text{Default}}=\hat{\beta_0}+\hat{\beta_1}\times \text{Female}\]</span></p>
+<p>Use the <code>tidy</code> function to display the results and analyze them. Are these results consistent with the graph from Exercise 7?</p>
+</section>
+<section id="exercise-9" class="level2">
+<h2 class="anchored" data-anchor-id="exercise-9">Exercise 9</h2>
+<p>Repeat Exercise 7 for the variable <code>marriage</code>. Provide a brief summary of the plot.</p>
+</section>
+<section id="exercise-10" class="level2">
+<h2 class="anchored" data-anchor-id="exercise-10">Exercise 10</h2>
+<p>Estimate the following regression:</p>
+<p><span class="math display">\[\widehat{\text{Default}}=\hat{\beta_0}+\hat{\beta_1}\times \text{Single}+\hat{\beta_2}\times \text{Others}\]</span></p>
+<p>Are the coefficients alligned with the plot in Exercise 9?</p>
+</section>
+<section id="exercise-11" class="level2">
+<h2 class="anchored" data-anchor-id="exercise-11">Exercise 11</h2>
+<p>Analyze the variable of given credit (<code>limit_bal</code>). Plot its density and provide summary statistics to aid in your analysis.</p>
+</section>
+<section id="exercise-12" class="level2">
+<h2 class="anchored" data-anchor-id="exercise-12">Exercise 12</h2>
+<p>We are analyzing a sample of clients. What is the range within which the true average credit amount is likely to fall? Use the <code>t.test()</code> function to compute a 95% confidence interval.</p>
+</section>
+<section id="exercise-13" class="level2">
+<h2 class="anchored" data-anchor-id="exercise-13">Exercise 13</h2>
+<p>Perform the same analysis for the average fraction of female clients. What are the lower and upper bounds of the confidence interval?</p>
+</section>
+<section id="exercise-14" class="level2">
+<h2 class="anchored" data-anchor-id="exercise-14">Exercise 14</h2>
+<p>Plot the relationship between the given credit and age. Do you observe any clear pattern or trend?</p>
+</section>
+<section id="exercise-15" class="level2">
+<h2 class="anchored" data-anchor-id="exercise-15">Exercise 15</h2>
+<p>Estimate a linear regression to predict the probability of being in default using all demographic variables. Are all predictors significant at the 5% level?</p>
+</section>
+<section id="exercise-16" class="level2">
+<h2 class="anchored" data-anchor-id="exercise-16">Exercise 16</h2>
+<p>Interpret the significant coefficients from the regression model in Exercise 15. You may choose to analyze them one by one for clarity or provide a general description of which groups appear to be good predictors of the probability of being in default.</p>
+</section>
+<section id="exercise-17" class="level2">
+<h2 class="anchored" data-anchor-id="exercise-17">Exercise 17</h2>
+<p>Delete all variables related to <code>payment_amount</code> and <code>repayment_status</code> except for those corresponding to September.</p>
+</section>
+<section id="exercise-18" class="level2">
+<h2 class="anchored" data-anchor-id="exercise-18">Exercise 18</h2>
+<p>Plot the relationship between given credit (<code>limit_bal</code>) and payment amount in September. Do you observe any clear pattern or trend? Additionally, analyze the relationship between the logs of both variables.</p>
+</section>
+<section id="exercise-19" class="level2">
+<h2 class="anchored" data-anchor-id="exercise-19">Exercise 19</h2>
+<p>What is the elasticity of the payment in September based on the total amount of credit (<code>limit_bal</code>)? To find this, estimate a log-log regression model.</p>
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+<script src="credit_exercise_files/libs/quarto-html/zenscroll-min.js"></script>
+</body></html>

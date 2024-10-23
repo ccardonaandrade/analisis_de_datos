@@ -1,0 +1,410 @@
+incr_porcentual,tipo_contrato,salario_anual,rating_performance
+1,Contrato Fijo,25000,Bueno
+1,Contrato Fijo,25000,Normal
+1,Contrato Fijo,25000,Bueno
+1,Contrato por Hora,33987.2,Normal
+NA,Contrato por Hora,34798.4,Bueno
+NA,Contrato por Hora,35360,NA
+NA,Contrato por Hora,37440,NA
+0,Contrato por Hora,37814.4,NA
+4,Contrato por Hora,41100.8,Excelente
+1.2,Contrato por Hora,42328,NA
+5,Contrato por Hora,42390.4,NA
+1.2,Contrato por Hora,42515.2,Bueno
+2.5,Contrato por Hora,42702.4,Excelente
+NA,Contrato por Hora,44990.4,NA
+NA,Contrato por Hora,45510.4,Normal
+0,Contrato por Hora,45510.4,Normal
+1.5,Contrato por Hora,46321.6,Normal
+3,Contrato por Hora,47840,Bueno
+1.3,Contrato por Hora,48609.6,Normal
+1.3,Contrato por Hora,48609.6,NA
+3,Contrato por Hora,49441.6,NA
+3,Contrato por Hora,49920,Normal
+2.7,Contrato por Hora,50252.8,Normal
+1.2,Contrato por Hora,50564.8,Normal
+1,Contrato por Hora,50876.8,Bueno
+1.2,Contrato por Hora,50939.2,Normal
+1.2,Contrato por Hora,50939.2,Normal
+1.2,Contrato por Hora,50939.2,Normal
+1.2,Contrato por Hora,50939.2,Normal
+NA,Contrato por Hora,51001.6,NA
+1.3,Contrato por Hora,51875.2,Normal
+1.2,Contrato por Hora,52624,Normal
+NA,Contrato por Hora,52998.4,NA
+12,Contrato por Hora,53768,Excelente
+1,Contrato por Hora,54246.4,NA
+1,Contrato por Hora,54537.6,NA
+2.5,Contrato por Hora,55120,NA
+10,Contrato Fijo,25000,Normal
+2.5,Contrato por Hora,55432,Bueno
+10,Contrato por Hora,55473.6,Excelente
+0,Contrato por Hora,56160,NA
+0,Contrato por Hora,56160,NA
+2,Contrato por Hora,57740.8,Normal
+3,Contrato por Hora,58988.8,Normal
+1.5,Contrato por Hora,60736,Normal
+2.5,Contrato por Hora,61505.6,Normal
+0,Contrato por Hora,62400,NA
+12,Contrato por Hora,68640,NA
+1.3,Contrato por Hora,70616,NA
+0,Contrato por Hora,75441.6,NA
+4,Contrato por Hora,75712,Bueno
+3.5,Contrato por Hora,79102.4,Normal
+1,Contrato por Hora,83200,NA
+0,Contrato por Hora,83200,NA
+1,Contrato por Hora,85280,NA
+2.5,Contrato por Hora,87131.2,Normal
+NA,Contrato por Hora,90480,NA
+1.2,Contrato por Hora,91457.6,Normal
+0,Contrato por Hora,95680,NA
+0,Contrato por Hora,95680,NA
+2,Contrato por Hora,97094.4,NA
+0,Contrato por Hora,104000,Normal
+0,Contrato por Hora,104000,Bueno
+NA,Contrato por Hora,104998.4,NA
+1.5,Contrato por Hora,110240,Normal
+3.5,Contrato por Hora,113838.4,Normal
+NA,Contrato por Hora,130000,NA
+1,Contrato Fijo,28000,Normal
+1.2,Contrato Fijo,30500,Normal
+4.5,Contrato Fijo,31803,Normal
+5.7,Contrato Fijo,32178,Normal
+1,Contrato Fijo,33300,Normal
+1,Contrato Fijo,33500,Normal
+1,Contrato Fijo,33987,Normal
+1,Contrato Fijo,34000,Bueno
+2.5,Contrato Fijo,34486,Normal
+1,Contrato Fijo,34568,Normal
+1,Contrato Fijo,34798,NA
+1,Contrato Fijo,35000,Normal
+0,Contrato Fijo,35760,NA
+1,Contrato Fijo,35793,Normal
+1,Contrato Fijo,35795,Normal
+1.2,Contrato Fijo,35903,Normal
+NA,Contrato Fijo,36000,NA
+1,Contrato Fijo,36000,Normal
+10.2,Contrato Fijo,36939,Bueno
+8,Contrato Fijo,37190,Bueno
+NA,Contrato Fijo,37232,NA
+6.9,Contrato Fijo,37294,Bueno
+2.3,Contrato Fijo,37318,Bueno
+2,Contrato Fijo,37500,Normal
+2.2,Contrato Fijo,37872,Bueno
+1.2,Contrato Fijo,39000,Normal
+1.2,Contrato Fijo,39083,Normal
+0,Contrato Fijo,39520,Normal
+1,Contrato Fijo,39771,Normal
+1,Contrato Fijo,40000,Normal
+0,Contrato Fijo,40000,Normal
+1.26,Contrato Fijo,40019,Normal
+3,Contrato Fijo,41000,Excelente
+0,Contrato Fijo,41221,Normal
+1.2,Contrato Fijo,41808,Normal
+1,Contrato Fijo,42000,Normal
+1.2,Contrato Fijo,42328,Normal
+1.2,Contrato Fijo,42328,Normal
+2,Contrato Fijo,43181,Bueno
+2.5,Contrato Fijo,43389,Excelente
+2.2,Contrato Fijo,43672,Bueno
+2.2,Contrato Fijo,44631,Bueno
+3.1,Contrato Fijo,45053,Bueno
+2.5,Contrato Fijo,45245,Normal
+1,Contrato Fijo,45448,Normal
+1,Contrato Fijo,45802,Normal
+2.5,Contrato Fijo,46000,Bueno
+1.5,Contrato Fijo,46406,Normal
+1,Contrato Fijo,47500,Normal
+4,Contrato Fijo,47652,Bueno
+0,Contrato Fijo,48000,NA
+1,Contrato Fijo,48000,NA
+1.3,Contrato Fijo,48610,NA
+1.3,Contrato Fijo,48610,Normal
+3,Contrato Fijo,49000,Bueno
+NA,Contrato Fijo,49000,Bueno
+1,Contrato Fijo,49000,Normal
+4.4,Contrato Fijo,49285,Bueno
+3,Contrato Fijo,49442,Bueno
+3,Contrato Fijo,49600,Bueno
+8,Contrato Fijo,50000,NA
+1.2,Contrato Fijo,50000,Normal
+4,Contrato Fijo,50000,Normal
+2,Contrato Fijo,50000,Bueno
+4,Contrato Fijo,50045,Bueno
+1.2,Contrato Fijo,50939,Normal
+1.2,Contrato Fijo,50939,Normal
+3,Contrato Fijo,52000,Bueno
+2.7,Contrato Fijo,52312,Normal
+1.2,Contrato Fijo,52416,Normal
+11,Contrato Fijo,53000,NA
+0,Contrato Fijo,55000,NA
+2.5,Contrato Fijo,55598,Bueno
+0,Contrato Fijo,56000,Normal
+1,Contrato Fijo,57000,Normal
+1.3,Contrato Fijo,57358,Normal
+1.5,Contrato Fijo,58000,Normal
+3,Contrato Fijo,58000,Bueno
+1.3,Contrato Fijo,58458,Normal
+2.5,Contrato Fijo,60000,Normal
+1.5,Contrato Fijo,60000,NA
+5.4,Contrato Fijo,60000,Normal
+1.5,Contrato Fijo,60000,Normal
+3.5,Contrato Fijo,60078,Bueno
+1.5,Contrato Fijo,60902,NA
+3.5,Contrato Fijo,61027,NA
+2.5,Contrato Fijo,61506,Excelente
+1,Contrato Fijo,61526,Normal
+3.5,Contrato Fijo,62000,NA
+2.1,Contrato Fijo,62000,Normal
+4.5,Contrato Fijo,62000,Excelente
+2.3,Contrato Fijo,62000,NA
+1,Contrato Fijo,62000,Normal
+NA,Contrato Fijo,65000,NA
+0,Contrato Fijo,65000,NA
+0,Contrato Fijo,65000,NA
+NA,Contrato Fijo,65000,NA
+0,Contrato Fijo,65000,NA
+0,Contrato Fijo,65000,NA
+0,Contrato Fijo,65000,NA
+0,Contrato Fijo,65000,NA
+4,Contrato Fijo,65000,NA
+2.5,Contrato Fijo,65000,NA
+1,Contrato Fijo,65600,Normal
+3,Contrato Fijo,65980,Bueno
+10,Contrato Fijo,66019,NA
+10,Contrato Fijo,66019,Excelente
+1.5,Contrato Fijo,66165,Bueno
+2,Contrato Fijo,66310,Excelente
+1,Contrato Fijo,67621,Normal
+0,Contrato Fijo,67672,Normal
+1.3,Contrato Fijo,68000,Normal
+2,Contrato Fijo,68349,Normal
+1.2,Contrato Fijo,69160,NA
+4.5,Contrato Fijo,69500,Bueno
+1.2,Contrato Fijo,69950,Bueno
+0,Contrato Fijo,70000,Normal
+NA,Contrato Fijo,70000,NA
+1.3,Contrato Fijo,70304,Bueno
+3,Contrato Fijo,71000,Bueno
+1.3,Contrato Fijo,72051,Normal
+1.3,Contrato Fijo,72051,Normal
+1.2,Contrato Fijo,73000,Bueno
+3,Contrato Fijo,73570,Excelente
+1,Contrato Fijo,73750,Bueno
+3,Contrato Fijo,74000,Excelente
+3,Contrato Fijo,74000,Excelente
+NA,Contrato Fijo,74100,NA
+NA,Contrato Fijo,75000,NA
+0,Contrato Fijo,75000,NA
+NA,Contrato Fijo,75000,NA
+5,Contrato Fijo,75088,NA
+1,Contrato Fijo,75750,NA
+10,Contrato Fijo,76000,Bueno
+NA,Contrato Fijo,78000,NA
+NA,Contrato Fijo,78000,NA
+3,Contrato Fijo,78957,Bueno
+3,Contrato Fijo,79000,NA
+NA,Contrato Fijo,79000,Normal
+3.5,Contrato Fijo,79000,Normal
+1.5,Contrato Fijo,79000,Normal
+21.5,Contrato Fijo,79000,Bueno
+0,Contrato Fijo,80000,Malo
+10,Contrato Fijo,80000,Bueno
+0,Contrato Fijo,80000,NA
+20,Contrato Fijo,80000,Bueno
+5.4,Contrato Fijo,80496,Bueno
+1.2,Contrato Fijo,81000,Normal
+2.5,Contrato Fijo,81890,NA
+2,Contrato Fijo,82000,Normal
+3,Contrato Fijo,82000,Normal
+2,Contrato Fijo,82000,Normal
+2.5,Contrato Fijo,82000,NA
+2,Contrato Fijo,82000,NA
+NA,Contrato Fijo,82000,Normal
+2,Contrato Fijo,82000,NA
+2.5,Contrato Fijo,82000,Bueno
+3.5,Contrato Fijo,82805,Normal
+3.5,Contrato Fijo,82805,Normal
+2.7,Contrato Fijo,83000,Normal
+3,Contrato Fijo,83000,Malo
+3,Contrato Fijo,83762,NA
+10.5,Contrato Fijo,83970,Bueno
+1.5,Contrato Fijo,84000,Normal
+2.5,Contrato Fijo,84000,Normal
+9.5,Contrato Fijo,85000,Bueno
+NA,Contrato Fijo,85200,NA
+NA,Contrato Fijo,86000,NA
+3.5,Contrato Fijo,86340,NA
+4,Contrato Fijo,87000,Bueno
+12.8,Contrato Fijo,87000,NA
+6,Contrato Fijo,87900,Normal
+2.5,Contrato Fijo,88400,Bueno
+3,Contrato Fijo,90000,Normal
+7.4,Contrato Fijo,90000,Normal
+2,Contrato Fijo,90000,Bueno
+0,Contrato Fijo,92000,Normal
+7,Contrato Fijo,92000,Excelente
+2.5,Contrato Fijo,92247,Bueno
+3.5,Contrato Fijo,93000,NA
+2,Contrato Fijo,93000,Normal
+2,Contrato Fijo,95200,NA
+3.5,Contrato Fijo,96000,Bueno
+NA,Contrato Fijo,97000,Bueno
+2.5,Contrato Fijo,97452,Normal
+13,Contrato Fijo,98000,Bueno
+2,Contrato Fijo,98000,Bueno
+2,Contrato Fijo,1e+05,NA
+0,Contrato Fijo,1e+05,Normal
+NA,Contrato Fijo,1e+05,NA
+NA,Contrato Fijo,1e+05,Excelente
+2,Contrato Fijo,1e+05,NA
+3,Contrato Fijo,1e+05,NA
+11.3,Contrato Fijo,1e+05,Bueno
+NA,Contrato Fijo,1e+05,NA
+NA,Contrato Fijo,1e+05,NA
+2,Contrato Fijo,1e+05,Bueno
+NA,Contrato Fijo,101000,Bueno
+4,Contrato Fijo,101000,Normal
+1,Contrato Fijo,101005,Normal
+1.25,Contrato Fijo,101250,Bueno
+2,Contrato Fijo,102000,Normal
+4,Contrato Fijo,102000,Normal
+2.5,Contrato Fijo,102500,Normal
+4,Contrato Fijo,102856,Bueno
+3,Contrato Fijo,103000,Bueno
+12,Contrato Fijo,104000,NA
+10,Contrato Fijo,104000,NA
+11,Contrato Fijo,104957,Excelente
+0,Contrato Fijo,105000,Normal
+0,Contrato Fijo,105000,NA
+10,Contrato Fijo,105331,Bueno
+2.5,Contrato Fijo,106000,Normal
+17,Contrato Fijo,107000,Bueno
+3,Contrato Fijo,107500,Bueno
+3.2,Contrato Fijo,108000,Normal
+2.5,Contrato Fijo,109000,Normal
+2,Contrato Fijo,109038,Normal
+0,Contrato Fijo,109990.4,NA
+0,Contrato Fijo,109997,Normal
+2.5,Contrato Fijo,110000,Normal
+2.5,Contrato Fijo,110000,Normal
+15,Contrato Fijo,110000,Bueno
+18.6,Contrato Fijo,110000,Excelente
+2,Contrato Fijo,110635,Normal
+2,Contrato Fijo,110700,Bueno
+NA,Contrato Fijo,112000,NA
+3,Contrato Fijo,112000,Bueno
+3.5,Contrato Fijo,112850,Bueno
+3,Contrato Fijo,113000,Bueno
+2.8,Contrato Fijo,113069,Normal
+2,Contrato Fijo,114000,Normal
+3,Contrato Fijo,114000,Bueno
+3,Contrato Fijo,114000,Bueno
+4,Contrato Fijo,114400,Bueno
+1,Contrato Fijo,115000,Bueno
+NA,Contrato Fijo,115000,NA
+0,Contrato Fijo,116000,Malo
+3,Contrato Fijo,117000,Normal
+2,Contrato Fijo,117000,Bueno
+4.5,Contrato Fijo,117000,Bueno
+2.9,Contrato Fijo,118000,NA
+5,Contrato Fijo,118500,Excelente
+1.8,Contrato Fijo,119000,NA
+6,Contrato Fijo,120000,Bueno
+3.5,Contrato Fijo,120000,Bueno
+3.7,Contrato Fijo,120000,Normal
+NA,Contrato Fijo,120000,NA
+NA,Contrato Fijo,120000,NA
+3,Contrato Fijo,120000,Normal
+3,Contrato Fijo,120000,Normal
+2,Contrato Fijo,120360,Normal
+NA,Contrato Fijo,121000,Normal
+8,Contrato Fijo,121000,Bueno
+0,Contrato Fijo,121000,NA
+2,Contrato Fijo,122400,Normal
+2.5,Contrato Fijo,123500,Bueno
+3,Contrato Fijo,123600,Bueno
+13.5,Contrato Fijo,124000,NA
+NA,Contrato Fijo,125000,Normal
+16,Contrato Fijo,125000,Bueno
+NA,Contrato Fijo,125000,Normal
+3,Contrato Fijo,127000,Normal
+3,Contrato Fijo,128005,Normal
+2.5,Contrato Fijo,128125,NA
+3,Contrato Fijo,128600,Bueno
+3,Contrato Fijo,129104,Normal
+3,Contrato Fijo,130000,Normal
+3.9,Contrato Fijo,132736,Normal
+15,Contrato Fijo,133000,NA
+2,Contrato Fijo,133307,Normal
+2.5,Contrato Fijo,134000,Normal
+0,Contrato Fijo,135000,Bueno
+0,Contrato Fijo,135000,Normal
+10,Contrato Fijo,135000,Bueno
+2.5,Contrato Fijo,135000,Normal
+2.5,Contrato Fijo,135000,Bueno
+4,Contrato Fijo,135000,Bueno
+0,Contrato Fijo,135219,Malo
+14,Contrato Fijo,135596,Excelente
+1,Contrato Fijo,136780,Normal
+17,Contrato Fijo,136947,NA
+3.5,Contrato Fijo,137000,Normal
+2,Contrato Fijo,138000,Normal
+3.5,Contrato Fijo,138000,Normal
+11,Contrato Fijo,140000,Excelente
+1,Contrato Fijo,140000,Normal
+3,Contrato Fijo,141000,NA
+10,Contrato Fijo,142000,NA
+3,Contrato Fijo,143000,Normal
+5,Contrato Fijo,143541,Bueno
+2,Contrato Fijo,144001,Normal
+2.5,Contrato Fijo,144551,Bueno
+4,Contrato Fijo,144560,NA
+2,Contrato Fijo,144619.55,Normal
+10,Contrato Fijo,145000,Excelente
+18,Contrato Fijo,147000,Excelente
+4,Contrato Fijo,147000,Excelente
+0,Contrato Fijo,147500,Malo
+10,Contrato Fijo,148000,Excelente
+2.5,Contrato Fijo,149000,Bueno
+2,Contrato Fijo,150000,Bueno
+2,Contrato Fijo,151000,NA
+1,Contrato Fijo,151000,NA
+2.1,Contrato Fijo,151000,Normal
+0,Contrato Fijo,153000,NA
+2,Contrato Fijo,153000,Normal
+2,Contrato Fijo,153000,Normal
+2.6,Contrato Fijo,153900,Bueno
+3,Contrato Fijo,154500,Normal
+4.5,Contrato Fijo,155000,Bueno
+2,Contrato Fijo,156000,NA
+3,Contrato Fijo,158000,NA
+NA,Contrato Fijo,160000,NA
+2.5,Contrato Fijo,164000,Bueno
+2,Contrato Fijo,164000,Normal
+2.3,Contrato Fijo,164187,Bueno
+13.3,Contrato Fijo,166000,Bueno
+2,Contrato Fijo,168500,NA
+2.8,Contrato Fijo,170000,Bueno
+3.1,Contrato Fijo,174556,Normal
+4,Contrato Fijo,175000,NA
+3,Contrato Fijo,175000,NA
+3,Contrato Fijo,180000,Bueno
+4.5,Contrato Fijo,180000,Bueno
+3,Contrato Fijo,185000,Bueno
+2.9,Contrato Fijo,186000,Normal
+2,Contrato Fijo,195000,Bueno
+2,Contrato Fijo,197000,Normal
+2.2,Contrato Fijo,198000,Bueno
+2,Contrato Fijo,204000,Normal
+2.5,Contrato Fijo,216856,Bueno
+1,Contrato Fijo,41591,Normal
+1,Contrato Fijo,44402,Normal
+3,Contrato Fijo,40178,Bueno
+2.5,Contrato Fijo,42522,Bueno
+2.5,Contrato Fijo,43210,Bueno
+1,Contrato Fijo,43465,Normal
+1,Contrato Fijo,54787,Normal
+16,Contrato Fijo,65745,Bueno
+1,Contrato Fijo,84008,Normal
+4,Contrato Fijo,87298,NA

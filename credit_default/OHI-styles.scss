@@ -1,0 +1,55 @@
+/*-- scss:defaults --*/
+
+// Import fonts
+@import url('https://fonts.googleapis.com/css2?family=Gabarito:wght@400..900&family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap');
+
+// fonts
+$font-family-sans-serif: 'Nunito', sans-serif;
+$font-family-serif: 'Gabarito', serif;
+
+// colors
+$baby-blue: #E3F1F2;
+$teal: #4BA7C0;
+$dark-blue: #252D5C;
+$orange: #F26C25;
+$gray: #ADADAD;
+$dark-gray: #373A3E;
+
+// quarto sass variables
+$link-color: $teal;
+$code-color: $orange;
+
+/*-- scss:rules --*/
+
+// Make title font larger
+.quarto-title-banner .quarto-title .title {
+    font-weight: 700;
+    font-size: xxx-large;
+}
+
+// header font & color
+h1, h2, h3, h4 {
+  font-family: $font-family-serif;
+  color: $dark-blue;
+}
+
+// line beneath h2
+h2 {
+  border-bottom: 3px solid $dark-blue;
+  padding-bottom: 0.5rem;
+}
+
+// gray text
+.gray-text {
+  color: $gray;
+}
+
+// center text (horizontally)
+.center-text{
+  text-align: center;
+}
+
+
+
+
+

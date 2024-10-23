@@ -1,0 +1,478 @@
+---
+  format:
+    revealjs: 
+      theme: [default, style.scss]
+      slide-number: true
+      highlight-style: github
+      width: 1400
+      css:
+       - https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.2/font/bootstrap-icons.css
+---
+  
+##  {.center}
+
+<h1 class="text-indigo-pink">
+
+Analítica de Datos
+
+<h1>
+
+<h2>Solución del Parcial</h2>
+
+::: {style="margin-top:50px"}
+### Carlos Cardona Andrade {.text-orange-gold}
+:::
+
+
+## Preliminares {.text-indigo-pink}
+
+- El primer paso es cargar los paquetes que usaremos:
+
+```{r}
+#| echo: true
+#| warning: false
+# El paquete estrella!
+library(tidyverse)
+# El paquete broom es para visualizar la regresión de mejor manera
+library(broom)
+
+# Cargamos el archivo ".csv"
+blizzard <- read.csv("blizzard_salary.csv")
+```
+
+:::{.fragment}
+
+- ¿Cómo están estructurados los datos?
+
+```{r}
+#| echo: true
+#| warning: false
+glimpse(blizzard)
+```
+
+:::
+
+
+## Pregunta 1 {.text-indigo-pink}
+
+```{r}
+#| echo: false
+#| fig-align: center
+library(tidymodels)
+library(scales)
+
+median_salarios <- blizzard %>%
+  group_by(tipo_contrato) %>%
+  summarize(median_salario = median(salario_anual))
+
+ggplot(blizzard, aes(x = salario_anual)) +
+  geom_histogram(binwidth = 10000, color = "white") +
+  facet_wrap(~tipo_contrato, ncol = 1) +
+  scale_x_continuous(labels = label_dollar(scale = 1/1000, suffix = "K"), breaks = seq(0, 250000, 25000)) +
+  labs(
+    x = "Salario Anual (en USD)",
+    y = "Frecuencia"
+  ) +
+  geom_vline(data = median_salarios, aes(xintercept = median_salario), linetype = "dashed", color = "red") +
+  theme_minimal()
+```
+
+## Pregunta 1 {.text-indigo-pink}
+
+```{r}
+#| echo: false
+#| fig-align: center
+
+ggplot(blizzard, aes(x = salario_anual)) +
+  geom_histogram(binwidth = 10000, color = "white") +
+  facet_wrap(~tipo_contrato, nrow = 1) +
+  scale_x_continuous(labels = label_dollar(scale = 1/1000, suffix = "K"), breaks = c(0,50000,100000, 150000, 200000, 250000)) +
+  labs(
+    x = "Salario Anual (en USD)",
+    y = "Frecuencia"
+  ) +
+  geom_vline(data = median_salarios, aes(xintercept = median_salario), linetype = "dashed", color = "red") +
+  theme_minimal()
+```
+
+
+## Pregunta 1 {.text-indigo-pink}
+
+En la primera gráfica es mucho más fácil ver que la mediana del salario anual para trabajadores con `Contrato Fijo` es más alta que para trabajadores con `Contrato por Hora`. En cambio, en la segunda figura  toca mirar los ejes para poder comparar las dos medianas.
+
+
+
+## Pregunta 1 {.text-indigo-pink}
+
+```{r}
+#| echo: false
+#| fig-align: center
+
+blizzard |>
+  drop_na(tipo_contrato, rating_performance) |>
+  mutate(rating_performance = fct_relevel(rating_performance, "Malo", "Normal", "Bueno", "Excelente")) |>
+  ggplot(aes(x = tipo_contrato, fill = fct_rev(rating_performance))) +
+  geom_bar() +
+  scale_fill_viridis_d() +
+  labs(
+    x = "Tipo de Contrato",
+    y = "Frecuencia",
+    fill = "Nivel de Performance"
+  ) + theme_minimal()
+
+```
+
+
+## Pregunta 1 {.text-indigo-pink}
+
+```{r}
+#| echo: false
+#| fig-align: center
+
+blizzard |>
+  drop_na(tipo_contrato, rating_performance) |>
+    mutate(rating_performance = fct_relevel(rating_performance, "Malo", "Normal", "Bueno", "Excelente")) |>
+  ggplot(aes(x = tipo_contrato, fill = fct_rev(rating_performance))) +
+  geom_bar(position = "fill") +
+  scale_fill_viridis_d() +
+  labs(
+    x = "Tipo de Contrato",
+    y = "Proporción",
+    fill = "Nivel de Performance"
+  ) + theme_minimal()
+```
+
+
+## Pregunta 2 {.text-indigo-pink}
+
+Para los que tenían que calcular el promedio y la mediana por `Tipo de Contrato`:
+
+```{r}
+#| echo: true
+
+blizzard %>% 
+  group_by(tipo_contrato) %>% 
+  summarise(salario_anual_promedio=mean(salario_anual),
+            salario_anual_mediana=median(salario_anual))
+```
+
+En este caso el mejor estimado es 50,000.
+
+
+## Pregunta 2 {.text-indigo-pink}
+
+Mientras que para los que tenían que calcularlo por el `Nivel de Performance`:
+
+```{r}
+#| echo: true
+blizzard %>% 
+  group_by(rating_performance) %>% 
+  summarise(salario_anual_promedio=mean(salario_anual),
+            salario_anual_mediana=median(salario_anual))
+```
+
+
+El mejor estimado es 80,000
+
+
+## Pregunta 3 {.text-indigo-pink}
+
+
+```{r}
+#| echo: true
+blizzard %>% 
+  group_by(tipo_contrato) %>% 
+  summarise(salario_anual_sd=sd(salario_anual))
+```
+
+La desviación estándar de la distribución de salarios anuales de los trabajadores con `Contrato Fijo` es mayor.
+
+
+
+## Pregunta 3 {.text-indigo-pink}
+
+
+```{r}
+#| echo: true
+blizzard %>% 
+  group_by(rating_performance) %>% 
+  summarise(salario_anual_sd=sd(salario_anual))
+```
+
+La desviación estándar de la distribución de salarios anuales de los trabajadores con desempeño `Bueno` es mayor.
+
+
+## Pregunta 4 {.text-indigo-pink}
+
+La gráfica sugiere que el aumento está positivamente relacionado con el nivel de salario anual. Resultado que se corrobora con los resultados de la regresión en el punto 6. 
+
+```{r}
+#| echo: true
+#| warning: false
+#| eval: false
+blizzard <- blizzard %>% 
+  mutate(aumento=salario_anual*(incr_porcentual/100))
+
+ggplot(blizzard, aes(x=salario_anual, y=aumento))+
+  geom_point()+
+    labs(
+    y = "Aumento (en USD)",
+    x = "Salario Anual (en USD)"
+  ) +
+  theme_minimal()
+```
+
+
+## Pregunta 4 {.text-indigo-pink}
+
+```{r}
+#| echo: false
+#| warning: false
+#| fig-align: center
+blizzard <- blizzard %>% 
+  mutate(aumento=salario_anual*(incr_porcentual/100))
+
+ggplot(blizzard, aes(x=salario_anual, y=aumento))+
+  geom_point()+
+    labs(
+    y = "Aumento (en USD)",
+    x = "Salario Anual (en USD)"
+  ) +
+  theme_minimal()
+```
+
+## Pregunta 4 {.text-indigo-pink}
+
+::: columns
+::: {.column width="50%"}
+
+```{r}
+#| echo: false
+#| warning: false
+#| fig-align: center
+blizzard <- blizzard %>% 
+  mutate(aumento=salario_anual*(incr_porcentual/100))
+
+ggplot(blizzard, aes(x=salario_anual, y=aumento))+
+  geom_point()+geom_smooth(method = "lm")+
+    labs(
+    y = "Aumento (en USD)",
+    x = "Salario Anual (en USD)"
+  ) +
+  theme_minimal()
+```
+
+:::
+
+::: {.column .fragment width="50%"}
+
+También podríamos calcular el coeficiente de correlación:
+
+```{r}
+#| echo: false
+#| warning: false
+cor(blizzard$salario_anual, blizzard$aumento, use = "complete.obs")
+```
+
+:::
+:::
+
+
+## Pregunta 5 {.text-indigo-pink}
+
+Si asumimos que estamos trabajando con una muestra de empleados de Blizzard en lugar de la población completa, ¿cuál es el rango en el que se encuentra el salario anual promedio de toda la empresa?
+
+```{r}
+#| echo: true
+#| warning: false
+prueba <- t.test(blizzard$salario_anual, conf.level = 0.95)
+ic <- prueba$conf.int
+ic
+```
+
+:::{.fragment}
+Con un nivel de confianza de 95%, el verdadero salario anual promedio está entre 82366 y 90114 dólares.
+:::
+
+
+## Pregunta 6 {.text-indigo-pink}
+
+```{r}
+#| echo: true
+#| warning: false
+aumento_1 <- lm(incr_porcentual ~ salario_anual, data= blizzard)
+tidy(aumento_1)
+```
+
+Como es un modelo en niveles, la interpretación sería: un aumento de 1 dólar en el salario anual, está asociado a un aumento promedio de 0.0000159%. 
+
+
+## Pregunta 6 {.text-indigo-pink}
+
+```{r}
+#| echo: true
+#| warning: false
+aumento_1 <- lm(incr_porcentual ~ salario_anual, data= blizzard)
+tidy(aumento_1)
+```
+
+Las opciones describen es un aumento de 1000 dólares, por lo tanto, se multiplica el coeficiente por 1000. 
+
+Un aumento de mil dórates, estaría asociado a un incremento promedio de (0.0000159\*1000) 0.0159% en el incremento porcentual.
+
+
+## Pregunta 7 {.text-indigo-pink}
+
+```{r}
+#| echo: false
+#| warning: false
+#| fig-align: center
+
+augment(aumento_1) %>%
+  ggplot(aes(x = .fitted, y = .resid)) +
+  geom_point() +
+  geom_smooth(se = FALSE) +
+  labs(x = "Valores predichos", y = "Residuos")  +
+  theme_minimal()
+```
+
+## Pregunta 7 {.text-indigo-pink}
+
+Al ver la gráfica de abajo no vemos ningún patrón en los residuos y la varianza (salvo para las observaciones después de 4.5 en los valores predichos) parece constante. En este punto no voy a ser tan estricto con la explicación siempre y cuando haya cierta coherencia en la respuesta.
+
+```{r}
+#| echo: true
+#| warning: false
+#| eval: false
+augment(aumento_1) %>%
+  ggplot(aes(x = .fitted, y = .resid)) +
+  geom_point() +
+  geom_smooth(se = FALSE) +
+  labs(x = "Valores predichos", y = "Residuos")  +
+  theme_minimal()
+```
+
+## Pregunta 7 {.text-indigo-pink}
+
+```{r}
+#| echo: false
+#| warning: false
+#| fig-align: center
+
+augment(aumento_1) %>%
+  ggplot(aes(x = .resid)) +
+  geom_histogram() +
+  labs(title = "Distribución de los residuos",
+       x = "Residuos") +
+  theme_minimal()
+```
+
+
+## Pregunta 7 {.text-indigo-pink}
+
+La gráfica de la distribución de los residuos tiende a verse como una normal. Sin embargo, ambas gráficas nos están sugiriendo que hay valores atípicos (outliers) hacia la derecha. En todo caso, si la respuesta es medianamante coherente no importa si dijeron que era normal o no.
+
+```{r}
+#| echo: true
+#| warning: false
+#| eval: false
+augment(aumento_1) %>%
+  ggplot(aes(x = .resid)) +
+  geom_histogram() +
+  labs(title = "Distribución de los residuos",
+       x = "Residuos") +
+  theme_minimal()
+```
+
+## Pregunta 8  {.text-indigo-pink}
+
+Creo las variables dummy primero:
+
+```{r}
+#| echo: true
+#| warning: false
+blizzard <- blizzard %>% 
+  mutate(contrato_fijo=ifelse(tipo_contrato == "Contrato Fijo", 1, 0),
+         malo=ifelse(rating_performance == "Malo", 1, 0),
+         normal=ifelse(rating_performance == "Normal", 1, 0),
+         excelente=ifelse(rating_performance == "Excelente", 1, 0))
+```
+
+:::{.fragment}
+
+Ahora sí estimo ambos modelos:
+
+```{r}
+#| echo: true
+#| warning: false
+modelo_1 <- lm(incr_porcentual ~ salario_anual + contrato_fijo, 
+               data= blizzard)
+modelo_2 <- lm(incr_porcentual ~ salario_anual + malo + normal + excelente,
+               data= blizzard)
+```
+
+:::
+
+## Pregunta 8  {.text-indigo-pink}
+
+El criterio para elegir cuál modelo es mejor (por ahora) es el $R^2$:
+
+```{r}
+#| echo: true
+#| warning: false
+glance(modelo_1)
+glance(modelo_2)
+```
+
+Mientras que el `modelo_2` explica el 25% de la variación en el incremento porcentual, el `modelo_1` explica solo el 4%. Bajo este criterio, el `modelo_2` es mejor prediciendo la variable dependiente.
+
+
+## Pregunta 9 {.text-indigo-pink}
+ 
+Uno debería decirle al colega que esa interpretación no es totalmente correcta. Según la estimación, alguien con un desempeño `Normal` no tiene menos incremento en el salario sino que el incremento es menor, en promedio, que el incremento de la categoría referencia, que en este caso, son los trabajadores con desempeño `Bueno`.
+
+## Pregunta 10 {.text-indigo-pink}
+
+El modelo que se está estimando es:
+
+
+$$\widehat{\text{Incremento Porcentual}}=\hat{\beta_0}+\hat{\beta_1}\times \text{Salario Anual}+\hat{\beta_2} \times \text{Contrato Fijo}$$
+Los coeficientes estimados son:
+
+```{r}
+#| label: raise-salary-type-fit
+#| echo: false
+
+raise_3_fit <- linear_reg() |>
+  fit(incr_porcentual ~ salario_anual + tipo_contrato, data = blizzard)
+
+tidy(raise_3_fit)
+```
+
+## Pregunta 10 {.text-indigo-pink}
+
+```{r}
+#| echo: false
+#| warning: false
+#| fig-align: center
+
+ggplot(blizzard, aes(x = salario_anual, y = incr_porcentual, color = tipo_contrato)) +
+  geom_point(alpha = 0.4) +
+  geom_abline(intercept = 1.24, slope = 0.0000137, color = "#56bcc2", linewidth = 1, linetype = "dashed") +
+  geom_abline(intercept = 1.24+0.913, slope = 0.0000137,  color = "#E87d72", linewidth = 1) +
+  labs(
+    x = "Salario Anual",
+    y = "Incremento Porcential",
+    color = "Tipo de Contrato",
+    linetype = "Tipo de Contrato",
+    shape = "Tipo de Contrato"
+  ) +
+  scale_x_continuous(labels = label_dollar()) +
+  scale_y_continuous(labels = label_percent(scale = 1)) +
+  theme_minimal() +
+  theme(legend.position = "bottom")
+```
+
+
+
+
