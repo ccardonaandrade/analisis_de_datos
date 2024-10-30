@@ -20,6 +20,7 @@
    - Quarto \[[**.html**](https://rawcdn.githack.com/ccardonaandrade/analisis_de_datos/90a2a466878d230dee4c503a6b5f40df4baed186/quarto/quarto.html) | [**.pdf**](https://rawcdn.githack.com/ccardonaandrade/analisis_de_datos/90a2a466878d230dee4c503a6b5f40df4baed186/quarto/quarto.pdf) | [**.qmd**](https://rawcdn.githack.com/ccardonaandrade/analisis_de_datos/90a2a466878d230dee4c503a6b5f40df4baed186/quarto/quarto.qmd)\]
    - [Acá](https://rawcdn.githack.com/ccardonaandrade/analisis_de_datos/bf9e76636821f3071c8e33375f5d710e11c0de9e/quarto/script/nombre_apellido.qmd) encuentran la primera parte del código que usaremos para el documento en Quarto
 9. Más sobre Regresión Lineal \[[**.html**](https://rawcdn.githack.com/ccardonaandrade/analisis_de_datos/29c49af0be7e69f0e2d990fcf43c5b3fb975381a/clase9/more_regression.html) | [**.pdf**](https://rawcdn.githack.com/ccardonaandrade/analisis_de_datos/29c49af0be7e69f0e2d990fcf43c5b3fb975381a/clase9/more_regression.pdf) | [**.qmd**](https://rawcdn.githack.com/ccardonaandrade/analisis_de_datos/29c49af0be7e69f0e2d990fcf43c5b3fb975381a/clase9/more_regression.qmd)\]
+10. Regresión Logística \[[**.html**](https://rawcdn.githack.com/ccardonaandrade/analisis_de_datos/c0eb76db5c2885a63011a71f95ac66037632a378/clase10/logit.html) | [**.pdf**](https://rawcdn.githack.com/ccardonaandrade/analisis_de_datos/c0eb76db5c2885a63011a71f95ac66037632a378/clase10/logit.pdf) | [**.qmd**](https://rawcdn.githack.com/ccardonaandrade/analisis_de_datos/c0eb76db5c2885a63011a71f95ac66037632a378/clase10/logit.qmd)\]
 
 
 ## Detalles
