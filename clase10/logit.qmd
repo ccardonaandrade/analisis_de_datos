@@ -1,0 +1,537 @@
+---
+  format:
+    revealjs: 
+      theme: [default, style.scss]
+      slide-number: true
+      highlight-style: github
+      width: 1400
+      css:
+       - https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.2/font/bootstrap-icons.css
+---
+  
+##  {.center}
+
+<h1 class="text-indigo-pink">
+
+Analítica de Datos
+
+<h1>
+
+<h2>Regresión Logística</h2>
+
+::: {style="margin-top:50px"}
+### Carlos Cardona Andrade {.text-orange-gold}
+:::
+
+# Tabla de contenido
+
+1. [Prediciendo variables categóricas](#pred)
+2. [Logit y Razón de probabilidad](#logit)
+
+
+
+# Prediciendo Variables<br>[Categóricas]{.hl .hl-gold} {#pred .text-wash-black background="linear-gradient(45deg, #f37335, #fdc830)"}
+
+```{r}
+#| echo: false
+#| eval: true
+#| fig-align: "center"
+#| fig-width: 8
+#| fig-height: 4
+
+library(tidyverse)
+library(janitor)
+library(knitr)
+library(broom)
+default <- read_csv("credit_demographics.csv")
+default <- default %>%
+  clean_names()
+default <- default %>%
+  mutate(
+    default_string = case_when(
+      default == 1 ~ "Default",
+      default == 0 ~ "No Default",
+      TRUE ~ NA_character_  # Assign NA for any unmatched values
+    ),
+    sex_string = case_when(
+      sex == 1 ~ "Male",
+      sex == 2 ~ "Female",
+      TRUE ~ NA_character_  # Assign NA for any unmatched values
+    ),
+    education_string = case_when(
+      education == 1 ~ "Graduate School",
+      education == 2 ~ "University",
+      education == 3 ~ "High School",
+      education == 4 ~ "Others",
+      education == 5 ~ "Unknown",
+      education == 6 ~ "Unknown",
+      TRUE ~ NA_character_  # Assign NA for any unmatched values
+    ),
+    marriage_string = case_when(
+      marriage == 1 ~ "Married",
+      marriage == 2 ~ "Single",
+      marriage == 3 ~ "Other",
+      TRUE ~ NA_character_  # Assign NA for any unmatched values     
+    )
+  )
+```
+
+
+## Tipos de variables dependientes {.text-orange-gold}
+
+**Variable dependiente continua**:
+
+-   Precio de venta de casas en Bogotá
+-   **Modelo**: Precio de venta esperado dado el número de cuartos, el tamaño del lote, etc. 
+
+. . .
+
+**Variable dependiente categoríca**:
+
+-   Riesgo de entrar en default de los clientes con un crédito
+-   **Modelo**: Probabilidad que un cliente haga default dada su edad, nivel educativo, etc.
+
+## Modelo de probabilidad lineal {.text-orange-gold}
+
+```{r}
+#| echo: true
+lin_model <- lm(default ~ age + factor(sex_string) + factor(marriage_string), data = default)
+tidy(lin_model)
+```
+
+$$Default= \hat{\beta_1} Age + \hat{\beta_2} Male + \hat{\beta_3} Other + \hat{\beta_4} Single$$
+
+## Modelo de probabilidad lineal {.text-orange-gold}
+
+```{r}
+#| echo: true
+lin_model <- lm(default ~ age + factor(sex_string) + factor(marriage_string), data = default)
+tidy(lin_model)
+```
+
+$$Default= \hat{\beta_1} Age + \hat{\beta_2} Male + \hat{\beta_3} Other + \hat{\beta_4} Single$$
+
+Cada año adicional en la edad del cliente se asocia, en promedio, con un aumento de 0.02 (0.0002$\times$100) **puntos porcentuales** en la probabilidad de estar en default, manteniendo constantes las demás variables.
+
+
+## Modelo de probabilidad lineal {.text-orange-gold}
+
+```{r}
+#| echo: true
+lin_model <- lm(default ~ age + factor(sex_string) + factor(marriage_string), data = default)
+tidy(lin_model)
+```
+
+$$Default= \beta_1 Age + \beta_2 Male + \beta_3 Other + \beta_4 Single$$
+
+Ser soltero se asocia, en promedio, con una disminución de 2.9 (0.029$\times$100) **puntos porcentuales** en la probabilidad de estar en default, en comparación con estar casado, manteniendo constantes las demás variables.
+
+## Puntos porcentuales vs Porcentaje {.text-orange-gold}
+
+- Un punto porcentual es la unidad para la diferencia aritmética de dos porcentajes. 
+
+- Por ejemplo, pasar del 40 % al 44 % es un aumento de 4 puntos porcentuales, pero es un aumento real del 10 % en lo que se está midiendo.
+
+- Al interpretar los coeficientes de un modelo de probabilidad lineal, multiplicamos el $\beta$ por 100 y su unidad de medidad son los puntos porcentuales.
+
+## Modelos para variables categóricas {.text-orange-gold}
+
+::: columns
+::: {.column width="50%"}
+**Regresión Logística**
+
+2 Categorías
+
+1: Si, 0: No
+:::
+
+::: {.column width="50%"}
+**Regresión Logística Multinomial**
+
+3+ Categorías
+
+1: Conservador, 2: Liberal, 3: Independente
+:::
+:::
+
+## Default Data {.text-orange-gold}
+
+::: columns
+::: {.column width="40%"}
+Los datos incluyen si el cliente cayó en default y otras características demográficas del cliente.
+
+`default`
+
+1: yes
+
+0: no
+:::
+
+::: {.column width="60%"}
+```{r}
+default %>%
+  filter(!is.na(age), !is.na(default)) %>%
+  select(default, age, sex)
+```
+:::
+:::
+
+
+
+## Miremos los datos {.text-orange-gold}
+
+```{r}
+#| echo: false
+#| fig-align: center
+set.seed(123)
+
+# Simulate data
+n <- 500  # Number of observations
+
+# Black Voting Age Population (continuous between 0 and 1)
+black_voting_age_population <- runif(n, min = 0, max = 1)
+
+# Create a linear probability model with noise
+true_linear_probs <- 2 * black_voting_age_population - 0.5  # Linear model, slope ensures that predictions can go outside [0,1]
+
+# Adding noise directly to the probabilities to make it less deterministic
+noisy_probs <- true_linear_probs + rnorm(n, mean = 0, sd = 0.5)  # Adding some noise to make the outcome more random
+
+# Generate binary outcome based on the noisy probabilities
+black_representative_elected <- ifelse(noisy_probs > 0.5, 1, 0)
+
+# Combine data into a data frame
+data <- data.frame(
+  Black_Voting_Age_Population = black_voting_age_population,
+  Black_Representative_Elected = black_representative_elected
+)
+
+
+ggplot(data, aes(x = Black_Voting_Age_Population, y = Black_Representative_Elected)) +
+  geom_point() + 
+  labs(y = "Probability of Default",
+       x = "Amount of Debts/Total Income") +
+  theme_minimal()
+```
+
+## Regresión Lineal {.text-orange-gold}
+
+```{r}
+#| echo: false
+#| fig-align: center
+ggplot(data, aes(x = Black_Voting_Age_Population, y = Black_Representative_Elected)) +
+  geom_point() + 
+  geom_smooth(method = "lm", se = FALSE) + 
+  labs(y = "Probability of Default",
+       x = "Amount of Debts/Total Income") +
+  theme_minimal()
+```
+
+
+## Regresión Lineal con Zoom {.text-orange-gold}
+
+```{r}
+#| echo: false
+#| fig-align: center
+ggplot(data, aes(x = Black_Voting_Age_Population, y = Black_Representative_Elected)) +
+  geom_point() + 
+  geom_hline(yintercept = c(0,1), lty = 2) + 
+  stat_smooth(method = "lm",fullrange = TRUE, se = FALSE) +
+  labs(y = "Probability of Default",
+       x = "Amount of Debts/Total Income") +
+  xlim(-0.1, 1.1) +
+  ylim(-1, 2) +
+  theme_minimal()
+```
+
+🛑 *Este modelo produce predicciones fuera del intervalo 0 y 1.*
+
+
+## Intentemos con otro modelo {.text-orange-gold}
+
+```{r}
+#| echo: false
+#| fig-align: center
+ggplot(data, aes(x = Black_Voting_Age_Population, y = Black_Representative_Elected)) +
+  geom_point() + 
+  geom_hline(yintercept = c(0,1), lty = 2) + 
+  stat_smooth(method ="glm", method.args = list(family = "binomial"), 
+              fullrange = TRUE, se = FALSE) + 
+  labs(y = "Probability of Default",
+              x = "Amount of Debts/Total Income") +
+  xlim(-0.1, 1.1) +
+  ylim(-1, 2) +
+  theme_minimal()
+```
+
+✅ Este modelo (llamado  **regresión logística**) solo  predice en el intervalo 0 y 1
+
+
+
+## Diferentes tipos de modelos {.text-orange-gold}
+
+| Método                          |  Variable    | Modelo                                                    |
+|---------------------------------|--------------|-----------------------------------------------------------|
+| Regresión Lineal                |  Continua    | $Y = \beta_0 + \beta_1~ X$                                |
+| Regresión Lineal (log(Y))       | Continua     | $\log(Y) = \beta_0 + \beta_1~ X$                          |
+| Regresión Logística             | Binaria      | $\log\big(\frac{\pi}{1-\pi}\big) = \beta_0 + \beta_1 ~ X$ |
+
+
+
+# [Probabilidad y <br>[[Razón de probabilidad]{.hl .hl-purple}]{style="font-size:75%;"}]{style="color:white"} {#logit background="linear-gradient(45deg, #4a00e0, #ff0099)"}
+
+
+## Variable dependiente binaria {.text-indigo-pink}
+
+-   $Y = 1: \text{ si}, 0: \text{ no}$
+-   $\pi$: **probabilidad** de que $Y=1$, i.e., $P(Y = 1)$
+-   $\frac{\pi}{1-\pi}$: **razón de probabilidad (odds)** de que $Y = 1$
+-   $\log\big(\frac{\pi}{1-\pi}\big)$: **log odds**
+-   Ir de $\pi$ a $\log\big(\frac{\pi}{1-\pi}\big)$ usando la **transformación logística**
+
+## Razón de Prob. (Odds) {.text-indigo-pink}
+
+Supongamos que hay un **70%** de probabilidad de que mañana llueva:
+
+-   La probabilidad de que llueva es $\mathbf{p = 0.7}$
+-   La probabilidad de que no llueva es $\mathbf{1 - p = 0.3}$
+-   La razón de prob. de que llueva es  **7 to 3**, **7:3**, $\mathbf{\frac{0.7}{0.3} \approx 2.33}$
+ 
+## Cuáles son las probabilidades en nuestros datos? {.text-indigo-pink}
+
+```{r}
+#| echo: true
+default %>%
+  count(default) %>%
+  mutate(p = round(n / sum(n), 3))
+```
+
+. . .
+
+$P(\text{default}) = P(Y = 1) = p = 0.221$
+
+. . .
+
+$P(\text{default}) = P(Y = 0) = 1 - p = 0.779$
+
+. . .
+
+$P(\text{odds de default}) = \frac{0.221}{0.779} = 0.283$
+
+
+## De odds a probabilidades {.text-indigo-pink}
+
+::: columns
+::: {.column width="50%"}
+**odds**
+
+$$\omega = \frac{\pi}{1-\pi}$$
+:::
+
+::: {.column width="50%"}
+**probabilidad**
+
+$$\pi = \frac{\omega}{1 + \omega}$$
+:::
+:::
+
+
+
+## De odds a probabilidades {.text-indigo-pink}
+
+(1) **Modelo Logístico**: log odds = $\log\big(\frac{\pi}{1-\pi}\big) = \beta_0 + \beta_1~X$
+(2) **Odds =** $\exp\big\{\log\big(\frac{\pi}{1-\pi}\big)\big\} = \frac{\pi}{1-\pi}$
+(3) Combinando (1) y (2) con lo visto antes
+
+:::{.fragment}
+
+$$\text{probabilidad} = \pi = \frac{\exp\{\beta_0 + \beta_1~X\}}{1 + \exp\{\beta_0 + \beta_1~X\}}$$
+:::
+
+
+
+## Modelo de Regresión Logística {.text-indigo-pink}
+
+**Forma Logística**: $$\log\big(\frac{\pi}{1-\pi}\big) = \beta_0 + \beta_1~X$$
+
+. . .
+
+**Forma en Probabilidad**:
+
+$$
+\pi = \frac{\exp\{\beta_0 + \beta_1~X\}}{1 + \exp\{\beta_0 + \beta_1~X\}}
+$$
+
+
+## Modelo de Regresión Logística {.text-indigo-pink}
+
+```{r}
+#| echo: true
+logit_model <- glm(default ~ age, data = default, family = "binomial")
+
+tidy(logit_model)
+
+```
+
+:::{.fragment}
+
+$$\log\Big(\frac{\hat{\pi}}{1-\hat{\pi}}\Big) = -1.39 + 0.0036 \times \text{age}$$ 
+donde $\hat{\pi}$ es la probabilidad predicha de que un cliente esté en default
+
+:::
+
+## log(odds) predichos {.text-indigo-pink}
+
+```{r}
+#| echo: true
+augment(logit_model)
+```
+
+$$\text{predicted odds} = \hat{\omega} = \frac{\hat{\pi}}{1-\hat{\pi}} = \exp\{-1.30\} = 0.272$$
+
+
+## log(odds) predichos {.text-indigo-pink}
+
+```{r}
+#| echo: true
+# Get predictions
+default$predprob <- predict(logit_model, newdata = default, type = "response")
+
+default %>%
+  select(default, predprob) %>%
+  head (10)
+```
+
+
+$$\text{predicted probabilities} = \hat{\pi} = \frac{\exp\{-1.30\}}{1 + \exp\{-1.30\}} = 0.214$$
+
+## ¿Cómo predecimos los 0s y 1s? {.text-indigo-pink}
+
+```{r}
+#| echo: true
+# Get predictions
+default <- default %>%
+  mutate(pred_class = if_else(predprob >= 0.5, 1, 0))
+
+default %>%
+  select(default, predprob, pred_class) %>%
+  head (10)
+```
+
+
+## Matríz de Confusión {.text-indigo-pink}
+
+```{r}
+#| echo: true
+confusion_matrix <- default %>%
+  count(default, pred_class)
+
+confusion_matrix
+```
+
+
+## Matríz de Confusión {.text-indigo-pink}
+
+```{r}
+#| echo: true
+default <- default %>%
+  mutate(pred_class = if_else(predprob >= 0.3, 1, 0))
+
+confusion_matrix <- default %>%
+  count(default, pred_class)
+
+confusion_matrix
+```
+
+
+## Matríz de Confusión {.text-indigo-pink}
+
+```{r}
+#| echo: true
+default <- default %>%
+  mutate(pred_class = if_else(predprob >= 0.2, 1, 0))
+
+confusion_matrix <- default %>%
+  count(default, pred_class)
+
+confusion_matrix
+```
+
+
+
+## Matríz de Confusión {.text-indigo-pink}
+
+```{r}
+#| echo: true
+
+
+logit_model2 <- glm(default ~ age + factor(sex) + factor(marriage), data = default, family = "binomial")
+
+default$predprob <- predict(logit_model2, newdata = default, type = "response")
+
+default <- default %>%
+  mutate(pred_class = if_else(predprob >= 0.2, 1, 0))
+
+confusion_matrix <- default %>%
+  count(default, pred_class)
+
+confusion_matrix
+```
+
+
+
+## Interpretación de los coeficientes {.text-indigo-pink}
+
+
+$$\log\Big(\frac{\hat{\pi}}{1-\hat{\pi}}\Big) = -1.39 + 0.0036 \times \text{age}$$
+
+Cada año adicional en la edad del cliente se asocia, en promedio, con un aumento de 0.0036 en el log(odd) de caer en default.
+
+### Es útil esa interpretación?
+
+
+## Interpretación de los coeficientes {.text-indigo-pink}
+
+El paquete `mfx` nos permite calcular los efectos marginales sobre la probabilidad directamente
+
+
+```{r}
+#| echo: true
+library(mfx)
+logitmfx(default ~ age, data = default)
+```
+
+Cada año adicional en la edad del cliente se asocia, en promedio, con un aumento de 0.0621 (0.000621$\times$100) **pp** en la probabilidad de estar en default, manteniendo constantes las demás variables.
+
+## Logit vs MLP {.text-indigo-pink}
+
+
+```{r}
+#| echo: true
+library(mfx)
+logitmfx(default ~ age, data = default)
+
+lin_model <- lm(default ~ age, data = default)
+tidy(lin_model)
+
+```
+
+## Logit vs MLP {.text-indigo-pink}
+
+- Dado que las interpretaciones de los coeficientes no cambian mucho, el MLP es más usado por que es más flexible
+
+- Sin embargo, el modelo logit tiene un poder predictivo más preciso
+
+## Logit vs MLP {.text-indigo-pink}
+
+
+```{r}
+#| eval: true
+#| echo: false
+#| fig-align: "center"
+#| out-width: "70%"
+knitr::include_graphics("images/machine_learning.jpg")
+
+```
+
+
