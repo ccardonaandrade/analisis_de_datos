@@ -1,0 +1,333 @@
+---
+  format:
+    revealjs: 
+      theme: [default, style.scss]
+      slide-number: true
+      highlight-style: github
+      width: 1400
+      css:
+       - https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.2/font/bootstrap-icons.css
+---
+  
+##  {.center}
+
+<h1 class="text-indigo-pink">
+
+Analítica de Datos
+
+<h1>
+
+<h2>The Dollar-And-Cents Case Against Hollywood’s Exclusion of Women</h2>
+
+::: {style="margin-top:50px"}
+### Carlos Cardona Andrade {.text-orange-gold}
+:::
+
+
+
+
+```{r}
+#| echo: false
+#| eval: true
+#| fig-align: "center"
+#| fig-width: 8
+#| fig-height: 4
+
+library(tidyverse)
+library(fivethirtyeight)
+library(broom)
+
+
+movies_data <- bechdel
+
+
+movies_data <- movies_data %>%
+  mutate(year_range = case_when(
+    year >= 1970 & year <= 1974 ~ "1970-'74",
+    year >= 1980 & year <= 1984 ~ "1980-'84",
+    year >= 1990 & year <= 1994 ~ "1990-'94",
+    year >= 2000 & year <= 2004 ~ "2000-'04",
+    year >= 2010 & year <= 2013 ~ "2010-'13",
+    TRUE ~ NA_character_  # To handle any years outside the specified ranges
+  ))
+
+
+movies_data <- movies_data %>%
+  mutate(pass = ifelse(binary == "PASS", 1, 0),
+         budget = budget/1000000,
+         domgross = domgross/1000000,
+         intgross = intgross/1000000)
+```
+
+
+## The  Alison Bechdel's test {.text-orange-gold}
+
+A movies is going to pass the test if:
+
+
+
+::: incremental
+  1. there are at least two named women in the picture
+  
+  2. they have a conversation with each other at some point
+  
+  3. that conversation isn’t about a male character 
+:::
+
+## The data {.text-orange-gold}
+
+1,615 films released from 1990 to 2013 with the following variables:
+
+- whether the film passes the test or not
+
+- which criteria the films fail to hold
+
+- budget
+
+- year
+
+- domestic gross
+
+- international gross
+
+
+##  {.text-orange-gold}
+
+
+```{r}
+#| echo: false
+#| eval: true
+#| fig-align: "center"
+#| fig-width: 8
+#| fig-height: 4
+
+# Step 2: Summarize the data by year range and cleant_test
+summary_data <- movies_data %>%
+  group_by(year_range, clean_test) %>%
+  summarise(count = n(), .groups = 'drop') %>%
+  group_by(year_range) %>%
+  mutate(proportion = count / sum(count)) %>%
+  filter(!is.na(year_range))
+
+
+# Assuming `summary_data` is the data frame with year ranges, cleant_test categories, and proportions
+ggplot(summary_data, aes(x = year_range, y = proportion, fill = clean_test)) +
+  geom_bar(stat = "identity", color = "black", width = 0.8) +  # Stacked bars with thin black borders
+  scale_fill_manual(
+    values = c(
+      "nowomen" = "#ff3333",           # Fewer than two women
+      "notalk" = "#f26b6b",            # Women don’t talk to each other
+      "men" = "#ff9999",               # Women only talk about men
+      "dubious" = "lightblue",           # Dubious
+      "ok" = "#169ff5"                 # Passes Bechdel Test
+    ), 
+    labels = c(
+      "nowomen" = "Fewer than two women",
+      "notalk" = "Women don’t talk to each other",
+      "men" = "Women only talk about men",
+      "dubious" = "Dubious",
+      "ok" = "Passes Bechdel Test"
+  ),
+  name = ""  # Remove legend title
+  ) +
+  labs(
+    title = "The Bechdel Test Over Time",
+    subtitle = "How women are represented in movies",
+    x = NULL,  # No x-axis label
+    y = "Percentage"
+  ) +
+  scale_y_continuous(labels = scales::percent_format(), expand = c(0, 0)) +
+  theme_minimal(base_size = 15) +
+  theme(
+    legend.position = "right",
+    plot.title = element_text(face = "bold"),
+    plot.subtitle = element_text(size = 12, color = "gray50"),
+    axis.title.y = element_text(size = 12),
+    panel.grid.minor = element_blank()
+  ) +
+  annotate("text", x = 3, y = 0.75, label = "FAIL", size = 12, color = "black", fontface = "bold") +
+  annotate("text", x = 3, y = 0.25, label = "PASS", size = 12, color = "black", fontface = "bold")
+
+```
+
+
+## Does budget plays a role?  {.text-orange-gold}
+
+
+```{r}
+#| echo: false
+#| eval: true
+#| fig-align: "center"
+
+# Summarize data to get the mean and 95% CI for each category in 'clean_test'
+summary_data <- movies_data %>%
+  group_by(binary) %>%
+  summarise(
+    mean_budget = mean(budget, na.rm = TRUE),
+    se_budget = sd(budget, na.rm = TRUE) / sqrt(n()),
+    ci_lower = mean_budget - 1.96 * se_budget,
+    ci_upper = mean_budget + 1.96 * se_budget
+  )
+
+
+# Create the plot
+ggplot(summary_data, aes(x = binary, y = mean_budget, fill = binary)) +
+  geom_bar(stat = "identity", color = "black", width = 0.7) +  # Bar graph
+  geom_errorbar(aes(ymin = ci_lower, ymax = ci_upper), width = 0.2) +  # Add confidence intervals
+  scale_fill_manual(
+    values = c(
+      "PASS" = "#0066cc",  # Color for PASS
+      "FAIL" = "#ff3333"   # Color for FAIL
+    ),
+    labels = c("PASS" = "Passes Bechdel Test", "FAIL" = "Fails Bechdel Test"),
+    name = ""  # Remove legend title
+  ) +
+  labs(
+    title = "Mean Budget by Bechdel Test Result",
+    subtitle = "Including 95% Confidence Intervals",
+    x = "Bechdel Test Result",
+    y = "Mean Budget"
+  ) +
+  scale_y_continuous(labels = scales::label_dollar(), limits = c(0, 60)) +  # Set y-axis limits
+  theme_minimal(base_size = 15) +
+  theme(
+    legend.position = "right",
+    plot.title = element_text(face = "bold"),
+    plot.subtitle = element_text(size = 12, color = "gray50"),
+    axis.title.y = element_text(size = 12),
+    panel.grid.minor = element_blank()
+  )
+```
+
+
+
+
+## Does any category matters? {.text-orange-gold}
+
+
+```{r}
+#| echo: false
+#| eval: true
+#| fig-align: "center"
+
+# Summarize data to get the mean and 95% CI for each category in 'clean_test'
+summary_data <- movies_data %>%
+  group_by(clean_test) %>%
+  summarise(
+    mean_budget = mean(budget, na.rm = TRUE),
+    se_budget = sd(budget, na.rm = TRUE) / sqrt(n()),
+    ci_lower = mean_budget - 1.96 * se_budget,
+    ci_upper = mean_budget + 1.96 * se_budget
+  )
+
+
+ggplot(summary_data, aes(x = clean_test, y = mean_budget, fill = clean_test)) +
+  geom_bar(stat = "identity", color = "black", width = 0.7) +  # Bar graph
+  geom_errorbar(aes(ymin = ci_lower, ymax = ci_upper), width = 0.2) +  # Add confidence intervals
+  scale_fill_manual(
+    values = c(
+      "nowomen" = "#ff3333",
+      "notalk" = "#f26b6b",
+      "men" = "#ff9999",
+      "dubious" = "lightblue",
+      "ok" = "#0066cc"
+    ),
+    labels = c(
+      "nowomen" = "Fewer than two women",
+      "notalk" = "Women don’t talk to each other",
+      "men" = "Women only talk about men",
+      "dubious" = "Dubious",
+      "ok" = "Passes Bechdel Test"
+    ),
+    name = ""  # Remove legend title
+  ) +
+  labs(
+    title = "Mean Budget by Bechdel Test Category",
+    subtitle = "Including 95% Confidence Intervals",
+    x = "Bechdel Test Category",
+    y = "Mean Budget"
+  ) +
+  scale_y_continuous(labels = scales::label_dollar()) +  # Format y-axis as currency
+  theme_minimal(base_size = 15) +
+  theme(
+    legend.position = "right",
+    plot.title = element_text(face = "bold"),
+    plot.subtitle = element_text(size = 12, color = "gray50"),
+    axis.title.y = element_text(size = 12),
+    panel.grid.minor = element_blank()
+  )
+
+```
+
+## What is a regression going to tell us? {.text-orange-gold}
+
+
+```{r}
+#| echo: true
+#| eval: true
+#| fig-align: "center"
+model_1 <- lm(pass ~ budget + factor(year_range), movies_data)
+tidy(model_1)
+```
+
+
+:::{.fragment}
+For each additional 1 million dollars in the budget, the probability of passing the Bechdel test decreases , on average, by 0.00186 pp keeping the other variables constant.
+:::
+
+
+## What is a regression going to tell us? {.text-orange-gold}
+
+
+```{r}
+#| echo: true
+#| eval: true
+#| fig-align: "center"
+model_1 <- lm(pass ~ budget + factor(year_range), movies_data)
+tidy(model_1)
+```
+
+
+:::{.fragment}
+Movies from the 2000-2004 period have, on average, a 0.339 higher probability of passing the Bechdel test compared to movies from the baseline period (70-74), holding the budget constant.
+:::
+
+
+## What is the predictive power of our model? {.text-orange-gold}
+
+
+```{r}
+#| echo: true
+#| eval: true
+#| fig-align: "center"
+glance(model_1)
+```
+
+## Are the domestic returns related to passing or failing? {.text-orange-gold}
+
+```{r}
+#| echo: true
+#| eval: true
+#| fig-align: "center"
+model_2 <- lm(domgross ~ pass + budget, movies_data)
+tidy(model_2)
+```
+
+
+## Are the international returns related to passing or failing? {.text-orange-gold}
+
+```{r}
+#| echo: true
+#| eval: true
+#| fig-align: "center"
+model_3 <- lm(intgross ~ pass + budget, movies_data)
+tidy(model_3)
+```
+
+## Conclusion {.text-orange-gold}
+
+- A higher movie budget is associated with a lower likelihood of passing the Bechdel Test. This could reflect traditional gender roles in higher-budget films. (You could provide the figure if it is meaningful)
+
+- Movies appear to have become less gender-biased over time (At least in this dataset!)
+
+- Passing the Bechdel Test is significantly linked to domestic box office returns, but there’s no significant relationship with international returns.
